@@ -1,3 +1,4 @@
+# puzzle taken from http://nikoli.com/swf/sl.swf?loadUrl=/nfp/sl-0001.nfp&lang=1
 10x10           # first line, rows (n) by columns (m)
                 # empty line, followed by numbers in grid (n x m)
 ....02....
