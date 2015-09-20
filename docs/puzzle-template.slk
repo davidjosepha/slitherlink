@@ -1,0 +1,35 @@
+10x10           # first line, rows (n) by columns (m)
+                # empty line, followed by numbers in grid (n x m)
+....02....
+230....223
+...3.-3...
+3...22...1
+.2.2..0.2.
+.2.3..3.3.
+3...10...2
+...2..3...
+303....331
+....02....
+                # empty line, followed by horizontal lines in (partial) solution grid (n+1 x m)
+--....-...
+.-...-.-.-
+.-.-.x-.x.
+-x-.-x..-.
+-.----x--.
+--.-.-x-..
+---.-x-x-.
+-.--xx----
+-x-x-x-.-x
+-x-xx-.-.x
+.-..xx---x
+                # empty line, followed by vertical lines in (partial) solution grid (n x m+1)
+-.-...--...
+--...-x.---
+-.---------
+.-x.xx--..-
+-.-...xx.--
+...--------
+-.x.xxxx..-
+.--x-.-..xx
+-xx-x-.---x
+.--xxx-..-x
