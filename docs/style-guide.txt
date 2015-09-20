@@ -1,0 +1,1 @@
+In order to have consistently styled code, here is a style guide with conventions we will use
