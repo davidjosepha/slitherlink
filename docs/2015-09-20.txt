@@ -1,0 +1,31 @@
+Todo:
+    - Set up git repository
+    - Text representation of grid
+    - Implemented representation of grid
+    - Validation of completed grids
+
+Text representation of grid
+    - Store in a way analogous to data in program
+    - 3 separate parts:
+        * numbers
+        * horizontal lines
+        * vertical lines
+
+Implemented representation of grid
+    - Store in three parts
+        * numbers (n x m)
+        * horizontal lines (n+1 x m)
+        * vertical lines (n x m+1)
+    - Contour class (for each line segment)
+        * id (?) (int)
+        * points (vector<int>)
+        * end points (int, int)
+        * closed (bool)
+        * length (int)
+    - Number class
+        * number of adjacent lines
+        * done (bool)
+        * index in array (int)
+        * top(), bottom(), left(), right()
+
+Validation of completed grids
