@@ -12,10 +12,11 @@ Text representation of grid
         * vertical lines
 
 Implemented representation of grid
+    - m rows, n columns
     - Store in three parts
-        * numbers (n x m)
-        * horizontal lines (n+1 x m)
-        * vertical lines (n x m+1)
+        * numbers (m x n)
+        * horizontal lines (m+1 x n)
+        * vertical lines (m x n+1)
     - Contour class (for each line segment)
         * id (?) (int)
         * points (vector<int>)

@@ -1,6 +1,6 @@
 # puzzle taken from http://nikoli.com/swf/sl.swf?loadUrl=/nfp/sl-0001.nfp&lang=1
-10x10           # first line, rows (n) by columns (m)
-                # empty line, followed by numbers in grid (n x m)
+10x10           # first line, rows (m) by columns (n)
+                # empty line, followed by numbers in grid (m x n)
 ....02....
 230....223
 ...3.-3...
@@ -11,7 +11,7 @@
 ...2..3...
 303....331
 ....02....
-                # empty line, followed by horizontal lines in (partial) solution grid (n+1 x m)
+                # empty line, followed by horizontal lines in (partial) solution grid (m+1 x n)
 --....-...
 .-...-.-.-
 .-.-.x-.x.
@@ -23,7 +23,7 @@
 -x-x-x-.-x
 -x-xx-.-.x
 .-..xx---x
-                # empty line, followed by vertical lines in (partial) solution grid (n x m+1)
+                # empty line, followed by vertical lines in (partial) solution grid (m x n+1)
 -.-...--...
 --...-x.---
 -.---------
