@@ -1,15 +1,50 @@
 #include "grid.h"
 #include <iostream>
 #include <vector>
+#include "enums.h"
 
 #define POINT '.'
 #define HLINE '-'
 #define VLINE '|'
+#define IMPOS 'x'
+#define BLANK ' '
 
 Grid::Grid() {
     m = 10;
     n = 10;
+
+    numbers = new Number*[m];
+    hlines = new Edge*[m+1];
+    vlines = new Edge*[m];
+    for (int i = 0; i < m; i++) {
+        numbers[i] = new Number[n];
+        hlines[i] = new Edge[n];
+        vlines[i] = new Edge[n+1];
+    }
+    // hlines needs one extra
+    hlines[m] = new Edge[n];
+
+
+    numbers[3][5] = THREE;
+    vlines[5][4] = LINE;
+    hlines[6][3] = LINE;
+    vlines[6][3] = EX;
+
     print();
+}
+
+Grid::~Grid() {
+    for (int i = 0; i < m; i++) {
+        delete [] numbers[i];
+        delete [] hlines[i];
+        delete [] vlines[i];
+    }
+    // hlines needs one extra
+    delete [] hlines[m];
+    // and delete the outer arrays
+    delete [] numbers;
+    delete [] hlines;
+    delete [] vlines;
 }
 
 void Grid::print() {
@@ -41,13 +76,38 @@ void Grid::print() {
 }
 
 char Grid::formatNumber(int i, int j) const {
-    return '1';
+    switch (numbers[i][j]) {
+        case ZERO:
+            return '0';
+        case ONE:
+            return '1';
+        case TWO:
+            return '2';
+        case THREE:
+            return '3';
+        default:
+            return BLANK;
+    }
 }
 
 char Grid::formatHLine(int i, int j) const {
-    return HLINE;
+    switch (hlines[i][j]) {
+        case LINE:
+            return HLINE;
+        case EX:
+            return IMPOS;
+        default:
+            return BLANK;
+    }
 }
 
 char Grid::formatVLine(int i, int j) const {
-    return VLINE;
+    switch (vlines[i][j]) {
+        case LINE:
+            return VLINE;
+        case EX:
+            return IMPOS;
+        default:
+            return BLANK;
+    }
 }
