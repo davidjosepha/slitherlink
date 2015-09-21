@@ -24,7 +24,7 @@ Grid::Grid() {
     // hlines needs one extra
     hlines[m] = new Edge[n];
 
-
+    // sample cells
     numbers[3][5] = THREE;
     vlines[5][4] = LINE;
     hlines[6][3] = LINE;
@@ -35,16 +35,12 @@ Grid::Grid() {
 
 Grid::~Grid() {
     for (int i = 0; i < m; i++) {
-        delete [] numbers[i];
-        delete [] hlines[i];
-        delete [] vlines[i];
+        delete [] numbers[i], hlines[i], vlines[i];
     }
     // hlines needs one extra
     delete [] hlines[m];
     // and delete the outer arrays
-    delete [] numbers;
-    delete [] hlines;
-    delete [] vlines;
+    delete [] numbers, hlines, vlines;
 }
 
 void Grid::print() {
