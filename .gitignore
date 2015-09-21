@@ -1,2 +1,5 @@
 # compiled files
 slitherlink
+
+# ignore vim .swp files
+*.swp
