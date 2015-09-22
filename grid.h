@@ -1,7 +1,6 @@
 #ifndef GRID_H
 #define GRID_H
 #include <string>
-#include <vector>
 #include "enums.h"
 
 class Grid {
