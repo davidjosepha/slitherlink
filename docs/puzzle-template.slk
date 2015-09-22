@@ -1,5 +1,5 @@
-# puzzle taken from http://nikoli.com/swf/sl.swf?loadUrl=/nfp/sl-0001.nfp&lang=1
-10x10           # first line, rows (m) by columns (n)
+# first line, source: http://nikoli.com/swf/sl.swf?loadUrl=/nfp/sl-0001.nfp&lang=1
+10 10           # second line, rows (m) by columns (n)
                 # empty line, followed by numbers in grid (m x n)
 ....02....
 230....223
