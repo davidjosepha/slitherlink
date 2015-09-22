@@ -1,0 +1,22 @@
+Completed:
+    - Settled on three array-arrays for representation of puzzle
+    - Set up git repository
+    - Have code that imports from file and prints out puzzle
+    - C++ progress
+
+Meeting:
+    - Debriefed Sherri on progress
+    - Talk of Amazon computing for us? :D
+    - How to represent rules? Where will the rules live?
+
+TODO:
+    - by Thursday:
+        * Where do we want to go after applying the rules?
+        * Understand concretely at least one method we could use
+        * Write down algorithm in pseudocode
+
+    - by next weeK:
+        * Be able to apply rules to puzzle
+            * Find some good rule representation
+            * Make sure we have complete set of rules
+
