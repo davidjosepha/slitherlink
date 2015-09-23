@@ -6,7 +6,7 @@
 #define POINT '.'
 #define HLINE '-'
 #define VLINE '|'
-#define IMPOS 'x'
+#define EX 'x'
 #define BLANK ' '
 
 Grid::Grid() {
@@ -136,7 +136,7 @@ void Grid::importHLineRow(int line, std::string row) {
                 hlines[line][j] = LINE;
                 break;
             case 'x':
-                hlines[line][j] = EX;
+                hlines[line][j] = NLINE;
                 break;
             default:
                 hlines[line][j] = EMPTY;
@@ -153,7 +153,7 @@ void Grid::importVLineRow(int line, std::string row) {
                 vlines[line][j] = LINE;
                 break;
             case 'x':
-                vlines[line][j] = EX;
+                vlines[line][j] = NLINE;
                 break;
             default:
                 vlines[line][j] = EMPTY;
@@ -181,8 +181,8 @@ char Grid::formatHLine(int i, int j) const {
     switch (hlines[i][j]) {
         case LINE:
             return HLINE;
-        case EX:
-            return IMPOS;
+        case NLINE:
+            return EX;
         default:
             return BLANK;
     }
@@ -192,8 +192,8 @@ char Grid::formatVLine(int i, int j) const {
     switch (vlines[i][j]) {
         case LINE:
             return VLINE;
-        case EX:
-            return IMPOS;
+        case NLINE:
+            return EX;
         default:
             return BLANK;
     }
