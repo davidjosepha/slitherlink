@@ -1,7 +1,6 @@
 #include "grid.h"
 #include <iostream>
 #include <string>
-#include <vector>
 #include "enums.h"
 
 #define POINT '.'
