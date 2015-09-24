@@ -18,6 +18,6 @@ else
 endif
 
 all:
-	$(CC) main.cpp grid.cpp rule.cpp -o slitherlink $(CCFLAGS)
+	$(CC) main.cpp lattice.cpp rule.cpp -o slitherlink $(CCFLAGS)
 clean:
 	rm *.o slitherlink

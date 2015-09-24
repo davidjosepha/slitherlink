@@ -1,6 +1,6 @@
-#include "grid.h"
+#include "lattice.h"
 
 int main(int argc, char * argv[]) {
-    Grid grid = Grid();
+    Lattice grid = Lattice();
     return 0;
 }

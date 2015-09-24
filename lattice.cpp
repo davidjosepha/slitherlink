@@ -1,4 +1,4 @@
-#include "grid.h"
+#include "lattice.h"
 #include <iostream>
 #include <string>
 #include "enums.h"
@@ -9,7 +9,7 @@
 #define EX 'x'
 #define BLANK ' '
 
-Grid::Grid() {
+Lattice::Lattice() {
     m = 10;
     n = 10;
 
@@ -28,7 +28,7 @@ Grid::Grid() {
     print();
 }
 
-Grid::~Grid() {
+Lattice::~Lattice() {
     for (int i = 0; i < m; i++) {
         delete [] numbers[i], hlines[i], vlines[i];
     }
@@ -38,7 +38,7 @@ Grid::~Grid() {
     delete [] numbers, hlines, vlines;
 }
 
-void Grid::print() {
+void Lattice::print() {
     for (int i = 0; i < m; i++) {
         // print points/lines/Xs/nothing above the row of numbers
         for (int j = 0; j < n; j++) {
@@ -66,7 +66,7 @@ void Grid::print() {
     std::cout << POINT << std::endl;
 }
 
-void Grid::import() {
+void Lattice::import() {
     std::string buffer;
 
     // source info
@@ -105,7 +105,7 @@ void Grid::import() {
     }
 }
 
-void Grid::importNumberRow(int line, std::string row) {
+void Lattice::importNumberRow(int line, std::string row) {
     for (std::string::size_type j = 0; j < row.size(); j++) {
         char c = row[j];
         switch (c) {
@@ -128,7 +128,7 @@ void Grid::importNumberRow(int line, std::string row) {
     }
 }
 
-void Grid::importHLineRow(int line, std::string row) {
+void Lattice::importHLineRow(int line, std::string row) {
     for (std::string::size_type j = 0; j < row.size(); j++) {
         char c = row[j];
         switch (c) {
@@ -145,7 +145,7 @@ void Grid::importHLineRow(int line, std::string row) {
     }
 }
 
-void Grid::importVLineRow(int line, std::string row) {
+void Lattice::importVLineRow(int line, std::string row) {
     for (std::string::size_type j = 0; j < row.size(); j++) {
         char c = row[j];
         switch (c) {
@@ -162,7 +162,7 @@ void Grid::importVLineRow(int line, std::string row) {
     }
 }
 
-char Grid::formatNumber(int i, int j) const {
+char Lattice::formatNumber(int i, int j) const {
     switch (numbers[i][j]) {
         case ZERO:
             return '0';
@@ -177,7 +177,7 @@ char Grid::formatNumber(int i, int j) const {
     }
 }
 
-char Grid::formatHLine(int i, int j) const {
+char Lattice::formatHLine(int i, int j) const {
     switch (hlines[i][j]) {
         case LINE:
             return HLINE;
@@ -188,7 +188,7 @@ char Grid::formatHLine(int i, int j) const {
     }
 }
 
-char Grid::formatVLine(int i, int j) const {
+char Lattice::formatVLine(int i, int j) const {
     switch (vlines[i][j]) {
         case LINE:
             return VLINE;
