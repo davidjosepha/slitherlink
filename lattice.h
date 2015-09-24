@@ -1,12 +1,12 @@
-#ifndef GRID_H
-#define GRID_H
+#ifndef LATTICE_H
+#define LATTICE_H
 #include <string>
 #include "enums.h"
 
-class Grid {
+class Lattice {
     public:
-        Grid();
-        ~Grid();
+        Lattice();
+        ~Lattice();
         void print();
 
     private:
