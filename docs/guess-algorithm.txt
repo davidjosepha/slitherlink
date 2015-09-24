@@ -1,0 +1,4 @@
+0. Iteratively perform all rule searches until no changes occur
+1. Compile a list of known endpoints 
+2. For each endpoint of a contour, make guess of either lines or x's, equal to guess radius (start with manhattan distance 1)
+2a. If a guess cannot be correct, add a line if the guess was an x; add an x if the guess was a line, then go back to step 0 with updated puzzle

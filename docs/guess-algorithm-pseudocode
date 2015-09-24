@@ -1,0 +1,31 @@
+Psuedocode of our guessing algorithm
+------------------------------------
+
+grid = Grid()
+
+def performRules(rules, grid):
+    While (not noChange):
+        For (rule: rules):
+            search(rule, grid)
+
+performRules(rules, grid)
+
+For (endpoint in getEndpoints(grid)):
+    
+    # both return a list of (up to 3) grids with guesses made
+    
+    nlineGuesses = endpoint.guessNline() # 'negative' line, or 'x'
+    For (nlineGrid in nlineGuesses):
+        if nlineGrid.isInvalid():
+            grid.addLine(nlineGrid.getDiff(grid)[0])
+            performRules(rules, grid)
+            break
+    
+    lineGuesses = endpoint.guessLine() # line, or '|' / '-'
+    For (lineGrid in lineGuesses):
+        if lineGrid.isInvalid():
+            grid.addNline(lineGrid.getDiff(grid)[0])
+            performRules(rules, grid)
+            break
+    
+    

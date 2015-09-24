@@ -1,1 +1,10 @@
 In order to have consistently styled code, here is a style guide with conventions we will use
+
+- 4 space indentation - no tabs except in Makefile
+- Opening brace on same line as statement
+    eg if (x == y) {
+
+Naming conventions
+- Class names: upper camel case
+- Method names: lower camel case
+- Just read the         Google style guide
