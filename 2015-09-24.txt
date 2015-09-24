@@ -1,1 +1,19 @@
-Completed: Pseudocode for an applying rules
+Completed: 
+    - Pseudocode for an applying rules
+    - Currently we’re figuring out how to map out rules 
+
+Meeting:
+    - Method: take any end point; make a guess; if we reach a contradiction, then yay; if we reach no contradiction
+    - Sherri believes that if you only have to make one line guess, then that’s an easy puzzle.
+    - We’ll have to have to guess with larger radii than 1 more than likely. 
+    - Not doing guesses deterministically
+    - Look into “guessing smarter” by connecting closer end points. 
+    - Lattice class? She’s cool with that. She’s also cool with inheritance.
+    - Learning rules via GP? One paper did that and they thought it was a bit dumb. There aren’t that many rules. Makes more sense to enumerate.
+
+To Do:
+    - Compartmentalize
+    - Try to find general “puzzle generating” papers (even tutorial to make them by hand).
+    - When do we want to have code ready that does solve a puzzle? 
+    - Think about proposal. 
+    - Ideally by Tuesday have some code that does that. 
