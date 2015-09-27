@@ -9,192 +9,55 @@
 #define EX 'x'
 #define BLANK ' '
 
-Lattice::Lattice() {
-    m = 10;
-    n = 10;
-
-    numbers = new Number*[m];
-    hlines = new Edge*[m+1];
-    vlines = new Edge*[m];
-    for (int i = 0; i < m; i++) {
-        numbers[i] = new Number[n];
-        hlines[i] = new Edge[n];
-        vlines[i] = new Edge[n+1];
-    }
-    // hlines needs one extra
-    hlines[m] = new Edge[n];
-
-    import();
-    print();
-}
+Lattice::Lattice() { }
 
 Lattice::~Lattice() {
+    if (init_) {
+        for (int i = 0; i < m_; i++) {
+            delete [] numbers_[i], hlines_[i], vlines_[i];
+        }
+        // hlines_ needs one extra
+        delete [] hlines_[m_];
+        // and delete the outer arrays
+        delete [] numbers_, hlines_, vlines_;
+    }
+}
+
+void Lattice::initArrays(int m, int n) {
+    init_ = true;
+
+    numbers_ = new Number*[m];
+    hlines_ = new Edge*[m+1];
+    vlines_ = new Edge*[m];
     for (int i = 0; i < m; i++) {
-        delete [] numbers[i], hlines[i], vlines[i];
+        numbers_[i] = new Number[n];
+        hlines_[i] = new Edge[n];
+        vlines_[i] = new Edge[n+1];
     }
-    // hlines needs one extra
-    delete [] hlines[m];
-    // and delete the outer arrays
-    delete [] numbers, hlines, vlines;
+    // hlines_ needs one extra
+    hlines_[m] = new Edge[n];
 }
 
-void Lattice::print() {
-    for (int i = 0; i < m; i++) {
-        // print points/lines/Xs/nothing above the row of numbers
-        for (int j = 0; j < n; j++) {
-            std::cout << POINT;
-            std::cout << formatHLine(i, j);
-        }
-        std::cout << POINT << std::endl;
-
-        // print row of numbers
-        for (int j = 0; j < n; j++) {
-            // print line/x/nothing to the left of number
-            std::cout << formatVLine(i, j);
-            // print number
-            std::cout << formatNumber(i, j);
-        }
-        // print line/x/nothing to the right of last number
-        std::cout << formatVLine(i, n) << std::endl;
-    }
-
-    // print lines/Xs/nothing below the last row of numbers
-    for (int j = 0; j < n; j++) {
-        std::cout << POINT;
-        std::cout << formatHLine(m, j);
-    }
-    std::cout << POINT << std::endl;
+void Lattice::setNumber(int i, int j, Number num) {
+    numbers_[i][j] = num;
 }
 
-void Lattice::import() {
-    std::string buffer;
-
-    // source info
-    std::getline(std::cin, buffer);
-
-    // get dimensions
-    std::cin >> m;
-    std::cin >> n;
-
-    // blank lines
-    std::getline(std::cin, buffer);
-    std::getline(std::cin, buffer);
-
-    // numbers
-    for (int i = 0; i < m; i++) {
-        std::getline(std::cin, buffer);
-        importNumberRow(i, buffer);
-    }
-
-    // blank line
-    std::getline(std::cin, buffer);
-
-    // horizontal lines
-    for (int i = 0; i < m+1; i++) {
-        std::getline(std::cin, buffer);
-        importHLineRow(i, buffer);
-    }
-
-    // blank line
-    std::getline(std::cin, buffer);
-
-    // vertical lines
-    for (int i = 0; i < m; i++) {
-        std::getline(std::cin, buffer);
-        importVLineRow(i, buffer);
-    }
+Number Lattice::getNumber(int i, int j) {
+    return numbers_[i][j];
 }
 
-void Lattice::importNumberRow(int line, std::string row) {
-    for (std::string::size_type j = 0; j < row.size(); j++) {
-        char c = row[j];
-        switch (c) {
-            case '0':
-                numbers[line][j] = ZERO;
-                break;
-            case '1':
-                numbers[line][j] = ONE;
-                break;
-            case '2':
-                numbers[line][j] = TWO;
-                break;
-            case '3':
-                numbers[line][j] = THREE;
-                break;
-            default:
-                numbers[line][j] = NONE;
-                break;
-        }
-    }
+void Lattice::setHLine(int i, int j, Edge edge) {
+    hlines_[i][j] = edge;
 }
 
-void Lattice::importHLineRow(int line, std::string row) {
-    for (std::string::size_type j = 0; j < row.size(); j++) {
-        char c = row[j];
-        switch (c) {
-            case '-':
-                hlines[line][j] = LINE;
-                break;
-            case 'x':
-                hlines[line][j] = NLINE;
-                break;
-            default:
-                hlines[line][j] = EMPTY;
-                break;
-        }
-    }
+Edge Lattice::getHLine(int i, int j) {
+    return hlines_[i][j];
 }
 
-void Lattice::importVLineRow(int line, std::string row) {
-    for (std::string::size_type j = 0; j < row.size(); j++) {
-        char c = row[j];
-        switch (c) {
-            case '-':
-                vlines[line][j] = LINE;
-                break;
-            case 'x':
-                vlines[line][j] = NLINE;
-                break;
-            default:
-                vlines[line][j] = EMPTY;
-                break;
-        }
-    }
+void Lattice::setVLine(int i, int j, Edge edge) {
+    vlines_[i][j] = edge;
 }
 
-char Lattice::formatNumber(int i, int j) const {
-    switch (numbers[i][j]) {
-        case ZERO:
-            return '0';
-        case ONE:
-            return '1';
-        case TWO:
-            return '2';
-        case THREE:
-            return '3';
-        default:
-            return BLANK;
-    }
-}
-
-char Lattice::formatHLine(int i, int j) const {
-    switch (hlines[i][j]) {
-        case LINE:
-            return HLINE;
-        case NLINE:
-            return EX;
-        default:
-            return BLANK;
-    }
-}
-
-char Lattice::formatVLine(int i, int j) const {
-    switch (vlines[i][j]) {
-        case LINE:
-            return VLINE;
-        case NLINE:
-            return EX;
-        default:
-            return BLANK;
-    }
+Edge Lattice::getVLine(int i, int j) {
+    return vlines_[i][j];
 }
