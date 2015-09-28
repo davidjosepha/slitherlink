@@ -37,27 +37,3 @@ void Lattice::initArrays(int m, int n) {
     // hlines_ needs one extra
     hlines_[m] = new Edge[n];
 }
-
-void Lattice::setNumber(int i, int j, Number num) {
-    numbers_[i][j] = num;
-}
-
-Number Lattice::getNumber(int i, int j) {
-    return numbers_[i][j];
-}
-
-void Lattice::setHLine(int i, int j, Edge edge) {
-    hlines_[i][j] = edge;
-}
-
-Edge Lattice::getHLine(int i, int j) {
-    return hlines_[i][j];
-}
-
-void Lattice::setVLine(int i, int j, Edge edge) {
-    vlines_[i][j] = edge;
-}
-
-Edge Lattice::getVLine(int i, int j) {
-    return vlines_[i][j];
-}

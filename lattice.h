@@ -8,12 +8,14 @@ class Lattice {
         Lattice();
         ~Lattice();
         void initArrays(int m, int n);
-        void setNumber(int i, int j, Number num);
-        Number getNumber(int i, int j);
-        void setHLine(int i, int j, Edge edge);
-        Edge getHLine(int i, int j);
-        void setVLine(int i, int j, Edge edge);
-        Edge getVLine(int i, int j);
+        void setNumber(int i, int j, Number num) { numbers_[i][j] = num; };
+        int getHeight() { return m_; };
+        int getWidth() { return n_; };
+        Number getNumber(int i, int j) { return numbers_[i][j]; };
+        void setHLine(int i, int j, Edge edge) { hlines_[i][j] = edge; };
+        Edge getHLine(int i, int j) { return hlines_[i][j]; };
+        void setVLine(int i, int j, Edge edge) { vlines_[i][j] = edge; };
+        Edge getVLine(int i, int j) { return vlines_[i][j]; };
 
     private:
         bool init_ = false;
