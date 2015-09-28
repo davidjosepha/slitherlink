@@ -25,15 +25,17 @@ Lattice::~Lattice() {
 
 void Lattice::initArrays(int m, int n) {
     init_ = true;
+    m_ = m;
+    n_ = n;
 
-    numbers_ = new Number*[m];
-    hlines_ = new Edge*[m+1];
-    vlines_ = new Edge*[m];
-    for (int i = 0; i < m; i++) {
-        numbers_[i] = new Number[n];
-        hlines_[i] = new Edge[n];
-        vlines_[i] = new Edge[n+1];
+    numbers_ = new Number*[m_];
+    hlines_ = new Edge*[m_+1];
+    vlines_ = new Edge*[m_];
+    for (int i = 0; i < m_; i++) {
+        numbers_[i] = new Number[n_];
+        hlines_[i] = new Edge[n_];
+        vlines_[i] = new Edge[n_+1];
     }
     // hlines_ needs one extra
-    hlines_[m] = new Edge[n];
+    hlines_[m_] = new Edge[n_];
 }

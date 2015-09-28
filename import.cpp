@@ -13,7 +13,7 @@
 Import::Import() { }
 
 Import::Import(Lattice & lattice) {
-    lattice_ = lattice;
+    lattice_ = &lattice;
     buildLattice();
 }
 
@@ -27,7 +27,7 @@ void Import::buildLattice() {
     int m, n;
     std::cin >> m;
     std::cin >> n;
-    lattice_.initArrays(m, n);
+    lattice_->initArrays(m, n);
 
     // blank lines
     std::getline(std::cin, buffer);
@@ -63,19 +63,19 @@ void Import::importNumberRow(int i, std::string row) {
         char c = row[j];
         switch (c) {
             case '0':
-                lattice_.setNumber(i, j, ZERO);
+                lattice_->setNumber(i, j, ZERO);
                 break;
             case '1':
-                lattice_.setNumber(i, j, ONE);
+                lattice_->setNumber(i, j, ONE);
                 break;
             case '2':
-                lattice_.setNumber(i, j, TWO);
+                lattice_->setNumber(i, j, TWO);
                 break;
             case '3':
-                lattice_.setNumber(i, j, THREE);
+                lattice_->setNumber(i, j, THREE);
                 break;
             default:
-                lattice_.setNumber(i, j, NONE);
+                lattice_->setNumber(i, j, NONE);
                 break;
         }
     }
@@ -86,13 +86,13 @@ void Import::importHLineRow(int i, std::string row) {
         char c = row[j];
         switch (c) {
             case '-':
-                lattice_.setHLine(i, j, LINE);
+                lattice_->setHLine(i, j, LINE);
                 break;
             case 'x':
-                lattice_.setHLine(i, j, NLINE);
+                lattice_->setHLine(i, j, NLINE);
                 break;
             default:
-                lattice_.setHLine(i, j, EMPTY);
+                lattice_->setHLine(i, j, EMPTY);
                 break;
         }
     }
@@ -103,13 +103,13 @@ void Import::importVLineRow(int i, std::string row) {
         char c = row[j];
         switch (c) {
             case '-':
-                lattice_.setVLine(i, j, LINE);
+                lattice_->setVLine(i, j, LINE);
                 break;
             case 'x':
-                lattice_.setVLine(i, j, NLINE);
+                lattice_->setVLine(i, j, NLINE);
                 break;
             default:
-                lattice_.setVLine(i, j, EMPTY);
+                lattice_->setVLine(i, j, EMPTY);
                 break;
         }
     }
