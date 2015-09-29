@@ -1,0 +1,28 @@
+# first line
+3 2             # second line, rows (m) by columns (n)
+                # start, empty line, followed by numbers in grid (m x n)
+..
+33
+..
+                # empty line, followed by horizontal lines in (partial) solution grid (m+1 x n)
+..
+..
+..
+..
+                # empty line, followed by vertical lines in (partial) solution grid (m x n+1)
+...
+...
+...
+                # result, empty line, followed by numbers in grid (m x n)
+..
+33
+..
+                # empty line, followed by horizontal lines in (partial) solution grid (m+1 x n)
+..
+..
+..
+..
+                # empty line, followed by vertical lines in (partial) solution grid (m x n+1)
+.x.
+|||
+.x.
