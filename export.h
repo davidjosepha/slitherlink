@@ -6,7 +6,7 @@
 
 class Export {
     public:
-        Export(Lattice & lattice);
+        Export(Lattice const & lattice);
         void print();
 
     private:
@@ -14,7 +14,7 @@ class Export {
         char formatHLine(int i, int j) const;
         char formatVLine(int i, int j) const;
 
-        Lattice * lattice_;
+        Lattice const * lattice_;
 };
 
 #endif

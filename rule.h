@@ -5,7 +5,7 @@
 
 class Rule {
     public:
-        Rule();
+        Rule(Lattice const & before, Lattice const & after);
         int getHeight() const { return m_; };
         int getWidth() const { return n_; };
         Lattice const * getBefore() const { return before_; };
@@ -14,8 +14,8 @@ class Rule {
     private:
         int m_;
         int n_;
-        Lattice * before_;
-        Lattice * after_;
+        Lattice const * before_;
+        Lattice const * after_;
 };
 
 #endif

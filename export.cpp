@@ -5,7 +5,7 @@
 #include "lattice.h"
 #include "symbols.h"
 
-Export::Export(Lattice & lattice) {
+Export::Export(Lattice const & lattice) {
     lattice_ = &lattice;
 }
 
