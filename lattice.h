@@ -6,6 +6,7 @@
 class Lattice {
     public:
         Lattice();
+        Lattice(int m, int n);
         ~Lattice();
         void initArrays(int m, int n);
         void setNumber(int i, int j, Number num) { numbers_[i][j] = num; };
