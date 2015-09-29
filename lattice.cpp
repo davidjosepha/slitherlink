@@ -18,17 +18,20 @@ Lattice::Lattice(int m, int n) {
 Lattice::~Lattice() {
     if (init_) {
         for (int i = 0; i < m_; i++) {
-            delete [] numbers_[i], hlines_[i], vlines_[i];
+            delete [] numbers_[i];
+            delete [] hlines_[i];
+            delete [] vlines_[i];
         }
         // hlines_ needs one extra
         delete [] hlines_[m_];
         // and delete the outer arrays
-        delete [] numbers_, hlines_, vlines_;
+        delete [] numbers_;
+        delete [] hlines_;
+        delete [] vlines_;
     }
 }
 
 void Lattice::initArrays(int m, int n) {
-    init_ = true;
     m_ = m;
     n_ = n;
 
@@ -42,6 +45,8 @@ void Lattice::initArrays(int m, int n) {
     }
     // hlines_ needs one extra
     hlines_[m_] = new Edge[n_];
+
+    init_ = true;
 }
 
 void Lattice::cleanArrays() {
