@@ -43,3 +43,20 @@ void Lattice::initArrays(int m, int n) {
     // hlines_ needs one extra
     hlines_[m_] = new Edge[n_];
 }
+
+void Lattice::cleanArrays() {
+    if (init_) {
+        for (int i = 0; i < m_; i++) {
+            for (int j = 0; j < n_; j++) {
+                numbers_[i][j] = NONE;
+                hlines_[i][j] = EMPTY;
+                vlines_[i][j] = EMPTY;
+            }
+            vlines_[i][n_] = EMPTY;
+        }
+
+        for (int j = 0; j < n_; j++) {
+            hlines_[m_][j] = EMPTY;
+        }
+    }
+}

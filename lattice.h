@@ -9,6 +9,7 @@ class Lattice {
         Lattice(int m, int n);
         ~Lattice();
         void initArrays(int m, int n);
+        void cleanArrays();
         void setNumber(int i, int j, Number num) { numbers_[i][j] = num; };
         int getHeight() const { return m_; };
         int getWidth() const { return n_; };
