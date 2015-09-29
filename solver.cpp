@@ -1,6 +1,7 @@
 #include "solver.h"
 #include "enums.h"
 #include "lattice.h"
+#include "rule.h"
 
 Solver::Solver(Lattice & grid) {
     grid_ = &grid;
