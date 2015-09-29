@@ -1,5 +1,4 @@
 #include "rule.h"
 #include "enums.h"
 
-Rule::Rule() {
-}
+Rule::Rule() { }

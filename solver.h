@@ -9,7 +9,7 @@ class Solver {
 
     private:
         void applyRules();
-        void applyRule(Rule rule);
+        void applyRule(int i, int j, Rule & rule);
         Lattice * grid_;
 };
 
