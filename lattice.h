@@ -5,8 +5,7 @@
 
 class Lattice {
     public:
-        Lattice();
-        Lattice(int m, int n);
+        Lattice() { };
         ~Lattice();
         void initArrays(int m, int n);
         void cleanArrays();

@@ -9,12 +9,6 @@
 #define EX 'x'
 #define BLANK ' '
 
-Lattice::Lattice() { }
-
-Lattice::Lattice(int m, int n) {
-    initArrays(m, n);
-}
-
 Lattice::~Lattice() {
     if (init_) {
         for (int i = 0; i < m_; i++) {
