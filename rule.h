@@ -5,6 +5,7 @@
 
 class Rule {
     public:
+        Rule() { };
         Rule(Lattice const & before, Lattice const & after);
         int getHeight() const { return m_; };
         int getWidth() const { return n_; };
