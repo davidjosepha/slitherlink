@@ -17,7 +17,9 @@ void Export::print() {
         // print points/lines/Xs/nothing above the row of numbers
         for (int j = 0; j < n; j++) {
             std::cout << POINT;
+            std::cout << ' ';
             std::cout << formatHLine(i, j);
+            std::cout << ' ';
         }
         std::cout << POINT << std::endl;
 
@@ -25,8 +27,10 @@ void Export::print() {
         for (int j = 0; j < n; j++) {
             // print line/x/nothing to the left of number
             std::cout << formatVLine(i, j);
+            std::cout << ' ';
             // print number
             std::cout << formatNumber(i, j);
+            std::cout << ' ';
         }
         // print line/x/nothing to the right of last number
         std::cout << formatVLine(i, n) << std::endl;
@@ -35,7 +39,9 @@ void Export::print() {
     // print lines/Xs/nothing below the last row of numbers
     for (int j = 0; j < n; j++) {
         std::cout << POINT;
+        std::cout << ' ';
         std::cout << formatHLine(m, j);
+        std::cout << ' ';
     }
     std::cout << POINT << std::endl;
 }
