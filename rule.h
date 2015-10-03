@@ -12,6 +12,14 @@ class Rule {
         Lattice const * getBefore() const { return before_; };
         Lattice const * getAfter() const { return after_; };
 
+        Number getNumberBefore(int i, int j, Orientation orient) const;
+        Edge getHLineBefore(int i, int j, Orientation orient) const;
+        Edge getVLineBefore(int i, int j, Orientation orient) const;
+
+        Number getNumberAfter(int i, int j, Orientation orient) const;
+        Edge getHLineAfter(int i, int j, Orientation orient) const;
+        Edge getVLineAfter(int i, int j, Orientation orient) const;
+
     private:
         int m_;
         int n_;
