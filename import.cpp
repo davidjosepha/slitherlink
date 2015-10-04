@@ -10,54 +10,62 @@
 #define EX 'x'
 #define BLANK ' '
 
+/* Empty constructor */
 Import::Import() { }
 
+/* Constructor taking as input a lattice to be imported into */
 Import::Import(Lattice & lattice) {
     lattice_ = &lattice;
     buildLattice();
 }
 
+/* Reads from stdin and initializes a lattice based on given
+ * dimensions and three separate grids, one each for numbers,
+ * horizontal lines, and vertical lines. */
 void Import::buildLattice() {
     std::string buffer;
 
-    // source info
+    /* source info */
     std::getline(std::cin, buffer);
 
-    // get dimensions
+    /* get dimensions */
     int m, n;
     std::cin >> m;
     std::cin >> n;
     lattice_->initArrays(m, n);
 
-    // blank lines
+    /* blank lines */
     std::getline(std::cin, buffer);
     std::getline(std::cin, buffer);
 
-    // numbers
+    /* numbers */
     for (int i = 0; i < m; i++) {
         std::getline(std::cin, buffer);
         importNumberRow(i, buffer);
     }
 
-    // blank line
+    /* blank line */
     std::getline(std::cin, buffer);
 
-    // horizontal lines
+    /* horizontal lines */
     for (int i = 0; i < m+1; i++) {
         std::getline(std::cin, buffer);
         importHLineRow(i, buffer);
     }
 
-    // blank line
+    /* blank line */
     std::getline(std::cin, buffer);
 
-    // vertical lines
+    /* vertical lines */
     for (int i = 0; i < m; i++) {
         std::getline(std::cin, buffer);
         importVLineRow(i, buffer);
     }
 }
 
+/* Helper function for reading a line from stdin and
+ * interpreting 0-3 as their corresponding values in
+ * the Number enumeration. */
 void Import::importNumberRow(int i, std::string row) {
     for (std::string::size_type j = 0; j < row.size(); j++) {
         char c = row[j];
@@ -81,6 +89,9 @@ void Import::importNumberRow(int i, std::string row) {
     }
 }
 
+/* Helper function for reading a line from stdin and
+ * interpreting '-' and 'x' as their corresponding values in
+ * the Number enumeration. */
 void Import::importHLineRow(int i, std::string row) {
     for (std::string::size_type j = 0; j < row.size(); j++) {
         char c = row[j];
@@ -98,6 +109,9 @@ void Import::importHLineRow(int i, std::string row) {
     }
 }
 
+/* Helper function for reading a line from stdin and
+ * interpreting '-' and 'x' as their corresponding values in
+ * the Number enumeration. */
 void Import::importVLineRow(int i, std::string row) {
     for (std::string::size_type j = 0; j < row.size(); j++) {
         char c = row[j];

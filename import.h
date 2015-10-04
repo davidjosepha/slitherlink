@@ -16,8 +16,8 @@ class Import {
         void importVLineRow(int i, std::string row);
 
         Lattice * lattice_;
-        int m_;     // number of rows
-        int n_;     // number of columns
+        int m_;     /* number of rows */
+        int n_;     /* number of columns */
 };
 
 #endif
