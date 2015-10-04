@@ -12,7 +12,7 @@ Solver::Solver(Lattice & grid) {
 void Solver::applyRules() {
     for  (int x = 0; x < NUM_RULES; x++) {
         Rule rule = rules_[x];
-        Orientation orient = RIGHT;
+        Orientation orient = UP;
         /* orientation = UP */
         for (int i = 0; i <= grid_->getWidth() - rules_[x].getNumberWidth(orient); i++) {
             for (int j = 0; j <= grid_->getHeight() - rules_[x].getNumberHeight(orient); j++) {

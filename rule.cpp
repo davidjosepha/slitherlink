@@ -125,7 +125,7 @@ Edge Rule::getHLineBefore(int i, int j, Orientation orient) const {
         case DOWN:
             return before_->getHLine(m_-i, n_-j-1);
         case LEFT:
-            //return before_->getHLine(j, n_-i-1);
+            return before_->getVLine(j, n_-i);
         case RIGHT:
             //return before_->getHLine(m_-j, i);
         case UPFLIP:
@@ -143,7 +143,7 @@ Edge Rule::getVLineBefore(int i, int j, Orientation orient) const {
         case DOWN:
             return before_->getVLine(m_-i-1, n_-j);
         case LEFT:
-            //return before_->getVLine(j, n_-i);
+            return before_->getHLine(j, m_-i-1);
         case RIGHT:
             //return before_->getVLine(m_-j-1, i);
         case UPFLIP:
@@ -179,7 +179,7 @@ Edge Rule::getHLineAfter(int i, int j, Orientation orient) const {
         case DOWN:
             return after_->getHLine(m_-i, n_-j-1);
         case LEFT:
-            //return after_->getHLine(j, n_-i-1);
+            return after_->getVLine(j, n_-i);
         case RIGHT:
             //return after_->getHLine(m_-j, i);
         case UPFLIP:
@@ -197,7 +197,7 @@ Edge Rule::getVLineAfter(int i, int j, Orientation orient) const {
         case DOWN:
             return after_->getVLine(m_-i-1, n_-j);
         case LEFT:
-            //return after_->getVLine(j, n_-i);
+            return after_->getHLine(j, m_-i-1);
         case RIGHT:
             //return after_->getVLine(m_-j-1, i);
         case UPFLIP:
