@@ -11,13 +11,13 @@ Solver::Solver(Lattice & grid) {
 
 void Solver::applyRules() {
     for  (int x = 0; x < NUM_RULES; x++) {
-        Rule rule = rules_[x];
-        Orientation orient = UP;
-        /* orientation = UP */
-        for (int i = 0; i <= grid_->getWidth() - rules_[x].getNumberWidth(orient); i++) {
-            for (int j = 0; j <= grid_->getHeight() - rules_[x].getNumberHeight(orient); j++) {
-                if (ruleApplies(i, j, rules_[x], orient)) {
-                    applyRule(i, j, rules_[x], orient);
+        for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT }) {
+            /* orientation = UP */
+            for (int i = 0; i <= grid_->getWidth() - rules_[x].getNumberWidth(orient); i++) {
+                for (int j = 0; j <= grid_->getHeight() - rules_[x].getNumberHeight(orient); j++) {
+                    if (ruleApplies(i, j, rules_[x], orient)) {
+                        applyRule(i, j, rules_[x], orient);
+                    }
                 }
             }
         }
