@@ -15,9 +15,9 @@ Solver::Solver(Lattice & grid) {
  * applying it. */
 void Solver::applyRules() {
     for  (int x = 0; x < NUM_RULES; x++) {
-        for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT }) {
-            for (int i = 0; i <= grid_->getWidth() - rules_[x].getNumberWidth(orient); i++) {
-                for (int j = 0; j <= grid_->getHeight() - rules_[x].getNumberHeight(orient); j++) {
+        for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
+            for (int i = 0; i <= grid_->getHeight() - rules_[x].getNumberHeight(orient); i++) {
+                for (int j = 0; j <= grid_->getWidth() - rules_[x].getNumberWidth(orient); j++) {
                     if (ruleApplies(i, j, rules_[x], orient)) {
                         applyRule(i, j, rules_[x], orient);
                     }
