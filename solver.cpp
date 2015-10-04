@@ -72,7 +72,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getVLineHeight(orient); k++) {
         for (int l = 0; l < rule.getVLineWidth(orient); l++) {
             if (rule.getVLineBefore(k, l, orient) != EMPTY and
-                rule.getVLineBefore(k, l, orient) != grid_->getVLine(k + rule.getWidth(), l + rule.getHeight())) {
+                rule.getVLineBefore(k, l, orient) != grid_->getVLine(k + i, l + j)) {
                 return false;
             }
         }
