@@ -129,11 +129,11 @@ Number Rule::getNumberBefore(int i, int j, Orientation orient) const {
         case DOWN:
             return before_->getNumber(m_-i-1, n_-j-1);
         case LEFTFLIP:
-            j = m_ - j - 1;
+            i = n_ - i - 1;
         case LEFT:
             return before_->getNumber(j, n_-i-1);
         case RIGHTFLIP:
-            j = m_ - j - 1;
+            i = n_ - i - 1;
         case RIGHT:
             return before_->getNumber(m_-j-1, i);
     }
@@ -204,11 +204,11 @@ Number Rule::getNumberAfter(int i, int j, Orientation orient) const {
         case DOWN:
             return after_->getNumber(m_-i-1, n_-j-1);
         case LEFTFLIP:
-            j = m_ - j - 1;
+            i = n_ - i - 1;
         case LEFT:
             return after_->getNumber(j, n_-i-1);
         case RIGHTFLIP:
-            j = m_ - j - 1;
+            i = n_ - i - 1;
         case RIGHT:
             return after_->getNumber(m_-j-1, i);
     }

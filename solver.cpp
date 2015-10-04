@@ -94,7 +94,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
  * used by the Solver to complete the grid. */
 void Solver::initRules() {
     int i = 0;
-    
+
     /* Rule #01 */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
