@@ -3,16 +3,19 @@
 #include "lattice.h"
 #include "rule.h"
 
+/* Constructor takes a grid as input to solve */
 Solver::Solver(Lattice & grid) {
     grid_ = &grid;
     initRules();
     applyRules();
 }
 
+/* Runs a loop checking each rule in each orientation in each valid
+ * position on the grid, checking if the rule applies, and, if so,
+ * applying it. */
 void Solver::applyRules() {
     for  (int x = 0; x < NUM_RULES; x++) {
         for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT }) {
-            /* orientation = UP */
             for (int i = 0; i <= grid_->getWidth() - rules_[x].getNumberWidth(orient); i++) {
                 for (int j = 0; j <= grid_->getHeight() - rules_[x].getNumberHeight(orient); j++) {
                     if (ruleApplies(i, j, rules_[x], orient)) {
@@ -24,6 +27,9 @@ void Solver::applyRules() {
     }
 }
 
+/* Applies a rule in a given orientation to a given region of the
+ * grid, overwriting all old values with any applicable values from
+ * the after_ lattice for that rule. */
 void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getNumberHeight(orient); k++) {
         for (int l = 0; l < rule.getNumberWidth(orient); l++) {
@@ -50,6 +56,10 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     }
 }
 
+/* Checks if a rule in a given orientation applies to a given
+ * region of the grid by checking all non-empty values in the
+ * before_ lattice and verifying they correspond to the values
+ * in the grid. */
 bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getNumberHeight(orient); k++) {
         for (int l = 0; l < rule.getNumberWidth(orient); l++) {
@@ -80,9 +90,9 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
     return true;
 }
 
-
+/* Initializes the rules_ array with each deterministic rule
+ * used by the Solver to complete the grid. */
 void Solver::initRules() {
-
     int i = 0;
     
     /* Rule #01 */
