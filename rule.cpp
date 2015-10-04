@@ -1,6 +1,8 @@
 #include "rule.h"
 #include "enums.h"
 
+/* Constructor instantiates new rule based on before and
+ * after lattices. */
 Rule::Rule(Lattice const & before, Lattice const & after) {
     m_ = before.getHeight();
     n_ = before.getWidth();
@@ -8,6 +10,8 @@ Rule::Rule(Lattice const & before, Lattice const & after) {
     after_ = &after;
 }
 
+/* Gives the height of the number grid based on a given
+ * orientation. In its upright position, its height is m_. */
 int Rule::getNumberHeight(Orientation orient) const {
     switch (orient) {
         case UP:
@@ -23,6 +27,8 @@ int Rule::getNumberHeight(Orientation orient) const {
     }
 }
 
+/* Gives the width of the number grid based on a given
+ * orientation. In its upright position, its width is n_. */
 int Rule::getNumberWidth(Orientation orient) const {
     switch (orient) {
         case UP:
@@ -38,6 +44,8 @@ int Rule::getNumberWidth(Orientation orient) const {
     }
 }
 
+/* Gives the height of the horizontal line grid based on a given
+ * orientation. In its upright position, its height is n_ + 1. */
 int Rule::getHLineHeight(Orientation orient) const {
     switch (orient) {
         case UP:
@@ -53,6 +61,8 @@ int Rule::getHLineHeight(Orientation orient) const {
     }
 }
 
+/* Gives the width of the horizontal line grid based on a given
+ * orientation. In its upright position, its width is n_. */
 int Rule::getHLineWidth(Orientation orient) const {
 
     switch (orient) {
@@ -69,6 +79,8 @@ int Rule::getHLineWidth(Orientation orient) const {
     }
 }
 
+/* Gives the height of the vertical line grid based on a given
+ * orientation. In its upright position, its height is m_. */
 int Rule::getVLineHeight(Orientation orient) const {
 
     switch (orient) {
@@ -85,6 +97,8 @@ int Rule::getVLineHeight(Orientation orient) const {
     }
 }
 
+/* Gives the width of the horizontal line grid based on a given
+ * orientation. In its upright position, its width is n_ + 1. */
 int Rule::getVLineWidth(Orientation orient) const {
     switch (orient) {
         case UP:
@@ -100,6 +114,10 @@ int Rule::getVLineWidth(Orientation orient) const {
     }
 }
 
+/* Translates coordinates for a number on a rule in a given
+ * orientation to the coordinates for that number in its
+ * canonical orientation and returns the value of that number
+ * on the before_ lattice. */
 Number Rule::getNumberBefore(int i, int j, Orientation orient) const {
     switch (orient) {
         case UP:
@@ -118,6 +136,10 @@ Number Rule::getNumberBefore(int i, int j, Orientation orient) const {
     }
 }
 
+/* Translates coordinates for a horizontal line on a rule in a
+ * given orientation to the coordinates for that line in its
+ * canonical orientation and returns the value of that line
+ * on the before_ lattice. */
 Edge Rule::getHLineBefore(int i, int j, Orientation orient) const {
     switch (orient) {
         case UP:
@@ -136,6 +158,10 @@ Edge Rule::getHLineBefore(int i, int j, Orientation orient) const {
     }
 }
 
+/* Translates coordinates for a vertical line on a rule in a
+ * given orientation to the coordinates for that line in its
+ * canonical orientation and returns the value of that line
+ * on the before_ lattice. */
 Edge Rule::getVLineBefore(int i, int j, Orientation orient) const {
     switch (orient) {
         case UP:
@@ -154,6 +180,10 @@ Edge Rule::getVLineBefore(int i, int j, Orientation orient) const {
     }
 }
 
+/* Translates coordinates for a number on a rule in a given
+ * orientation to the coordinates for that number in its
+ * canonical orientation and returns the value of that number
+ * on the after_ lattice. */
 Number Rule::getNumberAfter(int i, int j, Orientation orient) const {
     switch (orient) {
         case UP:
@@ -172,6 +202,10 @@ Number Rule::getNumberAfter(int i, int j, Orientation orient) const {
     }
 }
 
+/* Translates coordinates for a horizontal line on a rule in a
+ * given orientation to the coordinates for that line in its
+ * canonical orientation and returns the value of that line
+ * on the after_ lattice. */
 Edge Rule::getHLineAfter(int i, int j, Orientation orient) const {
     switch (orient) {
         case UP:
@@ -190,6 +224,10 @@ Edge Rule::getHLineAfter(int i, int j, Orientation orient) const {
     }
 }
 
+/* Translates coordinates for a vertical line on a rule in a
+ * given orientation to the coordinates for that line in its
+ * canonical orientation and returns the value of that line
+ * on the after_ lattice. */
 Edge Rule::getVLineAfter(int i, int j, Orientation orient) const {
     switch (orient) {
         case UP:
