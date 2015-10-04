@@ -11,10 +11,13 @@ Solver::Solver(Lattice & grid) {
 
 void Solver::applyRules() {
     for  (int x = 0; x < NUM_RULES; x++) {
-        for (int i = 0; i <= grid_->getWidth() - rules_[x].getWidth(); i++) {
-            for (int j = 0; j <= grid_->getHeight() - rules_[x].getHeight(); j++) {
-                if (ruleApplies(i, j, rules_[x], UP)) {
-                    applyRule(i, j, rules_[x], UP);
+        Rule rule = rules_[x];
+        Orientation orient = RIGHT;
+        /* orientation = UP */
+        for (int i = 0; i <= grid_->getWidth() - rules_[x].getNumberWidth(orient); i++) {
+            for (int j = 0; j <= grid_->getHeight() - rules_[x].getNumberHeight(orient); j++) {
+                if (ruleApplies(i, j, rules_[x], orient)) {
+                    applyRule(i, j, rules_[x], orient);
                 }
             }
         }
@@ -22,27 +25,24 @@ void Solver::applyRules() {
 }
 
 void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
-    int m = rule.getHeight();
-    int n = rule.getWidth();
-
-    for (int k = 0; k < m; k++) {
-        for (int l = 0; l < n; l++) {
+    for (int k = 0; k < rule.getNumberHeight(orient); k++) {
+        for (int l = 0; l < rule.getNumberWidth(orient); l++) {
             if (rule.getNumberAfter(k, l, orient) != NONE) {
                 grid_->setNumber(k + i, l + j, rule.getNumberAfter(k, l, orient));
             }
         }
     }
 
-    for (int k = 0; k < m + 1; k++) {
-        for (int l = 0; l < n; l++) {
+    for (int k = 0; k < rule.getHLineHeight(orient); k++) {
+        for (int l = 0; l < rule.getHLineWidth(orient); l++) {
             if (rule.getHLineAfter(k, l, orient) != EMPTY) {
                 grid_->setHLine(k + i, l + j, rule.getHLineAfter(k, l, orient));
             }
         }
     }
 
-    for (int k = 0; k < m; k++) {
-        for (int l = 0; l < n + 1; l++) {
+    for (int k = 0; k < rule.getVLineHeight(orient); k++) {
+        for (int l = 0; l < rule.getVLineWidth(orient); l++) {
             if (rule.getVLineAfter(k, l, orient) != EMPTY) {
                 grid_->setVLine(k + i, l + j, rule.getVLineAfter(k, l, orient));
             }
@@ -51,11 +51,8 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
 }
 
 bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
-    int m = rule.getHeight();
-    int n = rule.getWidth();
-
-    for (int k = 0; k < m; k++) {
-        for (int l = 0; l < n; l++) {
+    for (int k = 0; k < rule.getNumberHeight(orient); k++) {
+        for (int l = 0; l < rule.getNumberWidth(orient); l++) {
             if (rule.getNumberBefore(k, l, orient) != NONE and
                 rule.getNumberBefore(k, l, orient) != grid_->getNumber(k + i, l + j)) {
                 return false;
@@ -63,8 +60,8 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
         }
     }
 
-    for (int k = 0; k < m + 1; k++) {
-        for (int l = 0; l < n; l++) {
+    for (int k = 0; k < rule.getHLineHeight(orient); k++) {
+        for (int l = 0; l < rule.getHLineWidth(orient); l++) {
             if (rule.getHLineBefore(k, l, orient) != EMPTY and
                 rule.getHLineBefore(k, l, orient) != grid_->getHLine(k + i, l + j)) {
                 return false;
@@ -72,8 +69,8 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
         }
     }
 
-    for (int k = 0; k < m; k++) {
-        for (int l = 0; l < n + 1; l++) {
+    for (int k = 0; k < rule.getVLineHeight(orient); k++) {
+        for (int l = 0; l < rule.getVLineWidth(orient); l++) {
             if (rule.getVLineBefore(k, l, orient) != EMPTY and
                 rule.getVLineBefore(k, l, orient) != grid_->getVLine(k + rule.getWidth(), l + rule.getHeight())) {
                 return false;
