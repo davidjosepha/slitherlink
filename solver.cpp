@@ -100,13 +100,14 @@ void Solver::initRules() {
     /**
      * Rule #01
      * Before       After
-     * . . .        . . .
-     * . . .        . . .
-     * . . .        . . .
+     * .   .   .    .   .   .
+     *     x
+     * . x . x .    .   .   .
+     *                  x
+     * .   .   .    .   .   .
      */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
-
 
     beforeLattices_[i].setHLine(1, 1, NLINE);
     beforeLattices_[i].setHLine(1, 0, NLINE);
@@ -124,9 +125,11 @@ void Solver::initRules() {
     /**
      * Rule #02
      * Before       After
-     * . . .        . . .
-     * . . .        . . .
-     * . . .        . . .
+     * .   .   .    .   .   .
+     *     |
+     * . - .   .    .   . x .
+     *                  x
+     * .   .   .    .   .   .
      */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
@@ -148,9 +151,11 @@ void Solver::initRules() {
     /**
      * Rule #03
      * Before       After
-     * . . .        . . .
-     * . . .        . . .
-     * . . .        . . .
+     * .   .   .    .   .   .
+     *                  x
+     * . - . - .    .   .   .
+     *                  x
+     * .   .   .    .   .   .
      */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
@@ -172,9 +177,11 @@ void Solver::initRules() {
     /**
      * Rule #04
      * Before       After
-     * . . .        . . .
-     * . . .        . . .
-     * . . .        . . .
+     * .   .   .    .   . - .
+     *       3              |
+     * .   .   .    .   .   .
+     *   3          |
+     * .   .   .    . - .   .
      */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
@@ -196,10 +203,13 @@ void Solver::initRules() {
     /**
      * Rule #05
      * Before       After
-     * . . .        . . .
-     * . . .        . . .
-     * . . .        . . .
-     * . . .        . . .
+     * .   .   .    .   .   .
+     *                  x
+     * .   .   .    .   .   .
+     *   3   3      |   |   |
+     * .   .   .    .   .   .
+     *                  x
+     * .   .   .    .   .   .
      */
     beforeLattices_[i].initArrays(3,2);
     beforeLattices_[i].cleanArrays();
