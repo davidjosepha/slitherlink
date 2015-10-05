@@ -91,11 +91,19 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
 }
 
 /* Initializes the rules_ array with each deterministic rule
- * used by the Solver to complete the grid. */
+ * used by the Solver to complete the grid. By convention the
+ * rules will be represented with width <= height, although
+ * each rule will be applied in each possible orientation. */
 void Solver::initRules() {
     int i = 0;
 
-    /* Rule #01 */
+    /**
+     * Rule #01
+     * Before       After
+     * . . .        . . .
+     * . . .        . . .
+     * . . .        . . .
+     */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
 
@@ -113,8 +121,13 @@ void Solver::initRules() {
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
 
-    /* Rule #02 */
-
+    /**
+     * Rule #02
+     * Before       After
+     * . . .        . . .
+     * . . .        . . .
+     * . . .        . . .
+     */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
 
@@ -132,8 +145,13 @@ void Solver::initRules() {
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
 
-    /* Rule #03 */
-
+    /**
+     * Rule #03
+     * Before       After
+     * . . .        . . .
+     * . . .        . . .
+     * . . .        . . .
+     */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
 
@@ -150,7 +168,14 @@ void Solver::initRules() {
 
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
-    /* Rule #1 */
+
+    /**
+     * Rule #04
+     * Before       After
+     * . . .        . . .
+     * . . .        . . .
+     * . . .        . . .
+     */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
 
@@ -168,7 +193,14 @@ void Solver::initRules() {
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
 
-    /* Rule B */
+    /**
+     * Rule #05
+     * Before       After
+     * . . .        . . .
+     * . . .        . . .
+     * . . .        . . .
+     * . . .        . . .
+     */
     beforeLattices_[i].initArrays(3,2);
     beforeLattices_[i].cleanArrays();
 
