@@ -481,4 +481,21 @@ void Solver::initRules() {
 
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
+
+    /* Rule C */
+    beforeLattices_[i].initArrays(2,2);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(0, 0, THREE);
+    beforeLattices_[i].setNumber(0, 1, ONE);
+    beforeLattices_[i].setVLine(1, 0, NLINE);
+    beforeLattices_[i].setVLine(1, 1, NLINE);
+
+    afterLattices_[i].initArrays(2,2);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setHLine(1, 0, LINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
 }
