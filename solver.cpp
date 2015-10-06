@@ -7,7 +7,11 @@
 Solver::Solver(Lattice & grid) {
     grid_ = &grid;
     initRules();
-    applyRules();
+
+    while (grid_->getUpdated()) {
+        grid_->setUpdated(false);
+        applyRules();
+    }
 }
 
 /* Runs a loop checking each rule in each orientation in each valid
@@ -33,24 +37,27 @@ void Solver::applyRules() {
 void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getNumberHeight(orient); k++) {
         for (int l = 0; l < rule.getNumberWidth(orient); l++) {
-            if (rule.getNumberAfter(k, l, orient) != NONE) {
+            if (rule.getNumberAfter(k, l, orient) != NONE && grid_->getNumber(k + i, l + j) == NONE) {
                 grid_->setNumber(k + i, l + j, rule.getNumberAfter(k, l, orient));
+                grid_->setUpdated(true);
             }
         }
     }
 
     for (int k = 0; k < rule.getHLineHeight(orient); k++) {
         for (int l = 0; l < rule.getHLineWidth(orient); l++) {
-            if (rule.getHLineAfter(k, l, orient) != EMPTY) {
+            if (rule.getHLineAfter(k, l, orient) != EMPTY && grid_->getHLine(k + i, l + j) == EMPTY) {
                 grid_->setHLine(k + i, l + j, rule.getHLineAfter(k, l, orient));
+                grid_->setUpdated(true);
             }
         }
     }
 
     for (int k = 0; k < rule.getVLineHeight(orient); k++) {
         for (int l = 0; l < rule.getVLineWidth(orient); l++) {
-            if (rule.getVLineAfter(k, l, orient) != EMPTY) {
+            if (rule.getVLineAfter(k, l, orient) != EMPTY && grid_->getVLine(k + i, l + j) == EMPTY) {
                 grid_->setVLine(k + i, l + j, rule.getVLineAfter(k, l, orient));
+                grid_->setUpdated(true);
             }
         }
     }
@@ -176,9 +183,9 @@ void Solver::initRules() {
      * Rule #04
      * Before       After
      * .   .   .    .   .   .
-     *     x             
+     *     x
      * . - .   .    .   . - .
-     *     x             
+     *     x
      * .   .   .    .   .   .
      */
     beforeLattices_[i].initArrays(2, 2);
@@ -200,7 +207,7 @@ void Solver::initRules() {
      * Rule #05
      * Before       After
      * .   .   .    .   .   .
-     *     x             
+     *     x
      * . - . x .    .   .   .
      *                  |
      * .   .   .    .   .   .
@@ -224,7 +231,7 @@ void Solver::initRules() {
      * Rule #06
      * Before   After
      * . - .    .   .
-     *   1      x   x 
+     *   1      x   x
      * .   .    . x .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -247,7 +254,7 @@ void Solver::initRules() {
      * Rule #07
      * Before   After
      * .   .    . - .
-     * x 1 x          
+     * x 1 x
      * . x .    .   .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -270,7 +277,7 @@ void Solver::initRules() {
      * Rule #08
      * Before   After
      * . - .    .   .
-     * | 2          x 
+     * | 2          x
      * .   .    . x .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -293,7 +300,7 @@ void Solver::initRules() {
      * Rule #09
      * Before   After
      * .   .    . - .
-     *   2 x    |     
+     *   2 x    |
      * . x .    .   .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -339,7 +346,7 @@ void Solver::initRules() {
      * Rule #11
      * Before   After
      * .   .    . - .
-     * x 2 x         
+     * x 2 x
      * .   .    . - .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -362,7 +369,7 @@ void Solver::initRules() {
      * Rule #12
      * Before   After
      * .   .    . x .
-     * | 3 |         
+     * | 3 |
      * . - .    .   .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -506,13 +513,13 @@ void Solver::initRules() {
 
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
-    
+
     /** Rule 18
      * Before         After
      * .   .   .   .      .   .   .   .
      *     x   x
      * . x .   . _ .      .   .   .   .
-     *      
+     *
      * . x .   . x .      .   .   .   .
      *         x              |
      * .   .   .   .      .   .   .   .
