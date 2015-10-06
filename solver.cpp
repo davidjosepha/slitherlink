@@ -134,7 +134,6 @@ void Solver::initRules() {
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
 
-
     beforeLattices_[i].setHLine(1, 0, LINE);
     beforeLattices_[i].setVLine(0, 1, LINE);
 
@@ -159,7 +158,6 @@ void Solver::initRules() {
      */
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
-
 
     beforeLattices_[i].setHLine(1, 0, LINE);
     beforeLattices_[i].setHLine(1, 1, LINE);
@@ -186,7 +184,6 @@ void Solver::initRules() {
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
 
-
     beforeLattices_[i].setHLine(1, 0, LINE);
     beforeLattices_[i].setVLine(0, 1, NLINE);
     beforeLattices_[i].setVLine(1, 1, NLINE);
@@ -211,7 +208,6 @@ void Solver::initRules() {
     beforeLattices_[i].initArrays(2, 2);
     beforeLattices_[i].cleanArrays();
 
-
     beforeLattices_[i].setHLine(1, 0, LINE);
     beforeLattices_[i].setHLine(1, 1, NLINE);
     beforeLattices_[i].setVLine(0, 1, NLINE);
@@ -226,17 +222,16 @@ void Solver::initRules() {
 
     /**
      * Rule #06
-     * Before       After
+     * Before   After
      * . - .    .   .
-     *   1            
-     * .   .    .   .
+     *   1      x   x 
+     * .   .    . x .
      */
     beforeLattices_[i].initArrays(1, 1);
     beforeLattices_[i].cleanArrays();
 
     beforeLattices_[i].setNumber(0, 0, ONE);
     beforeLattices_[i].setHLine(0, 0, LINE);
-
 
     afterLattices_[i].initArrays(2, 2);
     afterLattices_[i].cleanArrays();
@@ -250,6 +245,121 @@ void Solver::initRules() {
 
     /**
      * Rule #07
+     * Before   After
+     * .   .    . - .
+     * x 1 x          
+     * . x .    .   .
+     */
+    beforeLattices_[i].initArrays(1, 1);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(0, 0, ONE);
+    beforeLattices_[i].setHLine(1, 0, NLINE);
+    beforeLattices_[i].setVLine(0, 0, NLINE);
+    beforeLattices_[i].setVLine(0, 1, NLINE);
+
+    afterLattices_[i].initArrays(2, 2);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setHLine(0, 0, LINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /**
+     * Rule #08
+     * Before   After
+     * . - .    .   .
+     * | 2          x 
+     * .   .    . x .
+     */
+    beforeLattices_[i].initArrays(1, 1);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(0, 0, TWO);
+    beforeLattices_[i].setHLine(0, 0, LINE);
+    beforeLattices_[i].setVLine(0, 0, LINE);
+
+    afterLattices_[i].initArrays(2, 2);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setHLine(0, 1, NLINE);
+    afterLattices_[i].setVLine(1, 0, NLINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /**
+     * Rule #09
+     * Before   After
+     * .   .    . - .
+     *   2 x    |     
+     * . x .    .   .
+     */
+    beforeLattices_[i].initArrays(1, 1);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(0, 0, TWO);
+    beforeLattices_[i].setHLine(1, 0, NLINE);
+    beforeLattices_[i].setVLine(0, 1, NLINE);
+
+    afterLattices_[i].initArrays(2, 2);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setHLine(0, 0, LINE);
+    afterLattices_[i].setVLine(0, 0, LINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /**
+     * Rule #10
+     * Before   After
+     * . - .    .   .
+     *   2      x   x
+     * . - .    .   .
+     */
+    beforeLattices_[i].initArrays(1, 1);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(0, 0, TWO);
+    beforeLattices_[i].setHLine(0, 0, LINE);
+    beforeLattices_[i].setHLine(1, 0, LINE);
+
+    afterLattices_[i].initArrays(2, 2);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setVLine(0, 0, NLINE);
+    afterLattices_[i].setVLine(0, 1, NLINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /**
+     * Rule #11
+     * Before   After
+     * .   .    . - .
+     * x 2 x         
+     * .   .    . - .
+     */
+    beforeLattices_[i].initArrays(1, 1);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(0, 0, TWO);
+    beforeLattices_[i].setVLine(0, 0, NLINE);
+    beforeLattices_[i].setVLine(0, 1, NLINE);
+
+    afterLattices_[i].initArrays(2, 2);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setHLine(0, 0, LINE);
+    afterLattices_[i].setHLine(1, 0, LINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /**
+     * Rule #12
      * Before       After
      * .   .   .    .   . - .
      *       3              |
@@ -275,7 +385,7 @@ void Solver::initRules() {
     i++;
 
     /**
-     * Rule #08
+     * Rule #13
      * Before       After
      * .   .   .    .   .   .
      *                  x
