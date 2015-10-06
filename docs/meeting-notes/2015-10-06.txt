@@ -1,0 +1,26 @@
+Week4 Tues
+// What we talked about
+• Get Dan up to speed
+	- One on one with Git, C++, and/or implementation
+• Look into auto-documentation for C++
+• Keep working on rules and implementation details
+• Start thinking about writing the proposal
+
+// What to do for Thursday
+• Dan gets with one of us to go through project details
+• Get the edge of the puzzle implemented.
+	- Dan & V
+• Add the rest of the rules and make sure that there
+	are no problems.
+	- Dav & E
+• Look into guessing/ what to do when rules stop being 
+	helpful to solve the puzzle.
+	- S
+
+// Extra
+• Talked about emacs, vim, sublime, brackets, aquamacs
+	- And quirks of each
+	- laughed
+	- went over by ten (and counting minutes)
+• Dave taking Org and Arch
+	- Is he a slacker??? Find out next week.
