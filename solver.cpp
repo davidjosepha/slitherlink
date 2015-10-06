@@ -360,6 +360,75 @@ void Solver::initRules() {
 
     /**
      * Rule #12
+     * Before   After
+     * .   .    . x .
+     * | 3 |         
+     * . - .    .   .
+     */
+    beforeLattices_[i].initArrays(1, 1);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(0, 0, THREE);
+    beforeLattices_[i].setVLine(0, 0, LINE);
+    beforeLattices_[i].setVLine(0, 1, LINE);
+    beforeLattices_[i].setHLine(1, 0, LINE);
+
+    afterLattices_[i].initArrays(2, 2);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setHLine(0, 0, NLINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /**
+     * Rule #13
+     * Before   After
+     * . x .    .   .
+     *   3      |   |
+     * .   .    . - .
+     */
+    beforeLattices_[i].initArrays(1, 1);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(0, 0, THREE);
+    beforeLattices_[i].setHLine(0, 0, NLINE);
+
+    afterLattices_[i].initArrays(2, 2);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setVLine(0, 0, LINE);
+    afterLattices_[i].setVLine(0, 1, LINE);
+    afterLattices_[i].setHLine(1, 0, LINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /**
+     * Rule #14
+     * Before   After
+     * .   .    . x .
+     *   0      x   x
+     * .   .    . x .
+     */
+    beforeLattices_[i].initArrays(1, 1);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(0, 0, ZERO);
+
+    afterLattices_[i].initArrays(2, 2);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setHLine(0, 0, NLINE);
+    afterLattices_[i].setHLine(1, 0, NLINE);
+    afterLattices_[i].setVLine(0, 0, NLINE);
+    afterLattices_[i].setVLine(0, 1, NLINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /**
+     * Rule #15
      * Before       After
      * .   .   .    .   . - .
      *       3              |
@@ -385,7 +454,7 @@ void Solver::initRules() {
     i++;
 
     /**
-     * Rule #13
+     * Rule #16
      * Before       After
      * .   .   .    .   .   .
      *                  x
