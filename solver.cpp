@@ -176,9 +176,9 @@ void Solver::initRules() {
      * Rule #04
      * Before       After
      * .   .   .    .   .   .
-     *     x             
+     *     x
      * . - .   .    .   . - .
-     *     x             
+     *     x
      * .   .   .    .   .   .
      */
     beforeLattices_[i].initArrays(2, 2);
@@ -200,7 +200,7 @@ void Solver::initRules() {
      * Rule #05
      * Before       After
      * .   .   .    .   .   .
-     *     x             
+     *     x
      * . - . x .    .   .   .
      *                  |
      * .   .   .    .   .   .
@@ -224,7 +224,7 @@ void Solver::initRules() {
      * Rule #06
      * Before   After
      * . - .    .   .
-     *   1      x   x 
+     *   1      x   x
      * .   .    . x .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -247,7 +247,7 @@ void Solver::initRules() {
      * Rule #07
      * Before   After
      * .   .    . - .
-     * x 1 x          
+     * x 1 x
      * . x .    .   .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -270,7 +270,7 @@ void Solver::initRules() {
      * Rule #08
      * Before   After
      * . - .    .   .
-     * | 2          x 
+     * | 2          x
      * .   .    . x .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -293,7 +293,7 @@ void Solver::initRules() {
      * Rule #09
      * Before   After
      * .   .    . - .
-     *   2 x    |     
+     *   2 x    |
      * . x .    .   .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -339,7 +339,7 @@ void Solver::initRules() {
      * Rule #11
      * Before   After
      * .   .    . - .
-     * x 2 x         
+     * x 2 x
      * .   .    . - .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -362,7 +362,7 @@ void Solver::initRules() {
      * Rule #12
      * Before   After
      * .   .    . x .
-     * | 3 |         
+     * | 3 |
      * . - .    .   .
      */
     beforeLattices_[i].initArrays(1, 1);
@@ -506,13 +506,13 @@ void Solver::initRules() {
 
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
-    
+
     /** Rule 18
      * Before         After
      * .   .   .   .      .   .   .   .
      *     x   x
      * . x .   . _ .      .   .   .   .
-     *      
+     *
      * . x .   . x .      .   .   .   .
      *         x              |
      * .   .   .   .      .   .   .   .
