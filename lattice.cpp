@@ -9,6 +9,8 @@
 #define EX 'x'
 #define BLANK ' '
 
+/* Destructor checks if arrays have been initialized and
+ * if so, frees them all. */
 Lattice::~Lattice() {
     if (init_) {
         for (int i = 0; i < m_; i++) {
@@ -25,6 +27,11 @@ Lattice::~Lattice() {
     }
 }
 
+/* Initializes the three two dimensional arrays used to
+ * represent a lattice, one each for numbers, horizontal
+ * lines, and vertical lines. Sets the init_ variable to
+ * true so that the destructor knows to free the memory
+ * after destroying an instance of the class. */
 void Lattice::initArrays(int m, int n) {
     m_ = m;
     n_ = n;
@@ -43,6 +50,9 @@ void Lattice::initArrays(int m, int n) {
     init_ = true;
 }
 
+/* Wipes out all data from the three two dimensional
+ * arrays so that new data can be added on top of a
+ * clean grid. */
 void Lattice::cleanArrays() {
     if (init_) {
         for (int i = 0; i < m_; i++) {

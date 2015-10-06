@@ -5,16 +5,18 @@
 #include "lattice.h"
 #include "symbols.h"
 
+/* Constructor taking as input a lattice to be exported */
 Export::Export(Lattice const & lattice) {
     lattice_ = &lattice;
 }
 
+/* Outputs a lattice to stdout in a human readable format */
 void Export::print() {
     int m = lattice_->getHeight();
     int n = lattice_->getWidth();
 
     for (int i = 0; i < m; i++) {
-        // print points/lines/Xs/nothing above the row of numbers
+        /* print points/lines/Xs/nothing above the row of numbers */
         for (int j = 0; j < n; j++) {
             std::cout << POINT;
             std::cout << ' ';
@@ -23,20 +25,20 @@ void Export::print() {
         }
         std::cout << POINT << std::endl;
 
-        // print row of numbers
+        /* print row of numbers */
         for (int j = 0; j < n; j++) {
-            // print line/x/nothing to the left of number
+            /* print line/x/nothing to the left of number */
             std::cout << formatVLine(i, j);
             std::cout << ' ';
-            // print number
+            /* print number */
             std::cout << formatNumber(i, j);
             std::cout << ' ';
         }
-        // print line/x/nothing to the right of last number
+        /* print line/x/nothing to the right of last number */
         std::cout << formatVLine(i, n) << std::endl;
     }
 
-    // print lines/Xs/nothing below the last row of numbers
+    /* print lines/Xs/nothing below the last row of numbers */
     for (int j = 0; j < n; j++) {
         std::cout << POINT;
         std::cout << ' ';
@@ -46,6 +48,8 @@ void Export::print() {
     std::cout << POINT << std::endl;
 }
 
+/* Helper function for formatting a value from the Number
+ * enumeration into a human readable 0-3 or blank space. */
 char Export::formatNumber(int i, int j) const {
     switch (lattice_->getNumber(i, j)) {
         case ZERO:
@@ -61,6 +65,8 @@ char Export::formatNumber(int i, int j) const {
     }
 }
 
+/* Helper function for formatting a value from the Number
+ * enumeration into a human readable '-', 'x' or blank space. */
 char Export::formatHLine(int i, int j) const {
     switch (lattice_->getHLine(i, j)) {
         case LINE:
@@ -72,6 +78,8 @@ char Export::formatHLine(int i, int j) const {
     }
 }
 
+/* Helper function for formatting a value from the Number
+ * enumeration into a human readable '|', 'x' or blank space. */
 char Export::formatVLine(int i, int j) const {
     switch (lattice_->getVLine(i, j)) {
         case LINE:

@@ -20,8 +20,8 @@ class Lattice {
 
     private:
         bool init_ = false;
-        int m_;     // number of rows
-        int n_;     // number of columns
+        int m_;     /* number of rows */
+        int n_;     /* number of columns */
         Number ** numbers_;
         Edge ** hlines_;
         Edge ** vlines_;
