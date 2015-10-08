@@ -8,7 +8,6 @@ class Lattice {
         Lattice() { };
         ~Lattice();
         void initArrays(int m, int n);
-        void cleanArrays();
 
         void setUpdated(bool updated) { updated_ = updated; };
         bool getUpdated() const { return updated_; };
@@ -22,6 +21,8 @@ class Lattice {
         void setVLine(int i, int j, Edge edge) { vlines_[i][j] = edge; };
 
     private:
+        void cleanArrays();
+
         bool init_ = false;
         bool updated_ = true;
         int m_;     /* number of rows */
