@@ -746,7 +746,6 @@ void Solver::initRules() {
      *
      */
     beforeLattices_[i].initArrays(1,1);
-    beforeLattices_[i].cleanArrays();
 
     beforeLattices_[i].setVLine(0, 0, LINE);
     beforeLattices_[i].setVLine(0, 1, LINE);
