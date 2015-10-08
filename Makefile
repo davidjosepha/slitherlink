@@ -1,5 +1,5 @@
 CC = g++
-CCFLAGS =
+CCFLAGS = -g
 
 ifeq ($(OS),Windows_NT)
 	# Windows flags, don't yet include gsl
@@ -18,6 +18,6 @@ else
 endif
 
 all:
-	$(CC) main.cpp solver.cpp import.cpp export.cpp lattice.cpp rule.cpp -o slitherlink $(CCFLAGS)
+	$(CC) main.cpp solver.cpp import.cpp export.cpp lattice.cpp grid.cpp rule.cpp -o slitherlink $(CCFLAGS)
 clean:
 	rm *.o slitherlink

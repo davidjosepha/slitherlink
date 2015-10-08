@@ -4,8 +4,10 @@
 #include "lattice.h"
 #include "solver.h"
 
+#include "grid.h"
+
 int main(int argc, char * argv[]) {
-    Lattice grid;
+    Grid grid;
     Import importer = Import(grid);
     Export exporter = Export(grid);
     std::cout << "Before:" << std::endl;
