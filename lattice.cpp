@@ -48,6 +48,8 @@ void Lattice::initArrays(int m, int n) {
     hlines_[m_] = new Edge[n_];
 
     init_ = true;
+
+    cleanArrays();
 }
 
 /* Wipes out all data from the three two dimensional
