@@ -433,9 +433,118 @@ void Solver::initRules() {
 
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
+    
+    /** Rule 15
+     * Before         After
+     * .   .   .   .      .   .   .   .
+     *         |
+     * .   .   . x .      .   .   .   .
+     *       1                x
+     * .   .   .   .      .   . x .   .
+     *                        
+     * .   .   .   .      .   .   .   .
+     *
+     */
+    beforeLattices_[i].initArrays(3,3);
+    beforeLattices_[i].cleanArrays();
+    
+    beforeLattices_[i].setNumber(1, 1, ONE);
+    beforeLattices_[i].setVLine(0, 2, LINE);
+    beforeLattices_[i].setHLine(1, 2, NLINE);
 
+    afterLattices_[i].initArrays(3,3);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setVLine(1, 1, NLINE);
+    afterLattices_[i].setHLine(2, 1, NLINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+    
+    /** Rule 16
+     * Before         After
+     * .   .   .   .      .   .   .   .
+     *         |
+     * .   .   .   .      .   .   . x .
+     *     x 1
+     * .   . x .   .      .   .   .   .
+     *                        
+     * .   .   .   .      .   .   .   .
+     *
+     */
+    beforeLattices_[i].initArrays(3,3);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(1, 1, ONE);
+    beforeLattices_[i].setVLine(0, 2, LINE);
+    beforeLattices_[i].setVLine(1, 1, NLINE);
+    beforeLattices_[i].setHLine(2, 1, NLINE);
+
+    afterLattices_[i].initArrays(3,3);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setHLine(1, 2, NLINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /** Rule 17
+     * Before         After
+     * .   .   .   .      .   .   .   .
+     *         
+     * .   .   .   .      .   .   .   .
+     *       1                x 
+     * . x .   .   .      .   . x .   .
+     *     x                 
+     * .   .   .   .      .   .   .   .
+     *
+     */
+    beforeLattices_[i].initArrays(3,3);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(1, 1, ONE);
+    beforeLattices_[i].setVLine(2, 1, NLINE);
+    beforeLattices_[i].setHLine(2, 0, NLINE);
+
+    afterLattices_[i].initArrays(3,3);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setVLine(1, 1, NLINE);
+    afterLattices_[i].setHLine(2, 1, NLINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+    
+    /** Rule 18
+     * Before         After
+     * .   .   .   .      .   .   .   .
+     *     |   |
+     * . x .   . x .      .   . _ .   .
+     *       1
+     * .   .   .   .      .   .   .   .
+     *                        
+     * .   .   .   .      .   .   .   .
+     *
+     */
+    beforeLattices_[i].initArrays(3,3);
+    beforeLattices_[i].cleanArrays();
+
+    beforeLattices_[i].setNumber(1, 1, ONE);
+    beforeLattices_[i].setVLine(0, 1, LINE);
+    beforeLattices_[i].setVLine(0, 2, LINE);
+    beforeLattices_[i].setHLine(1, 2, NLINE);
+    beforeLattices_[i].setHLine(1, 0, NLINE);
+
+    afterLattices_[i].initArrays(3,3);
+    afterLattices_[i].cleanArrays();
+
+    afterLattices_[i].setHLine(1, 1, LINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+    
     /**
-     * Rule #15
+     * Rule 19
      * Before       After
      * .   .   .    .   . - .
      *       3              |
@@ -461,7 +570,7 @@ void Solver::initRules() {
     i++;
 
     /**
-     * Rule #16
+     * Rule 20
      * Before       After
      * .   .   .    .   .   .
      *                  x
@@ -489,7 +598,7 @@ void Solver::initRules() {
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
 
-    /** Rule 17
+    /** Rule 21
      * Before         After
      * .   .   .      .   .   .
      *   3   1
@@ -513,13 +622,13 @@ void Solver::initRules() {
 
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
-
-    /** Rule 18
+    
+    /** Rule 22
      * Before         After
      * .   .   .   .      .   .   .   .
      *     x   x
      * . x .   . _ .      .   .   .   .
-     *
+     *      
      * . x .   . x .      .   .   .   .
      *         x              |
      * .   .   .   .      .   .   .   .
