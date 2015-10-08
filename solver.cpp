@@ -290,8 +290,8 @@ void Solver::initRules() {
     afterLattices_[i].initArrays(2, 2);
     afterLattices_[i].cleanArrays();
 
-    afterLattices_[i].setHLine(0, 1, NLINE);
-    afterLattices_[i].setVLine(1, 0, NLINE);
+    afterLattices_[i].setHLine(1, 0, NLINE);
+    afterLattices_[i].setVLine(0, 1, NLINE);
 
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
