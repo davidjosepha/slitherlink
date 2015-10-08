@@ -7,5 +7,7 @@ class Grid : public Lattice {
         Grid() { };
 
     private:
+        void mergeContours();
+
         std::vector<Contour> contours_;
 };
