@@ -4,7 +4,7 @@
 #include "lattice.h"
 #include "rule.h"
 
-#define NUM_RULES 22
+#define NUM_RULES 18
 
 class Solver {
     public:
