@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include "enums.h"
-#include "lattice.h"
+#include "grid.h"
 
 #define POINT '.'
 #define HLINE '-'
@@ -14,7 +14,7 @@
 Import::Import() { }
 
 /* Constructor taking as input a lattice to be imported into */
-Import::Import(Lattice & lattice) {
+Import::Import(Grid & lattice) {
     lattice_ = &lattice;
     buildLattice();
 }

@@ -2,12 +2,12 @@
 #define IMPORT_H
 #include <string>
 #include "enums.h"
-#include "lattice.h"
+#include "grid.h"
 
 class Import {
     public:
         Import();
-        Import(Lattice & lattice);
+        Import(Grid & lattice);
 
     private:
         void buildLattice();
@@ -17,7 +17,7 @@ class Import {
         void addHNLine(int m);
         void addVNLine(int m, int n);
 
-        Lattice * lattice_;
+        Grid * lattice_;
         int m_;     /* number of rows */
         int n_;     /* number of columns */
 };
