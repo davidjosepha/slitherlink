@@ -4,7 +4,7 @@
 #include "grid.h"
 #include "rule.h"
 
-#define NUM_RULES 22
+#define NUM_RULES 28
 
 class Solver {
     public:
