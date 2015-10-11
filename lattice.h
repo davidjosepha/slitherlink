@@ -16,11 +16,11 @@ class Lattice {
         Number getNumber(int i, int j) const { return numbers_[i][j]; };
         void setNumber(int i, int j, Number num) { numbers_[i][j] = num; };
         Edge getHLine(int i, int j) const { return hlines_[i][j]; }
-        void setHLine(int i, int j, Edge edge) { hlines_[i][j] = edge; };
+        virtual void setHLine(int i, int j, Edge edge) { hlines_[i][j] = edge; };
         Edge getVLine(int i, int j) const { return vlines_[i][j]; };
-        void setVLine(int i, int j, Edge edge) { vlines_[i][j] = edge; };
+        virtual void setVLine(int i, int j, Edge edge) { vlines_[i][j] = edge; };
 
-    private:
+    protected:
         void cleanArrays();
 
         bool init_ = false;
