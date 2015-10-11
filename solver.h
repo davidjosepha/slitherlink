@@ -1,14 +1,14 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 #include "enums.h"
-#include "lattice.h"
+#include "grid.h"
 #include "rule.h"
 
 #define NUM_RULES 22
 
 class Solver {
     public:
-        Solver(Lattice & grid);
+        Solver(Grid & grid);
 
     private:
         void initRules();

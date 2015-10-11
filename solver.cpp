@@ -1,10 +1,10 @@
 #include "solver.h"
 #include "enums.h"
-#include "lattice.h"
+#include "grid.h"
 #include "rule.h"
 
 /* Constructor takes a grid as input to solve */
-Solver::Solver(Lattice & grid) {
+Solver::Solver(Grid & grid) {
     grid_ = &grid;
     initRules();
 
