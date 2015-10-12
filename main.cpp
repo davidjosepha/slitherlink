@@ -15,5 +15,10 @@ int main(int argc, char * argv[]) {
     Solver solver = Solver(grid);
     std::cout << "After:" << std::endl;
     exporter.print();
+    if (grid.isSolved()) {
+        std::cout << "we solved it!\n";
+    } else {
+        std::cout << "still not solved!\n";
+    }
     return 0;
 }

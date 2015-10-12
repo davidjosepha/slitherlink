@@ -10,6 +10,8 @@ class Grid : public Lattice {
         Grid() { };
         virtual void setHLine(int i, int j, Edge edge);
         virtual void setVLine(int i, int j, Edge edge);
+        bool numberSatisfied(int i, int j);
+        bool isSolved();
 
     private:
         void mergeContours(Contour & newContour);

@@ -15,6 +15,7 @@ bool Contour::sharesEndpoint(Contour & contour) {
 }
 
 // Add another contour as part of this contour. If it doesn't share any endpoints nothing happens
+// sets closed_ to be true if new contour closes the contour
 void Contour::addContour(Contour & contour) {
     if (start_[0] == contour.start_[0] and start_[1] == contour.start_[1]) {
         start_[0] = contour.end_[0];
@@ -32,5 +33,9 @@ void Contour::addContour(Contour & contour) {
         end_[0] = contour.start_[0];
         end_[1] = contour.start_[1];
         length_++;
+    }
+
+    if (start_[0] == end_[0] and start_[1] == start_[1]) {
+        closed_ = true;
     }
 }

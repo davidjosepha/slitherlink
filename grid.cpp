@@ -1,7 +1,5 @@
 #include "grid.h"
 #include <vector>
-#include <iostream>
-#include <string>
 #include "contour.h"
 #include "enums.h"
 
@@ -43,4 +41,42 @@ void Grid::setVLine(int i, int j, Edge edge) {
         mergeContours(newContour);
         contours_.push_back(newContour);
     }
+}
+
+bool Grid::numberSatisfied(int i, int j) {
+
+    Number number = numbers_[i][j];
+    if (number == NONE) {
+        return true;
+    }
+
+    int numLines = 0;
+    if (vlines_[i][j] == LINE) {
+        numLines++;
+    }
+    if (vlines_[i][j+1] == LINE) {
+        numLines++;
+    }
+    if (hlines_[i][j] == LINE) {
+        numLines++;
+    }
+    if (hlines_[i+1][j] == LINE) {
+        numLines++;
+    }
+
+    return numLines+1 == number;
+}
+
+bool Grid::isSolved() {
+    if (contours_.size() != 1 or (contours_.size() > 0 and not contours_[0].isClosed())) {
+        return false;
+    }
+    for (int i = 0; i < m_; i++) {
+        for (int j = 0; j < n_; j++) {
+            if (not numberSatisfied(i,j)) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

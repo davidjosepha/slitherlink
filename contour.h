@@ -8,9 +8,11 @@ class Contour {
         int getLength() { return length_; }
         bool sharesEndpoint(Contour & contour);
         void addContour(Contour & contour);
+        bool isClosed() { return closed_; }
 
     private:
-        int length_;
+        int length_ = 0;
+        bool closed_ = false;
         int start_[2];
         int end_[2];
 };
