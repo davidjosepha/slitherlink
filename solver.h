@@ -15,7 +15,7 @@ class Solver {
         void applyRules();
         void applyRule(int i, int j, Rule & rule, Orientation orient);
         bool ruleApplies(int i, int j, Rule & rule, Orientation orient);
-        Lattice * grid_;
+        Grid * grid_;
         Rule rules_[NUM_RULES];
         Lattice beforeLattices_[NUM_RULES];
         Lattice afterLattices_[NUM_RULES];
