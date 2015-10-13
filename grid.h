@@ -8,8 +8,8 @@
 class Grid : public Lattice {
     public:
         Grid() { };
-        virtual void setHLine(int i, int j, Edge edge);
-        virtual void setVLine(int i, int j, Edge edge);
+        virtual bool setHLine(int i, int j, Edge edge);
+        virtual bool setVLine(int i, int j, Edge edge);
         bool numberSatisfied(int i, int j);
         bool isSolved();
 

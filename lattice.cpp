@@ -52,6 +52,26 @@ void Lattice::initArrays(int m, int n) {
     cleanArrays();
 }
 
+bool Lattice::setHLine(int i, int j, Edge edge) { 
+    Edge prevEdge = getHLine(i, j);
+    if (prevEdge == EMPTY) {
+        hlines_[i][j] = edge;
+    } else if (prevEdge != edge) {
+        return false;
+    }
+    return true;
+};
+
+bool Lattice::setVLine(int i, int j, Edge edge) { 
+    Edge prevEdge = getVLine(i, j);
+    if (prevEdge == EMPTY) {
+        vlines_[i][j] = edge;
+    } else if (prevEdge != edge) {
+        return false;
+    }
+    return true;
+};
+
 /* Wipes out all data from the three two dimensional
  * arrays so that new data can be added on top of a
  * clean grid. */

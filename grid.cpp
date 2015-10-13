@@ -21,7 +21,7 @@ void Grid::mergeContours(Contour & newContour) {
     }
 }
 
-void Grid::setHLine(int i, int j, Edge edge) {
+bool Grid::setHLine(int i, int j, Edge edge) {
 
     hlines_[i][j] = edge;
 
@@ -32,7 +32,7 @@ void Grid::setHLine(int i, int j, Edge edge) {
     }
 }
 
-void Grid::setVLine(int i, int j, Edge edge) {
+bool Grid::setVLine(int i, int j, Edge edge) {
 
     vlines_[i][j] = edge;
 
