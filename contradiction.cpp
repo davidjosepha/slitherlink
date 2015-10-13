@@ -123,19 +123,19 @@ Number Contradiction::getNumber(int i, int j, Orientation orient) const {
         case UPFLIP:
             i = m_ - i - 1;
         case UP:
-            return before_->getNumber(i, j);
+            return cont_->getNumber(i, j);
         case DOWNFLIP:
             i = m_ - i - 1;
         case DOWN:
-            return before_->getNumber(m_-i-1, n_-j-1);
+            return cont_->getNumber(m_-i-1, n_-j-1);
         case LEFTFLIP:
             i = n_ - i - 1;
         case LEFT:
-            return before_->getNumber(j, n_-i-1);
+            return cont_->getNumber(j, n_-i-1);
         case RIGHTFLIP:
             i = n_ - i - 1;
         case RIGHT:
-            return before_->getNumber(m_-j-1, i);
+            return cont_->getNumber(m_-j-1, i);
     }
 }
 
@@ -148,19 +148,19 @@ Edge Contradiction::getHLine(int i, int j, Orientation orient) const {
         case UPFLIP:
             i = m_ - i;
         case UP:
-            return before_->getHLine(i, j);
+            return cont_->getHLine(i, j);
         case DOWNFLIP:
             i = m_ - i;
         case DOWN:
-            return before_->getHLine(m_-i, n_-j-1);
+            return cont_->getHLine(m_-i, n_-j-1);
         case LEFTFLIP:
             i = n_ - i;
         case LEFT:
-            return before_->getVLine(j, n_-i);
+            return cont_->getVLine(j, n_-i);
         case RIGHTFLIP:
             i = n_ - i;
         case RIGHT:
-            return before_->getVLine(m_-j-1, i);
+            return cont_->getVLine(m_-j-1, i);
     }
 }
 
@@ -173,18 +173,18 @@ Edge Contradiction::getVLine(int i, int j, Orientation orient) const {
         case UPFLIP:
             i = m_ - i - 1;
         case UP:
-            return before_->getVLine(i, j);
+            return cont_->getVLine(i, j);
         case DOWNFLIP:
             i = m_ - i - 1;
         case DOWN:
-            return before_->getVLine(m_-i-1, n_-j);
+            return cont_->getVLine(m_-i-1, n_-j);
         case LEFTFLIP:
             i = n_ - i - 1;
         case LEFT:
-            return before_->getHLine(j, n_-i-1);
+            return cont_->getHLine(j, n_-i-1);
         case RIGHTFLIP:
             i = n_ - i - 1;
         case RIGHT:
-            return before_->getHLine(m_-j, i);
+            return cont_->getHLine(m_-j, i);
     }
 }

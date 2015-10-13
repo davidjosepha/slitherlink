@@ -2,6 +2,7 @@
 #include "enums.h"
 #include "grid.h"
 #include "rule.h"
+#include "contradiction.h"
 
 /* Constructor takes a grid as input to solve */
 Solver::Solver(Grid & grid) {
@@ -90,6 +91,40 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
         for (int l = 0; l < rule.getVLineWidth(orient); l++) {
             if (rule.getVLineBefore(k, l, orient) != EMPTY and
                 rule.getVLineBefore(k, l, orient) != grid_->getVLine(k + i, l + j)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+/* Checks if a contradiction in a given orientation applies to a given
+ * region of the grid by checking all non-empty values in the
+ * cont_ lattice and verifying they correspond to the values
+ * in the grid. */
+bool Solver::contradictionApplies(int i, int j, Contradiction & contradiction, Orientation orient) {
+    for (int k = 0; k < contradiction.getNumberHeight(orient); k++) {
+        for (int l = 0; l < contradiction.getNumberWidth(orient); l++) {
+            if (contradiction.getNumber(k, l, orient) != NONE and
+                contradiction.getNumber(k, l, orient) != grid_->getNumber(k + i, l + j)) {
+                return false;
+            }
+        }
+    }
+
+    for (int k = 0; k < contradiction.getHLineHeight(orient); k++) {
+        for (int l = 0; l < contradiction.getHLineWidth(orient); l++) {
+            if (contradiction.getHLine(k, l, orient) != EMPTY and
+                contradiction.getHLine(k, l, orient) != grid_->getHLine(k + i, l + j)) {
+                return false;
+            }
+        }
+    }
+
+    for (int k = 0; k < contradiction.getVLineHeight(orient); k++) {
+        for (int l = 0; l < contradiction.getVLineWidth(orient); l++) {
+            if (contradiction.getVLine(k, l, orient) != EMPTY and
+                contradiction.getVLine(k, l, orient) != grid_->getVLine(k + i, l + j)) {
                 return false;
             }
         }
