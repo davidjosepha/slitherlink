@@ -13,16 +13,24 @@ void Grid::mergeContours(Contour & newContour) {
     for (int n = 0; n < contours_.size(); n++) {
         if (newContour.sharesEndpoint(contours_[n])) {
             newContour.addContour(contours_[n]);
-            contours_[n] = contours_.back(); // Delete the contour at n since we've added it to the new one
+
+            /* delete old contour after merging */
+            contours_[n] = contours_.back();
             contours_.pop_back();
-            mergeContours(newContour); // There might be another contour to merge so run method again
-            break;
+
+            /* attempt to merge again, if possible */
+            mergeContours(newContour);
+            return;
         }
     }
 }
 
+/*
+ * Set a horizontal line to a given edge type, checking to see if this change overwrites
+ * any previous value set to that position. If a line is added, create a new contour and
+ * attempt to merge that contour to any adjacent contours.
+ */
 bool Grid::setHLine(int i, int j, Edge edge) {
-
     Edge prevEdge = getHLine(i, j);
     if (prevEdge == EMPTY) {
         hlines_[i][j] = edge;
@@ -39,8 +47,12 @@ bool Grid::setHLine(int i, int j, Edge edge) {
     return true;
 }
 
+/*
+ * Set a vertical line to a given edge type, checking to see if this change overwrites
+ * any previous value set to that position. If a line is added, create a new contour and
+ * attempt to merge that contour to any adjacent contours.
+ */
 bool Grid::setVLine(int i, int j, Edge edge) {
-
     Edge prevEdge = getVLine(i, j);
     if (prevEdge == EMPTY) {
         vlines_[i][j] = edge;
@@ -57,40 +69,45 @@ bool Grid::setVLine(int i, int j, Edge edge) {
     return true;
 }
 
+/*
+ * Check whether a given number has been satisfied with the proper number of lines
+ * surrounding it.
+ */
 bool Grid::numberSatisfied(int i, int j) {
-
     Number number = numbers_[i][j];
-    if (number == NONE) {
-        return true;
-    }
 
-    int numLines = 0;
-    if (vlines_[i][j] == LINE) {
-        numLines++;
-    }
-    if (vlines_[i][j+1] == LINE) {
-        numLines++;
-    }
-    if (hlines_[i][j] == LINE) {
-        numLines++;
-    }
-    if (hlines_[i+1][j] == LINE) {
-        numLines++;
-    }
+    /* determine number of lines around number */
+    int numLines = (hlines_[i][j] == LINE)
+                 + (hlines_[i+1][j] == LINE)
+                 + (vlines_[i][j] == LINE)
+                 + (vlines_[i][j+1] == LINE);
 
-    return numLines+1 == number;
+    switch (number) {
+        case NONE:
+            return true;
+        case ZERO:
+            return numLines == 0;
+        case ONE:
+            return numLines == 1;
+        case TWO:
+            return numLines == 2;
+        case THREE:
+            return numLines == 3;
+    }
 }
 
 bool Grid::isSolved() {
-    if (contours_.size() != 1 or (contours_.size() > 0 and not contours_[0].isClosed())) {
+    if (contours_.size() != 1 || (contours_.size() > 0 && !contours_[0].isClosed())) {
         return false;
     }
+
     for (int i = 0; i < m_; i++) {
         for (int j = 0; j < n_; j++) {
-            if (not numberSatisfied(i,j)) {
+            if (!numberSatisfied(i,j)) {
                 return false;
             }
         }
     }
+
     return true;
 }
