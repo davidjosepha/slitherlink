@@ -23,24 +23,38 @@ void Grid::mergeContours(Contour & newContour) {
 
 bool Grid::setHLine(int i, int j, Edge edge) {
 
-    hlines_[i][j] = edge;
+    Edge prevEdge = getHLine(i, j);
+    if (prevEdge == EMPTY) {
+        hlines_[i][j] = edge;
+    } else if (prevEdge != edge) {
+        return false;
+    }
 
     if (edge == LINE) {
         Contour newContour = Contour(i, j, i, j+1);
         mergeContours(newContour);
         contours_.push_back(newContour);
     }
+
+    return true;
 }
 
 bool Grid::setVLine(int i, int j, Edge edge) {
 
-    vlines_[i][j] = edge;
+    Edge prevEdge = getVLine(i, j);
+    if (prevEdge == EMPTY) {
+        vlines_[i][j] = edge;
+    } else if (prevEdge != edge) {
+        return false;
+    }
 
     if (edge == LINE) {
         Contour newContour = Contour(i, j, i+1, j);
         mergeContours(newContour);
         contours_.push_back(newContour);
     }
+
+    return true;
 }
 
 bool Grid::numberSatisfied(int i, int j) {
