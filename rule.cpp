@@ -97,7 +97,7 @@ int Rule::getVLineHeight(Orientation orient) const {
     }
 }
 
-/* Gives the width of the horizontal line grid based on a given
+/* Gives the width of the vertical line grid based on a given
  * orientation. In its upright position, its width is n_ + 1. */
 int Rule::getVLineWidth(Orientation orient) const {
     switch (orient) {
