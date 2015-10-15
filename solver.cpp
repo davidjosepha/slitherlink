@@ -3,15 +3,20 @@
 #include "grid.h"
 #include "rule.h"
 #include "contradiction.h"
+#include <stdio.h>
 
 /* Constructor takes a grid as input to solve */
 Solver::Solver(Grid & grid) {
     grid_ = &grid;
     initRules();
+    initContradictions();
 
     while (grid_->getUpdated()) {
         grid_->setUpdated(false);
         applyRules();
+        if (testContradictions()) {
+            printf("Contradiction found, error!\n");
+        }
     }
 }
 
@@ -31,6 +36,23 @@ void Solver::applyRules() {
         }
     }
 }
+            
+bool Solver::testContradictions() {
+    for (int x = 0; x < NUM_CONTS; x++) {
+        for (Orientation orient: (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
+            for (int i = 0; i <= grid_->getHeight() - contradictions_[x].getNumberHeight(orient); i++) {
+                for (int j = 0; j <= grid_->getWidth() - contradictions_[x].getNumberWidth(orient); j++) {
+                    if (contradictionApplies(i, j, contradictions_[x], orient)) {
+                        printf(" %i , m %i , n %i \n ", x, i, j);
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+                        
 
 /* Applies a rule in a given orientation to a given region of the
  * grid, overwriting all old values with any applicable values from
@@ -814,13 +836,29 @@ void Solver::initContradictions() {
     contLattices_[i].setHLine(1, 0, NLINE);
     contLattices_[i].setHLine(1, 1, NLINE);
     contLattices_[i].setVLine(0, 1, NLINE);
-    contLattices_[i].setVLine(1, 1, NLINE);
+    contLattices_[i].setVLine(1, 1, LINE);
 
     contradictions_[i] = Contradiction(contLattices_[i]);
     i++;
 
     /**
      * Contradiction #02
+     * .   .   .   
+     *     |
+     * . _ . _ . 
+     *           
+     */
+    contLattices_[i].initArrays(1, 2);
+
+    contLattices_[i].setHLine(1, 0, LINE);
+    contLattices_[i].setHLine(1, 1, LINE);
+    contLattices_[i].setVLine(0, 1, LINE);
+
+    contradictions_[i] = Contradiction(contLattices_[i]);
+    i++;
+    
+    /**
+     * Contradiction #03
      * . _ . 
      * |   |
      * . _ . 
@@ -834,9 +872,39 @@ void Solver::initContradictions() {
 
     contradictions_[i] = Contradiction(contLattices_[i]);
     i++;
+    
+    /**
+     * Contradiction #04
+     * . x .
+     * x 3
+     * .   .
+     */
+    contLattices_[i].initArrays(1, 1);
+
+    contLattices_[i].setNumber(0, 0, THREE);
+    contLattices_[i].setHLine(0, 0, NLINE);
+    contLattices_[i].setVLine(0, 0, NLINE);
+
+    contradictions_[i] = Contradiction(contLattices_[i]);
+    i++;
 
     /**
-     * Contradiction #03
+     * Contradiction #05
+     * .   .
+     * x 3 x
+     * .   .
+     */
+    contLattices_[i].initArrays(1, 1);
+
+    contLattices_[i].setNumber(0, 0, THREE);
+    contLattices_[i].setVLine(0, 0, NLINE);
+    contLattices_[i].setVLine(0, 1, NLINE);
+
+    contradictions_[i] = Contradiction(contLattices_[i]);
+    i++;
+
+    /**
+     * Contradiction #06
      * . _ .
      * | 2
      * . _ .
@@ -845,14 +913,30 @@ void Solver::initContradictions() {
 
     contLattices_[i].setNumber(0, 0, TWO);
     contLattices_[i].setHLine(0, 0, LINE);
-    contLattices_[i].setHLine(0, 1, LINE);
+    contLattices_[i].setHLine(1, 0, LINE);
     contLattices_[i].setVLine(0, 0, LINE);
+
+    contradictions_[i] = Contradiction(contLattices_[i]);
+    i++;
+    
+    /**
+     * Contradiction #07
+     * . x .
+     * x 2
+     * . x .
+     */
+    contLattices_[i].initArrays(1, 1);
+
+    contLattices_[i].setNumber(0, 0, TWO);
+    contLattices_[i].setHLine(0, 0, NLINE);
+    contLattices_[i].setHLine(1, 0, NLINE);
+    contLattices_[i].setVLine(0, 0, NLINE);
 
     contradictions_[i] = Contradiction(contLattices_[i]);
     i++;
 
     /**
-     * Contradiction #04
+     * Contradiction #08
      * . _ .
      * | 1
      * .   .
@@ -867,7 +951,7 @@ void Solver::initContradictions() {
     i++;
 
     /**
-     * Contradiction #05
+     * Contradiction #09
      * .   .
      * | 1 |
      * .   .
@@ -880,9 +964,26 @@ void Solver::initContradictions() {
 
     contradictions_[i] = Contradiction(contLattices_[i]);
     i++;
+    
+    /**
+     * Contradiction #10
+     * . x .
+     * x 1 x
+     * . x .
+     */
+    contLattices_[i].initArrays(1, 1);
+
+    contLattices_[i].setNumber(0, 0, ONE);
+    contLattices_[i].setVLine(0, 0, NLINE);
+    contLattices_[i].setVLine(0, 1, NLINE);
+    contLattices_[i].setHLine(0, 0, NLINE);
+    contLattices_[i].setHLine(1, 0, NLINE);
+
+    contradictions_[i] = Contradiction(contLattices_[i]);
+    i++;
 
     /**
-     * Contradiction #06
+     * Contradiction #11
      * .   .
      * | 0
      * .   .
@@ -894,4 +995,6 @@ void Solver::initContradictions() {
 
     contradictions_[i] = Contradiction(contLattices_[i]);
     i++;
+    
+    
 }

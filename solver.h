@@ -6,7 +6,7 @@
 #include "contradiction.h"
 
 #define NUM_RULES 28
-#define NUM_CONTS 6
+#define NUM_CONTS 11
 
 class Solver {
     public:
@@ -19,6 +19,7 @@ class Solver {
         bool ruleApplies(int i, int j, Rule & rule, Orientation orient);
         void initContradictions();
         bool contradictionApplies(int i, int j, Contradiction & contradiction, Orientation orient);
+        bool testContradictions();
     
         Grid * grid_;
         Rule rules_[NUM_RULES];
