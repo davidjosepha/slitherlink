@@ -42,7 +42,7 @@ void Export::print() {
     for (int j = 1; j < n-1; j++) {
         std::cout << POINT;
         std::cout << ' ';
-        std::cout << formatHLine(m, j);
+        std::cout << formatHLine(m-1, j);
         std::cout << ' ';
     }
     std::cout << POINT << std::endl;
