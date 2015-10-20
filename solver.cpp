@@ -70,7 +70,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getHLineHeight(orient); k++) {
         for (int l = 0; l < rule.getHLineWidth(orient); l++) {
             if (rule.getHLineAfter(k, l, orient) != EMPTY && grid_->getHLine(k + i, l + j) == EMPTY) {
-                grid_->setHLine(k + i, l + j, rule.getHLineAfter(k, l, orient));
+                grid_->setIsValid(grid_->setHLine(k + i, l + j, rule.getHLineAfter(k, l, orient)));
                 grid_->setUpdated(true);
             }
         }
@@ -79,7 +79,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getVLineHeight(orient); k++) {
         for (int l = 0; l < rule.getVLineWidth(orient); l++) {
             if (rule.getVLineAfter(k, l, orient) != EMPTY && grid_->getVLine(k + i, l + j) == EMPTY) {
-                grid_->setVLine(k + i, l + j, rule.getVLineAfter(k, l, orient));
+                grid_->setIsValid(grid_->setVLine(k + i, l + j, rule.getVLineAfter(k, l, orient)));
                 grid_->setUpdated(true);
             }
         }
@@ -151,6 +151,7 @@ bool Solver::contradictionApplies(int i, int j, Contradiction & contradiction, O
             }
         }
     }
+    grid_->setIsValid(false);
     return true;
 }
 

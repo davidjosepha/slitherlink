@@ -12,9 +12,12 @@ class Grid : public Lattice {
         virtual bool setVLine(int i, int j, Edge edge);
         bool numberSatisfied(int i, int j);
         bool isSolved();
+        bool isValid() {return isValid_;};
+        bool setIsValid(bool validity) { if (isValid_) {isValid_ = validity;}};
 
     private:
         void mergeContours(Contour & newContour);
+        bool isValid_ = true;
 
         std::vector<Contour> contours_;
 };
