@@ -12,7 +12,7 @@ class Grid : public Lattice {
         virtual bool setVLine(int i, int j, Edge edge);
         bool numberSatisfied(int i, int j);
         bool isSolved();
-        void gridCopy(Grid & newGrid);
+        void copy(Grid & newGrid);
         bool isValid() {return isValid_;};
         bool setIsValid(bool validity) { if (isValid_) {isValid_ = validity;}};
 

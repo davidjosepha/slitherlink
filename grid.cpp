@@ -28,7 +28,7 @@ void Grid::mergeContours(Contour & newContour) {
 /*
  * Copies grid for the purpose of making a guess.
  */
-void Grid::gridCopy(Grid & newGrid) {
+void Grid::copy(Grid & newGrid) {
     newGrid.initArrays(getHeight(), getWidth());
     for (int i = 0; i < getHeight(); i++) {
         for (int j = 0; j < getWidth(); j++) {
