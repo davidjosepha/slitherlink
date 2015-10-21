@@ -32,9 +32,19 @@ void Grid::copy(Grid & newGrid) {
     newGrid.initArrays(getHeight(), getWidth());
     for (int i = 0; i < getHeight(); i++) {
         for (int j = 0; j < getWidth(); j++) {
-            newGrid.setHLine(i, j, getHLine(i,j));
-            newGrid.setVLine(i, j, getVLine(i,j));
             newGrid.setNumber(i, j, getNumber(i,j));
+        }
+    }
+
+    for (int i = 0; i < getHeight()+1; i++) {
+        for (int j = 0; j < getWidth(); j++) {
+            newGrid.setHLine(i, j, getHLine(i,j));
+        }
+    }
+
+    for (int i = 0; i < getHeight(); i++) {
+        for (int j = 0; j < getWidth()+1; j++) {
+            newGrid.setVLine(i, j, getVLine(i,j));
         }
     }
 }
