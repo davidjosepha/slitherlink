@@ -3,8 +3,8 @@
 #include "import.h"
 #include "lattice.h"
 #include "solver.h"
-
 #include "grid.h"
+#include <stdio.h>
 
 int main(int argc, char * argv[]) {
     Grid grid;
@@ -12,6 +12,10 @@ int main(int argc, char * argv[]) {
     Export exporter = Export(grid);
     std::cout << "Before:" << std::endl;
     exporter.print();
+    Grid newG;
+    grid.gridCopy(newG);
+    Export newEx = Export(newG);
+    newEx.print();
     Solver solver = Solver(grid);
     std::cout << "After:" << std::endl;
     exporter.print();

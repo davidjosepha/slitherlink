@@ -12,6 +12,7 @@ class Grid : public Lattice {
         virtual bool setVLine(int i, int j, Edge edge);
         bool numberSatisfied(int i, int j);
         bool isSolved();
+        void gridCopy(Grid & newGrid);
 
     private:
         void mergeContours(Contour & newContour);

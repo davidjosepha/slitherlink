@@ -2,6 +2,7 @@
 #include <vector>
 #include "contour.h"
 #include "enums.h"
+#include <stdio.h>
 
 
 /*
@@ -21,6 +22,19 @@ void Grid::mergeContours(Contour & newContour) {
             /* attempt to merge again, if possible */
             mergeContours(newContour);
             return;
+        }
+    }
+}
+/*
+ * Copies grid for the purpose of making a guess.
+ */
+void Grid::gridCopy(Grid & newGrid) {
+    newGrid.initArrays(getHeight(), getWidth());
+    for (int i = 0; i < getHeight(); i++) {
+        for (int j = 0; j < getWidth(); j++) {
+            newGrid.setHLine(i, j, getHLine(i,j));
+            newGrid.setVLine(i, j, getVLine(i,j));
+            newGrid.setNumber(i, j, getNumber(i,j));
         }
     }
 }
