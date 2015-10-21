@@ -17,8 +17,10 @@ Solver::Solver(Grid & grid, int depth) {
 
 void Solver::solve() {
     while (grid_->getUpdated() && !grid_->isSolved()) {
-        grid_->setUpdated(false);
-        applyRules();
+        while (grid_->getUpdated() && !grid_->isSolved()) {
+            grid_->setUpdated(false);
+            applyRules();
+        }
 
         if (depth_ > 0 && !testContradictions()) {
             makeGuesses();
@@ -30,6 +32,11 @@ void Solver::makeGuesses() {
     for (int i = 0; i < grid_->getHeight()+1; i++) {
         for (int j = 0; j < grid_->getWidth(); j++) {
             if (grid_->getHLine(i, j) == EMPTY) {
+                /* there is only one case where the grid
+                 * will not be updated, which is handled
+                 * at the end of this iteration. */
+                grid_->setUpdated(true);
+
                 Grid lineGuess;
                 grid_->copy(lineGuess);
 
@@ -56,6 +63,7 @@ void Solver::makeGuesses() {
                         grid_->setHLine(i, j, LINE);
                         return;
                     } else {
+                        grid_->setUpdated(false);
                         intersectGrids(lineGuess, nLineGuess);
 
                         if (grid_->getUpdated()) {
