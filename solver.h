@@ -10,11 +10,10 @@
 
 class Solver {
     public:
-        Solver(Grid & grid);
-        void solve();
-        void solveDeterministic();
+        Solver(Grid & grid, int depth);
 
     private:
+        void solve();
         void makeGuesses();
 
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
@@ -29,6 +28,7 @@ class Solver {
         bool testContradictions();
 
         Grid * grid_;
+        int depth_;
         Rule rules_[NUM_RULES];
         Lattice beforeLattices_[NUM_RULES];
         Lattice afterLattices_[NUM_RULES];

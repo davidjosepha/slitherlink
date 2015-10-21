@@ -6,27 +6,23 @@
 #include <stdio.h>
 
 /* Constructor takes a grid as input to solve */
-Solver::Solver(Grid & grid) {
+Solver::Solver(Grid & grid, int depth) {
     grid_ = &grid;
+    depth_ = depth;
     initRules();
     initContradictions();
+
+    solve();
 }
 
 void Solver::solve() {
     while (grid_->getUpdated()) {
         grid_->setUpdated(false);
         applyRules();
-        if (testContradictions()) {
-            printf("Contradiction found, error!\n");
-            return;
-        }
-    }
-}
 
-void Solver::solveDeterministic() {
-    while (grid_->getUpdated()) {
-        grid_->setUpdated(false);
-        applyRules();
+        if (depth_ > 0) {
+            makeGuesses();
+        }
     }
 }
 
@@ -38,8 +34,7 @@ void Solver::makeGuesses() {
                 grid_->copy(lineGuess);
 
                 lineGuess.setHLine(i, j, LINE);
-                Solver lineSolver = Solver(lineGuess);
-                lineSolver.solveDeterministic();
+                Solver lineSolver = Solver(lineGuess, depth_-1);
 
                 if (!lineGuess.getIsValid()) {
                     grid_->setHLine(i, j, NLINE);
@@ -49,8 +44,7 @@ void Solver::makeGuesses() {
                     grid_->copy(nLineGuess);
 
                     nLineGuess.setHLine(i, j, NLINE);
-                    Solver nLineSolver = Solver(nLineGuess);
-                    nLineSolver.solveDeterministic();
+                    Solver nLineSolver = Solver(nLineGuess, depth_-1);
 
                     if (!nLineGuess.getIsValid()) {
                         grid_->setHLine(i, j, LINE);
