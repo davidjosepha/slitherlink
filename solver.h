@@ -5,7 +5,7 @@
 #include "rule.h"
 #include "contradiction.h"
 
-#define NUM_RULES 28
+#define NUM_RULES 34
 #define NUM_CONTS 11
 
 class Solver {

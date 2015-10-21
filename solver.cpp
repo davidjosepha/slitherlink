@@ -70,7 +70,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getHLineHeight(orient); k++) {
         for (int l = 0; l < rule.getHLineWidth(orient); l++) {
             if (rule.getHLineAfter(k, l, orient) != EMPTY && grid_->getHLine(k + i, l + j) == EMPTY) {
-                grid_->setHLine(k + i, l + j, rule.getHLineAfter(k, l, orient));
+                grid_->setIsValid(grid_->setHLine(k + i, l + j, rule.getHLineAfter(k, l, orient)));
                 grid_->setUpdated(true);
             }
         }
@@ -79,7 +79,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getVLineHeight(orient); k++) {
         for (int l = 0; l < rule.getVLineWidth(orient); l++) {
             if (rule.getVLineAfter(k, l, orient) != EMPTY && grid_->getVLine(k + i, l + j) == EMPTY) {
-                grid_->setVLine(k + i, l + j, rule.getVLineAfter(k, l, orient));
+                grid_->setIsValid(grid_->setVLine(k + i, l + j, rule.getVLineAfter(k, l, orient)));
                 grid_->setUpdated(true);
             }
         }
@@ -151,6 +151,7 @@ bool Solver::contradictionApplies(int i, int j, Contradiction & contradiction, O
             }
         }
     }
+    grid_->setIsValid(false);
     return true;
 }
 
@@ -814,7 +815,155 @@ void Solver::initRules() {
 
     rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
     i++;
+
+    /** Rule 29
+     * Before         After
+     *      
+     * . x .   .     .   .   .
+     * x 1                  
+     * .   .   .     .   .   .
+     *       1               x
+     * .   .   .     .   . x .
+     */
+    beforeLattices_[i].initArrays(2,2);
+
+    beforeLattices_[i].setNumber(0, 0, ONE);
+    beforeLattices_[i].setNumber(1, 1, ONE);
+    beforeLattices_[i].setVLine(0, 0, NLINE);
+    beforeLattices_[i].setHLine(0, 0, NLINE);
+
+    afterLattices_[i].initArrays(2,2);
+
+    afterLattices_[i].setHLine(2, 1, NLINE);
+    afterLattices_[i].setVLine(1, 2, NLINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /** Rule 30
+     * Before         After
+     *      
+     * .   .   .     .   .   .
+     *     x                 
+     * . x .   .     .   . x .
+     *       1           x   
+     * .   .   .     .   .   .
+     */
+    beforeLattices_[i].initArrays(2,2);
+
+    beforeLattices_[i].setNumber(1, 1, ONE);
+    beforeLattices_[i].setVLine(0, 1, NLINE);
+    beforeLattices_[i].setHLine(1, 0, NLINE);
+    
+
+    afterLattices_[i].initArrays(2,2);
+
+    afterLattices_[i].setHLine(1, 1, NLINE);
+    afterLattices_[i].setVLine(1, 1, NLINE);
+
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /** Rule 31
+     * Before         After
+     *      
+     * .   . x .     .   .   .
+     *       2               |
+     * . - .   .     .   .   .
+     *                   x   
+     * .   .   .     .   .   .
+     */
+    beforeLattices_[i].initArrays(2,2);
+
+    beforeLattices_[i].setNumber(0, 1, TWO);
+    beforeLattices_[i].setHLine(0, 1, NLINE);
+    beforeLattices_[i].setHLine(1, 0, LINE);
+    
+
+    afterLattices_[i].initArrays(2,2);
+
+    afterLattices_[i].setVLine(0, 2, LINE);
+    afterLattices_[i].setVLine(1, 1, NLINE);
+    
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /** Rule 32
+     * Before         After
+     *      
+     * .   .   .     .   . - .
+     *       2               |
+     * . - .   .     .   .   .
+     *     |                 
+     * .   .   .     .   .   .
+     */
+    beforeLattices_[i].initArrays(2,2);
+
+    beforeLattices_[i].setNumber(0, 1, TWO);
+    beforeLattices_[i].setHLine(1, 0, LINE);
+    beforeLattices_[i].setVLine(1, 1, LINE);
+    
+
+    afterLattices_[i].initArrays(2,2);
+
+    afterLattices_[i].setHLine(0, 1, LINE);
+    afterLattices_[i].setVLine(0, 2, LINE);
+    
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /** Rule 33
+     * Before         After
+     *      
+     * . - .   .     .   .   .
+     * | 3                    
+     * .   .   .     .   .   .
+     *       1               x
+     * .   .   .     .   . x .
+     */
+    beforeLattices_[i].initArrays(2,2);
+
+    beforeLattices_[i].setNumber(0, 0, THREE);
+    beforeLattices_[i].setNumber(1, 1, ONE);
+    beforeLattices_[i].setHLine(0, 0, LINE);
+    beforeLattices_[i].setVLine(0, 0, LINE);
+    
+
+    afterLattices_[i].initArrays(2,2);
+
+    afterLattices_[i].setHLine(2, 1, NLINE);
+    afterLattices_[i].setVLine(1, 2, NLINE);
+    
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
+
+    /** Rule 34
+     * Before         After
+     *      
+     * .   .   .     . - .   .
+     *   3           |        
+     * .   .   .     .   .   .
+     *       1 x              
+     * .   . x .     .   .   .
+     */
+    beforeLattices_[i].initArrays(2,2);
+
+    beforeLattices_[i].setNumber(0, 0, THREE);
+    beforeLattices_[i].setNumber(1, 1, ONE);
+    beforeLattices_[i].setHLine(2, 1, NLINE);
+    beforeLattices_[i].setVLine(1, 2, NLINE);
+
+    afterLattices_[i].initArrays(2,2);
+
+    afterLattices_[i].setHLine(0, 0, LINE);
+    afterLattices_[i].setVLine(0, 0, LINE);
+    
+    rules_[i] = Rule(beforeLattices_[i], afterLattices_[i]);
+    i++;
 }
+
+
+
 
 /* Initializes the contradictions_ array with each contradiction
  * used by the Solver to check the grid. By convention the
