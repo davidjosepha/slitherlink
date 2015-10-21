@@ -11,6 +11,8 @@
 class Solver {
     public:
         Solver(Grid & grid);
+        void solve();
+        void solveDeterministic();
 
     private:
         void makeGuesses();

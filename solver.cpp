@@ -10,7 +10,9 @@ Solver::Solver(Grid & grid) {
     grid_ = &grid;
     initRules();
     initContradictions();
+}
 
+void Solver::solve() {
     while (grid_->getUpdated()) {
         grid_->setUpdated(false);
         applyRules();
@@ -18,6 +20,13 @@ Solver::Solver(Grid & grid) {
             printf("Contradiction found, error!\n");
             return;
         }
+    }
+}
+
+void Solver::solveDeterministic() {
+    while (grid_->getUpdated()) {
+        grid_->setUpdated(false);
+        applyRules();
     }
 }
 
@@ -30,20 +39,28 @@ void Solver::makeGuesses() {
 
                 lineGuess.setHLine(i, j, LINE);
                 Solver lineSolver = Solver(lineGuess);
+                lineSolver.solveDeterministic();
 
                 if (!lineGuess.getIsValid()) {
                     grid_->setHLine(i, j, NLINE);
+                    return;
                 } else {
                     Grid nLineGuess;
                     grid_->copy(nLineGuess);
 
                     nLineGuess.setHLine(i, j, NLINE);
                     Solver nLineSolver = Solver(nLineGuess);
+                    nLineSolver.solveDeterministic();
 
                     if (!nLineGuess.getIsValid()) {
                         grid_->setHLine(i, j, LINE);
+                        return;
                     } else {
                         intersectGrids(lineGuess, nLineGuess);
+
+                        if (grid_->getUpdated()) {
+                            return;
+                        }
                     }
                 }
             }
