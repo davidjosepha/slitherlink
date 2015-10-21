@@ -13,7 +13,7 @@ class Grid : public Lattice {
         bool numberSatisfied(int i, int j);
         bool isSolved();
         void copy(Grid & newGrid);
-        bool isValid() {return isValid_;};
+        bool getIsValid() {return isValid_;};
         bool setIsValid(bool validity) { if (isValid_) {isValid_ = validity;}};
 
     private:
