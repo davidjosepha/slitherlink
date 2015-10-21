@@ -16,11 +16,11 @@ Solver::Solver(Grid & grid, int depth) {
 }
 
 void Solver::solve() {
-    while (grid_->getUpdated()) {
+    while (grid_->getUpdated() && !grid_->isSolved()) {
         grid_->setUpdated(false);
         applyRules();
 
-        if (depth_ > 0) {
+        if (depth_ > 0 && !testContradictions()) {
             makeGuesses();
         }
     }
@@ -36,7 +36,10 @@ void Solver::makeGuesses() {
                 lineGuess.setHLine(i, j, LINE);
                 Solver lineSolver = Solver(lineGuess, depth_-1);
 
-                if (!lineGuess.getIsValid()) {
+                if (lineGuess.isSolved()) {
+                    lineGuess.copy(*grid_);
+                    return;
+                } else if (!lineGuess.getIsValid()) {
                     grid_->setHLine(i, j, NLINE);
                     return;
                 } else {
@@ -46,7 +49,10 @@ void Solver::makeGuesses() {
                     nLineGuess.setHLine(i, j, NLINE);
                     Solver nLineSolver = Solver(nLineGuess, depth_-1);
 
-                    if (!nLineGuess.getIsValid()) {
+                    if (nLineGuess.isSolved()) {
+                        nLineGuess.copy(*grid_);
+                        return;
+                    } else if (!nLineGuess.getIsValid()) {
                         grid_->setHLine(i, j, LINE);
                         return;
                     } else {

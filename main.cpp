@@ -13,7 +13,7 @@ int main(int argc, char * argv[]) {
     std::cout << "Before:" << std::endl;
     exporter.print();
 
-    Solver solver = Solver(grid, 1);
+    Solver solver = Solver(grid, 2);
 
     std::cout << "After:" << std::endl;
     exporter.print();
