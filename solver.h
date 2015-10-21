@@ -13,7 +13,9 @@ class Solver {
         Solver(Grid & grid);
 
     private:
-        void intersectGrids(Grid & canonical, Grid const & lineGuess, Grid const & nLineGuess);
+        void makeGuesses();
+
+        void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
 
         void initRules();
         void applyRules();

@@ -16,27 +16,63 @@ Solver::Solver(Grid & grid) {
         applyRules();
         if (testContradictions()) {
             printf("Contradiction found, error!\n");
+            return;
         }
     }
 }
 
-/* Checks for the intersection between lineGuess and nLineGuess grids
- * and applies any intersection to canonical grid. */
-void Solver::intersectGrids(Grid & canonical, Grid const & lineGuess, Grid const & nLineGuess) {
-    /* TODO: add assertion that m and n are the same for all grids */
+void Solver::makeGuesses() {
+    for (int i = 0; i < grid_->getHeight()+1; i++) {
+        for (int j = 0; j < grid_->getWidth(); j++) {
+            if (grid_->getHLine(i, j) == EMPTY) {
+                Grid lineGuess;
+                grid_->copy(lineGuess);
 
-    for (int i = 0; i < canonical.getHeight()+1; i++) {
-        for (int j = 0; j < canonical.getWidth(); j++) {
-            if (lineGuess.getHLine(i, j) == nLineGuess.getHLine(i, j)) {
-                canonical.setHLine(i, j, lineGuess.getHLine(i, j));
+                lineGuess.setHLine(i, j, LINE);
+                Solver lineSolver = Solver(lineGuess);
+
+                if (!lineGuess.getIsValid()) {
+                    grid_->setHLine(i, j, NLINE);
+                } else {
+                    Grid nLineGuess;
+                    grid_->copy(nLineGuess);
+
+                    nLineGuess.setHLine(i, j, NLINE);
+                    Solver nLineSolver = Solver(nLineGuess);
+
+                    if (!nLineGuess.getIsValid()) {
+                        grid_->setHLine(i, j, LINE);
+                    } else {
+                        intersectGrids(lineGuess, nLineGuess);
+                    }
+                }
             }
         }
     }
 
-    for (int i = 0; i < canonical.getHeight(); i++) {
-        for (int j = 0; j < canonical.getWidth()+1; j++) {
-            if (lineGuess.getVLine(i, j) == nLineGuess.getVLine(i, j)) {
-                canonical.setVLine(i, j, lineGuess.getVLine(i, j));
+}
+
+/* Checks for the intersection between lineGuess and nLineGuess grids
+ * and applies any intersection to the canonical grid. */
+void Solver::intersectGrids(Grid const & lineGuess, Grid const & nLineGuess) {
+    /* TODO: add assertion that m and n are the same for all grids */
+
+    for (int i = 0; i < grid_->getHeight()+1; i++) {
+        for (int j = 0; j < grid_->getWidth(); j++) {
+            if (lineGuess.getHLine(i, j) == nLineGuess.getHLine(i, j) &&
+                  lineGuess.getHLine(i, j) != grid_->getHLine(i, j)) {
+                grid_->setHLine(i, j, lineGuess.getHLine(i, j));
+                grid_->setUpdated(true);
+            }
+        }
+    }
+
+    for (int i = 0; i < grid_->getHeight(); i++) {
+        for (int j = 0; j < grid_->getWidth()+1; j++) {
+            if (lineGuess.getVLine(i, j) == nLineGuess.getVLine(i, j) &&
+                  lineGuess.getVLine(i, j) != grid_->getVLine(i, j)) {
+                grid_->setVLine(i, j, lineGuess.getVLine(i, j));
+                grid_->setUpdated(true);
             }
         }
     }
@@ -58,7 +94,10 @@ void Solver::applyRules() {
         }
     }
 }
-            
+
+/* Runs a loop testing each contradiction in each orientation in
+ * each valid position on the grid, checking if the contradiction
+ * applies, and, if so, returning true. */
 bool Solver::testContradictions() {
     for (int x = 0; x < NUM_CONTS; x++) {
         for (Orientation orient: (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
@@ -72,6 +111,7 @@ bool Solver::testContradictions() {
             }
         }
     }
+
     return false;
 }
                         
@@ -115,7 +155,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
 bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getNumberHeight(orient); k++) {
         for (int l = 0; l < rule.getNumberWidth(orient); l++) {
-            if (rule.getNumberBefore(k, l, orient) != NONE and
+            if (rule.getNumberBefore(k, l, orient) != NONE &&
                 rule.getNumberBefore(k, l, orient) != grid_->getNumber(k + i, l + j)) {
                 return false;
             }
@@ -124,7 +164,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
 
     for (int k = 0; k < rule.getHLineHeight(orient); k++) {
         for (int l = 0; l < rule.getHLineWidth(orient); l++) {
-            if (rule.getHLineBefore(k, l, orient) != EMPTY and
+            if (rule.getHLineBefore(k, l, orient) != EMPTY &&
                 rule.getHLineBefore(k, l, orient) != grid_->getHLine(k + i, l + j)) {
                 return false;
             }
@@ -133,7 +173,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
 
     for (int k = 0; k < rule.getVLineHeight(orient); k++) {
         for (int l = 0; l < rule.getVLineWidth(orient); l++) {
-            if (rule.getVLineBefore(k, l, orient) != EMPTY and
+            if (rule.getVLineBefore(k, l, orient) != EMPTY &&
                 rule.getVLineBefore(k, l, orient) != grid_->getVLine(k + i, l + j)) {
                 return false;
             }
@@ -149,7 +189,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
 bool Solver::contradictionApplies(int i, int j, Contradiction & contradiction, Orientation orient) {
     for (int k = 0; k < contradiction.getNumberHeight(orient); k++) {
         for (int l = 0; l < contradiction.getNumberWidth(orient); l++) {
-            if (contradiction.getNumber(k, l, orient) != NONE and
+            if (contradiction.getNumber(k, l, orient) != NONE &&
                 contradiction.getNumber(k, l, orient) != grid_->getNumber(k + i, l + j)) {
                 return false;
             }
@@ -158,7 +198,7 @@ bool Solver::contradictionApplies(int i, int j, Contradiction & contradiction, O
 
     for (int k = 0; k < contradiction.getHLineHeight(orient); k++) {
         for (int l = 0; l < contradiction.getHLineWidth(orient); l++) {
-            if (contradiction.getHLine(k, l, orient) != EMPTY and
+            if (contradiction.getHLine(k, l, orient) != EMPTY &&
                 contradiction.getHLine(k, l, orient) != grid_->getHLine(k + i, l + j)) {
                 return false;
             }
@@ -167,12 +207,13 @@ bool Solver::contradictionApplies(int i, int j, Contradiction & contradiction, O
 
     for (int k = 0; k < contradiction.getVLineHeight(orient); k++) {
         for (int l = 0; l < contradiction.getVLineWidth(orient); l++) {
-            if (contradiction.getVLine(k, l, orient) != EMPTY and
+            if (contradiction.getVLine(k, l, orient) != EMPTY &&
                 contradiction.getVLine(k, l, orient) != grid_->getVLine(k + i, l + j)) {
                 return false;
             }
         }
     }
+
     grid_->setIsValid(false);
     return true;
 }
