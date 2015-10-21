@@ -12,10 +12,7 @@ int main(int argc, char * argv[]) {
     Export exporter = Export(grid);
     std::cout << "Before:" << std::endl;
     exporter.print();
-    Grid newG;
-    grid.copy(newG);
-    Export newEx = Export(newG);
-    newEx.print();
+
     Solver solver = Solver(grid);
     std::cout << "After:" << std::endl;
     exporter.print();
