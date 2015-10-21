@@ -13,14 +13,17 @@ class Solver {
         Solver(Grid & grid);
 
     private:
+        void intersectGrids(Grid & canonical, Grid const & lineGuess, Grid const & nLineGuess);
+
         void initRules();
         void applyRules();
         void applyRule(int i, int j, Rule & rule, Orientation orient);
         bool ruleApplies(int i, int j, Rule & rule, Orientation orient);
+
         void initContradictions();
         bool contradictionApplies(int i, int j, Contradiction & contradiction, Orientation orient);
         bool testContradictions();
-    
+
         Grid * grid_;
         Rule rules_[NUM_RULES];
         Lattice beforeLattices_[NUM_RULES];

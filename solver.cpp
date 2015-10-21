@@ -20,11 +20,33 @@ Solver::Solver(Grid & grid) {
     }
 }
 
+/* Checks for the intersection between lineGuess and nLineGuess grids
+ * and applies any intersection to canonical grid. */
+void Solver::intersectGrids(Grid & canonical, Grid const & lineGuess, Grid const & nLineGuess) {
+    /* TODO: add assertion that m and n are the same for all grids */
+
+    for (int i = 0; i < canonical.getHeight()+1; i++) {
+        for (int j = 0; j < canonical.getWidth(); j++) {
+            if (lineGuess.getHLine(i, j) == nLineGuess.getHLine(i, j)) {
+                canonical.setHLine(i, j, lineGuess.getHLine(i, j));
+            }
+        }
+    }
+
+    for (int i = 0; i < canonical.getHeight(); i++) {
+        for (int j = 0; j < canonical.getWidth()+1; j++) {
+            if (lineGuess.getVLine(i, j) == nLineGuess.getVLine(i, j)) {
+                canonical.setVLine(i, j, lineGuess.getVLine(i, j));
+            }
+        }
+    }
+}
+
 /* Runs a loop checking each rule in each orientation in each valid
  * position on the grid, checking if the rule applies, and, if so,
  * applying it. */
 void Solver::applyRules() {
-    for  (int x = 0; x < NUM_RULES; x++) {
+    for (int x = 0; x < NUM_RULES; x++) {
         for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
             for (int i = 0; i <= grid_->getHeight() - rules_[x].getNumberHeight(orient); i++) {
                 for (int j = 0; j <= grid_->getWidth() - rules_[x].getNumberWidth(orient); j++) {
@@ -44,13 +66,13 @@ bool Solver::testContradictions() {
                 for (int j = 0; j <= grid_->getWidth() - contradictions_[x].getNumberWidth(orient); j++) {
                     if (contradictionApplies(i, j, contradictions_[x], orient)) {
                         printf(" %i , m %i , n %i \n ", x, i, j);
-                        return 1;
+                        return true;
                     }
                 }
             }
         }
     }
-    return 0;
+    return false;
 }
                         
 
