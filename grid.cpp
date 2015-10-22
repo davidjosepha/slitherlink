@@ -35,7 +35,10 @@ void Grid::copy(Grid & newGrid) {
             newGrid.setNumber(i, j, getNumber(i,j));
         }
     }
-
+    
+    std::vector<Contour> newContours_(contours_);
+    newGrid.contours_ = newContours_;
+    
     for (int i = 0; i < getHeight()+1; i++) {
         for (int j = 0; j < getWidth(); j++) {
             newGrid.setHLine(i, j, getHLine(i,j));

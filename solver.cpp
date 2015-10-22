@@ -45,6 +45,7 @@ void Solver::makeGuesses() {
 
                 if (lineGuess.isSolved()) {
                     lineGuess.copy(*grid_);
+                    //free(lineGuess.contours_);
                     return;
                 } else if (!lineGuess.getIsValid()) {
                     grid_->setHLine(i, j, NLINE);
