@@ -47,7 +47,7 @@ void Solver::makeGuesses() {
                     lineGuess.copy(*grid_);
                     //free(lineGuess.contours_);
                     return;
-                } else if (!lineGuess.getIsValid()) {
+                } else if (!lineGuess.getValid()) {
                     grid_->setHLine(i, j, NLINE);
                     return;
                 } else {
@@ -60,7 +60,7 @@ void Solver::makeGuesses() {
                     if (nLineGuess.isSolved()) {
                         nLineGuess.copy(*grid_);
                         return;
-                    } else if (!nLineGuess.getIsValid()) {
+                    } else if (!nLineGuess.getValid()) {
                         grid_->setHLine(i, j, LINE);
                         return;
                     } else {
@@ -158,7 +158,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getHLineHeight(orient); k++) {
         for (int l = 0; l < rule.getHLineWidth(orient); l++) {
             if (rule.getHLineAfter(k, l, orient) != EMPTY && grid_->getHLine(k + i, l + j) == EMPTY) {
-                grid_->setIsValid(grid_->setHLine(k + i, l + j, rule.getHLineAfter(k, l, orient)));
+                grid_->setValid(grid_->setHLine(k + i, l + j, rule.getHLineAfter(k, l, orient)));
                 grid_->setUpdated(true);
             }
         }
@@ -167,7 +167,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     for (int k = 0; k < rule.getVLineHeight(orient); k++) {
         for (int l = 0; l < rule.getVLineWidth(orient); l++) {
             if (rule.getVLineAfter(k, l, orient) != EMPTY && grid_->getVLine(k + i, l + j) == EMPTY) {
-                grid_->setIsValid(grid_->setVLine(k + i, l + j, rule.getVLineAfter(k, l, orient)));
+                grid_->setValid(grid_->setVLine(k + i, l + j, rule.getVLineAfter(k, l, orient)));
                 grid_->setUpdated(true);
             }
         }
@@ -240,7 +240,7 @@ bool Solver::contradictionApplies(int i, int j, Contradiction & contradiction, O
         }
     }
 
-    grid_->setIsValid(false);
+    grid_->setValid(false);
     return true;
 }
 
