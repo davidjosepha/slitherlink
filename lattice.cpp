@@ -12,19 +12,7 @@
 /* Destructor checks if arrays have been initialized and
  * if so, frees them all. */
 Lattice::~Lattice() {
-    if (init_) {
-        for (int i = 0; i < m_; i++) {
-            delete [] numbers_[i];
-            delete [] hlines_[i];
-            delete [] vlines_[i];
-        }
-        // hlines_ needs one extra
-        delete [] hlines_[m_];
-        // and delete the outer arrays
-        delete [] numbers_;
-        delete [] hlines_;
-        delete [] vlines_;
-    }
+    destroyArrays();
 }
 
 /* Initializes the three two dimensional arrays used to
@@ -33,6 +21,8 @@ Lattice::~Lattice() {
  * true so that the destructor knows to free the memory
  * after destroying an instance of the class. */
 void Lattice::initArrays(int m, int n) {
+    destroyArrays();
+
     m_ = m;
     n_ = n;
 
@@ -71,6 +61,24 @@ bool Lattice::setVLine(int i, int j, Edge edge) {
     }
     return true;
 };
+
+/* Deallocates any data allocated in the three two
+ * dimensional arrays used to represent the lattice */
+void Lattice::destroyArrays() {
+    if (init_) {
+        for (int i = 0; i < m_; i++) {
+            delete [] numbers_[i];
+            delete [] hlines_[i];
+            delete [] vlines_[i];
+        }
+        // hlines_ needs one extra
+        delete [] hlines_[m_];
+        // and delete the outer arrays
+        delete [] numbers_;
+        delete [] hlines_;
+        delete [] vlines_;
+    }
+}
 
 /* Wipes out all data from the three two dimensional
  * arrays so that new data can be added on top of a

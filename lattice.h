@@ -21,6 +21,7 @@ class Lattice {
         virtual bool setVLine(int i, int j, Edge edge);
 
     protected:
+        void destroyArrays();
         void cleanArrays();
 
         bool init_ = false;
