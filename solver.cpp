@@ -17,25 +17,14 @@ Solver::Solver(Grid & grid, int depth) {
 
 void Solver::solve() {
     while (grid_->getUpdated() && !grid_->isSolved()) {
-        grid_->setUpdated(false);
         applyRules();
 
         for (int d = 0; d < depth_; d++) {
-            if (!grid_->getUpdated()) {
+            if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved()) {
                 printf("%d, ", d);
                 solveDepth(d);
             }
         }
-        /*
-        while (grid_->getUpdated() && !grid_->isSolved()) {
-            grid_->setUpdated(false);
-            applyRules();
-        }
-
-        if (depth_ > 0 && !testContradictions()) {
-            makeGuesses();
-        }
-        */
     }
 }
 
@@ -172,14 +161,19 @@ void Solver::intersectGrids(Grid const & lineGuess, Grid const & nLineGuess) {
 
 /* Runs a loop checking each rule in each orientation in each valid
  * position on the grid, checking if the rule applies, and, if so,
- * applying it. */
+ * applying it, and continue updating them until there are no longer
+ * any changes being made. */
 void Solver::applyRules() {
-    for (int x = 0; x < NUM_RULES; x++) {
-        for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
-            for (int i = 0; i <= grid_->getHeight() - rules_[x].getNumberHeight(orient); i++) {
-                for (int j = 0; j <= grid_->getWidth() - rules_[x].getNumberWidth(orient); j++) {
-                    if (ruleApplies(i, j, rules_[x], orient)) {
-                        applyRule(i, j, rules_[x], orient);
+    while (grid_->getUpdated()) {
+        grid_->setUpdated(false);
+
+        for (int x = 0; x < NUM_RULES; x++) {
+            for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
+                for (int i = 0; i <= grid_->getHeight() - rules_[x].getNumberHeight(orient); i++) {
+                    for (int j = 0; j <= grid_->getWidth() - rules_[x].getNumberWidth(orient); j++) {
+                        if (ruleApplies(i, j, rules_[x], orient)) {
+                            applyRule(i, j, rules_[x], orient);
+                        }
                     }
                 }
             }
