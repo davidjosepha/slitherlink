@@ -36,8 +36,8 @@ void Grid::copy(Grid & newGrid) {
         }
     }
     
-    std::vector<Contour> newContours_(contours_);
-    newGrid.contours_ = newContours_;
+    std::vector<Contour> newContours(contours_);
+    newGrid.contours_ = newContours;
     
     for (int i = 0; i < getHeight()+1; i++) {
         for (int j = 0; j < getWidth(); j++) {
