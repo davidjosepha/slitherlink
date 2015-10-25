@@ -14,7 +14,9 @@ class Solver {
 
     private:
         void solve();
-        void makeGuesses();
+        void solveDepth(int depth);
+        void makeHLineGuess(int i, int j, int depth);
+        void makeVLineGuess(int i, int j, int depth);
 
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
 

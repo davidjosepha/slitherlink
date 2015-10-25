@@ -17,6 +17,16 @@ Solver::Solver(Grid & grid, int depth) {
 
 void Solver::solve() {
     while (grid_->getUpdated() && !grid_->isSolved()) {
+        grid_->setUpdated(false);
+        applyRules();
+
+        for (int d = 0; d < depth_; d++) {
+            if (!grid_->getUpdated()) {
+                printf("%d, ", d);
+                solveDepth(d);
+            }
+        }
+        /*
         while (grid_->getUpdated() && !grid_->isSolved()) {
             grid_->setUpdated(false);
             applyRules();
@@ -25,57 +35,113 @@ void Solver::solve() {
         if (depth_ > 0 && !testContradictions()) {
             makeGuesses();
         }
+        */
     }
 }
 
-void Solver::makeGuesses() {
+void Solver::solveDepth(int depth) {
     for (int i = 0; i < grid_->getHeight()+1; i++) {
         for (int j = 0; j < grid_->getWidth(); j++) {
-            if (grid_->getHLine(i, j) == EMPTY) {
-                /* there is only one case where the grid
-                 * will not be updated, which is handled
-                 * at the end of this iteration. */
-                grid_->setUpdated(true);
+            applyRules();
+            makeHLineGuess(i, j, depth);
+        }
+    }
 
-                Grid lineGuess;
-                grid_->copy(lineGuess);
+    for (int i = 0; i < grid_->getHeight(); i++) {
+        for (int j = 0; j < grid_->getWidth()+1; j++) {
+            applyRules();
+            makeVLineGuess(i, j, depth);
+        }
+    }
+}
 
-                lineGuess.setHLine(i, j, LINE);
-                Solver lineSolver = Solver(lineGuess, depth_-1);
+void Solver::makeHLineGuess(int i, int j, int depth) {
+    if (grid_->getHLine(i, j) == EMPTY) {
+        /* there is only one case where the grid
+         * will not be updated, which is handled
+         * at the end of this iteration. */
+        grid_->setUpdated(true);
 
-                if (lineGuess.isSolved()) {
-                    lineGuess.copy(*grid_);
-                    //free(lineGuess.contours_);
+        Grid lineGuess;
+        grid_->copy(lineGuess);
+
+        lineGuess.setHLine(i, j, LINE);
+        Solver lineSolver = Solver(lineGuess, depth);
+
+        if (lineGuess.isSolved()) {
+            lineGuess.copy(*grid_);
+            return;
+        } else if (!lineGuess.getValid()) {
+            grid_->setHLine(i, j, NLINE);
+            return;
+        } else {
+            Grid nLineGuess;
+            grid_->copy(nLineGuess);
+
+            nLineGuess.setHLine(i, j, NLINE);
+            Solver nLineSolver = Solver(nLineGuess, depth);
+
+            if (nLineGuess.isSolved()) {
+                nLineGuess.copy(*grid_);
+                return;
+            } else if (!nLineGuess.getValid()) {
+                grid_->setHLine(i, j, LINE);
+                return;
+            } else {
+                grid_->setUpdated(false);
+                intersectGrids(lineGuess, nLineGuess);
+
+                if (grid_->getUpdated()) {
                     return;
-                } else if (!lineGuess.getValid()) {
-                    grid_->setHLine(i, j, NLINE);
-                    return;
-                } else {
-                    Grid nLineGuess;
-                    grid_->copy(nLineGuess);
-
-                    nLineGuess.setHLine(i, j, NLINE);
-                    Solver nLineSolver = Solver(nLineGuess, depth_-1);
-
-                    if (nLineGuess.isSolved()) {
-                        nLineGuess.copy(*grid_);
-                        return;
-                    } else if (!nLineGuess.getValid()) {
-                        grid_->setHLine(i, j, LINE);
-                        return;
-                    } else {
-                        grid_->setUpdated(false);
-                        intersectGrids(lineGuess, nLineGuess);
-
-                        if (grid_->getUpdated()) {
-                            return;
-                        }
-                    }
                 }
             }
         }
     }
+}
 
+void Solver::makeVLineGuess(int i, int j, int depth) {
+    if (grid_->getVLine(i, j) == EMPTY) {
+        /* there is only one case where the grid
+         * will not be updated, which is handled
+         * at the end of this iteration. */
+        grid_->setUpdated(true);
+
+        Grid lineGuess;
+        grid_->copy(lineGuess);
+
+        lineGuess.setVLine(i, j, LINE);
+        Solver lineSolver = Solver(lineGuess, depth);
+
+        if (lineGuess.isSolved()) {
+            lineGuess.copy(*grid_);
+            //free(lineGuess.contours_);
+            return;
+        } else if (!lineGuess.getValid()) {
+            grid_->setVLine(i, j, NLINE);
+            return;
+        } else {
+            Grid nLineGuess;
+            grid_->copy(nLineGuess);
+
+            nLineGuess.setVLine(i, j, NLINE);
+            Solver nLineSolver = Solver(nLineGuess, depth);
+
+            if (nLineGuess.isSolved()) {
+                nLineGuess.copy(*grid_);
+                return;
+            } else if (!nLineGuess.getValid()) {
+                grid_->setVLine(i, j, LINE);
+                return;
+            } else {
+                grid_->setUpdated(false);
+                intersectGrids(lineGuess, nLineGuess);
+
+                if (grid_->getUpdated()) {
+                    return;
+                }
+            }
+        }
+    }
 }
 
 /* Checks for the intersection between lineGuess and nLineGuess grids
