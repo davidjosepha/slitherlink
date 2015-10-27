@@ -1,4 +1,5 @@
 #include "lattice.h"
+#include <cassert>
 #include "enums.h"
 
 #define POINT '.'
@@ -19,6 +20,8 @@ Lattice::~Lattice() {
  * true so that the destructor knows to free the memory
  * after destroying an instance of the class. */
 void Lattice::initArrays(int m, int n) {
+    assert(m > 0 && n > 0);
+
     destroyArrays();
 
     m_ = m;
@@ -40,25 +43,75 @@ void Lattice::initArrays(int m, int n) {
     cleanArrays();
 }
 
+/* Get value of number located at coordinates (i, j),
+ * where i is on the range [0, m_+1] and j is on the
+ * range [0, n_]. */
+Number Lattice::getNumber(int i, int j) const {
+    assert(0 <= i && i < m_ && 0 <= j && j < n_);
+
+    return numbers_[i][j];
+}
+
+/* Get value of horizontal edge located at coordinates
+ * (i, j), where i is on the range [0, m_+1] and j is
+ * on the range [0, n_]. */
+Edge Lattice::getHLine(int i, int j) const {
+    assert(0 <= i && i < m_+1 && 0 <= j && j < n_);
+
+    return hlines_[i][j];
+}
+
+/* Get value of vertical edge located at coordinates
+ * (i, j), where i is on the range [0, m_+1] and j is
+ * on the range [0, n_]. */
+Edge Lattice::getVLine(int i, int j) const {
+    assert(0 <= i && i < m_ && 0 <= j && j < n_+1);
+
+    return vlines_[i][j];
+}
+
+/* Set value of number located at coordinates (i, j),
+ * where i is on the range [0, m_+1] and j is on the
+ * range [0, n_]. */
+void Lattice::setNumber(int i, int j, Number num) {
+    assert(0 <= i && i < m_ && 0 <= j && j < n_);
+
+    numbers_[i][j] = num;
+}
+
+/* Set value of horizontal edge located at coordinates
+ * (i, j), where i is on the range [0, m_+1] and j is
+ * on the range [0, n_]. */
 bool Lattice::setHLine(int i, int j, Edge edge) { 
+    assert(0 <= i && i < m_+1 && 0 <= j && j < n_);
+
     Edge prevEdge = getHLine(i, j);
+
     if (prevEdge == EMPTY) {
         hlines_[i][j] = edge;
     } else if (prevEdge != edge) {
         return false;
     }
-    return true;
-};
 
+    return true;
+}
+
+/* Set value of vertical edge located at coordinates
+ * (i, j), where i is on the range [0, m_+1] and j is
+ * on the range [0, n_]. */
 bool Lattice::setVLine(int i, int j, Edge edge) { 
+    assert(0 <= i && i < m_ && 0 <= j && j < n_+1);
+
     Edge prevEdge = getVLine(i, j);
+
     if (prevEdge == EMPTY) {
         vlines_[i][j] = edge;
     } else if (prevEdge != edge) {
         return false;
     }
+
     return true;
-};
+}
 
 /* Deallocates any data allocated in the three two
  * dimensional arrays used to represent the lattice */
