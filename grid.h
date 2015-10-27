@@ -14,7 +14,7 @@ class Grid : public Lattice {
         bool isSolved();
         void copy(Grid & newGrid);
         bool getValid() {return valid_;};
-        bool setValid(bool validity) { if (valid_) {valid_ = validity;}};
+        bool setValid(bool validity) { valid_ = validity; };
 
     private:
         void mergeContours(Contour & newContour);

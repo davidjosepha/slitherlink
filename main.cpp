@@ -8,15 +8,16 @@
 #include <time.h>
 
 int main(int argc, char * argv[]) {
-    clock_t t1,t2;
-    t1=clock();
+    clock_t startTime, endTime;
+    startTime = clock();
+
     Grid grid;
     Import importer = Import(grid);
     Export exporter = Export(grid);
     std::cout << "Before:" << std::endl;
     exporter.print();
 
-    Solver solver = Solver(grid, 0);
+    Solver solver = Solver(grid, 1);
 
     std::cout << "After:" << std::endl;
     exporter.print();
@@ -26,8 +27,10 @@ int main(int argc, char * argv[]) {
     } else {
         std::cout << "still not solved!\n";
     }
-    t2=clock();
-    float diff = ((float)t2-(float)t1)/ CLOCKS_PER_SEC;
-    std::cout << "Time to solve:\t" << diff << " seconds\n";
+
+    endTime = clock();
+    float diff = ((float)endTime - (float)startTime) / CLOCKS_PER_SEC;
+    std::cout << "Time to solve:\t" << diff << " seconds" << std::endl;
+
     return 0;
 }
