@@ -1,9 +1,18 @@
 #include "rule.h"
+#include <cassert>
+#include <iostream>
 #include "enums.h"
 
-/* Constructor instantiates new rule based on before and
- * after lattices. */
+/* Constructor instantiates new rule based on two
+ * lattices, before and after, where both are of
+ * the same dimensions and before reflects the
+ * necessary condition for the rule to be applied
+ * and after represents only the additional lines
+ * and nlines added as a result of the rule. */
 Rule::Rule(Lattice const & before, Lattice const & after) {
+    assert(before.getHeight() == after.getHeight() &&
+           before.getWidth() == after.getWidth());
+
     m_ = before.getHeight();
     n_ = before.getWidth();
     before_ = &before;
@@ -64,7 +73,6 @@ int Rule::getHLineHeight(Orientation orient) const {
 /* Gives the width of the horizontal line grid based on a given
  * orientation. In its upright position, its width is n_. */
 int Rule::getHLineWidth(Orientation orient) const {
-
     switch (orient) {
         case UP:
         case DOWN:
@@ -82,7 +90,6 @@ int Rule::getHLineWidth(Orientation orient) const {
 /* Gives the height of the vertical line grid based on a given
  * orientation. In its upright position, its height is m_. */
 int Rule::getVLineHeight(Orientation orient) const {
-
     switch (orient) {
         case UP:
         case DOWN:
