@@ -85,14 +85,7 @@ void Lattice::setNumber(int i, int j, Number num) {
 bool Lattice::setHLine(int i, int j, Edge edge) { 
     assert(0 <= i && i < m_+1 && 0 <= j && j < n_);
 
-    Edge prevEdge = getHLine(i, j);
-
-    if (prevEdge == EMPTY) {
-        hlines_[i][j] = edge;
-    } else if (prevEdge != edge) {
-        return false;
-    }
-
+    hlines_[i][j] = edge;
     return true;
 }
 
@@ -102,14 +95,7 @@ bool Lattice::setHLine(int i, int j, Edge edge) {
 bool Lattice::setVLine(int i, int j, Edge edge) { 
     assert(0 <= i && i < m_ && 0 <= j && j < n_+1);
 
-    Edge prevEdge = getVLine(i, j);
-
-    if (prevEdge == EMPTY) {
-        vlines_[i][j] = edge;
-    } else if (prevEdge != edge) {
-        return false;
-    }
-
+    vlines_[i][j] = edge;
     return true;
 }
 
