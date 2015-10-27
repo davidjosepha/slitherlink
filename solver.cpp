@@ -144,7 +144,8 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
 /* Checks for the intersection between lineGuess and nLineGuess grids
  * and applies any intersection to the canonical grid. */
 void Solver::intersectGrids(Grid const & lineGuess, Grid const & nLineGuess) {
-    /* TODO: add assertion that m and n are the same for all grids */
+    assert(lineGuess.getHeight() == nLineGuess.getHeight() &&
+           lineGuess.getWidth() == nLineGuess.getWidth());
 
     for (int i = 0; i < grid_->getHeight()+1; i++) {
         for (int j = 0; j < grid_->getWidth(); j++) {
