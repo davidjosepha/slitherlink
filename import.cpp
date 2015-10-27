@@ -57,7 +57,10 @@ void Import::buildLattice() {
     std::getline(std::cin, buffer);
 
     /* vertical lines */
-    addVNLine(m, n);
+    for (int j = 1; j < n+2; j++) {
+        lattice_->setVLine(0, j, NLINE);
+        lattice_->setVLine(m+1, j, NLINE);
+    }
 
     for (int i = 0; i < m; i++) {
         std::getline(std::cin, buffer);
@@ -132,16 +135,5 @@ void Import::importVLineRow(int i, std::string row) {
                 lattice_->setVLine(i, j+1, EMPTY);
                 break;
         }
-    }
-}
-
-void Import::addHNLine(int m) {
-
-}
-
-void Import::addVNLine(int m, int n) {
-    for (int j = 1; j < n+2; j++) {
-      lattice_->setVLine(0, j, NLINE);
-      lattice_->setVLine(m+1, j, NLINE);
     }
 }
