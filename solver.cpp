@@ -1,4 +1,5 @@
 #include "solver.h"
+#include <cassert>
 #include "contradiction.h"
 #include "enums.h"
 #include "grid.h"
@@ -14,6 +15,8 @@ Solver::Solver(Grid & grid, int depth) {
     solve();
 }
 
+/* Apply a combination of deterministic rules and
+ * recursive guessing to find a solution to a puzzle */
 void Solver::solve() {
     while (grid_->getUpdated() && !grid_->isSolved()) {
         applyRules();
@@ -26,6 +29,7 @@ void Solver::solve() {
     }
 }
 
+/* Make a guess in each valid position in the graph */
 void Solver::solveDepth(int depth) {
     for (int i = 0; i < grid_->getHeight()+1; i++) {
         for (int j = 0; j < grid_->getWidth(); j++) {
@@ -43,6 +47,9 @@ void Solver::solveDepth(int depth) {
 }
 
 void Solver::makeHLineGuess(int i, int j, int depth) {
+    assert(0 <= i && i < m_+1 && 0 <= j && j < n_);
+    assert(depth > 0);
+
     if (grid_->getHLine(i, j) == EMPTY) {
         /* there is only one case where the grid
          * will not be updated, which is handled
@@ -87,6 +94,9 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
 }
 
 void Solver::makeVLineGuess(int i, int j, int depth) {
+    assert(0 <= i && i < m_ && 0 <= j && j < n_+1);
+    assert(depth > 0);
+
     if (grid_->getVLine(i, j) == EMPTY) {
         /* there is only one case where the grid
          * will not be updated, which is handled
@@ -1290,6 +1300,4 @@ void Solver::initContradictions() {
 
     contradictions_[i] = Contradiction(contLattices_[i]);
     i++;
-
-
 }
