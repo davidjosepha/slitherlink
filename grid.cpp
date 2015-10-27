@@ -2,7 +2,6 @@
 #include <vector>
 #include "contour.h"
 #include "enums.h"
-#include <stdio.h>
 
 
 /*

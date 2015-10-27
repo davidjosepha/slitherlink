@@ -1,9 +1,8 @@
 #include "solver.h"
+#include "contradiction.h"
 #include "enums.h"
 #include "grid.h"
 #include "rule.h"
-#include "contradiction.h"
-#include <stdio.h>
 
 /* Constructor takes a grid as input to solve */
 Solver::Solver(Grid & grid, int depth) {
@@ -21,7 +20,6 @@ void Solver::solve() {
 
         for (int d = 0; d < depth_; d++) {
             if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved()) {
-                printf("%d, ", d);
                 solveDepth(d);
             }
         }
@@ -190,7 +188,6 @@ bool Solver::testContradictions() {
             for (int i = 0; i <= grid_->getHeight() - contradictions_[x].getNumberHeight(orient); i++) {
                 for (int j = 0; j <= grid_->getWidth() - contradictions_[x].getNumberWidth(orient); j++) {
                     if (contradictionApplies(i, j, contradictions_[x], orient)) {
-                        printf(" %i , m %i , n %i \n ", x, i, j);
                         return true;
                     }
                 }

@@ -1,11 +1,10 @@
 #include <iostream>
+#include <time.h>
 #include "export.h"
+#include "grid.h"
 #include "import.h"
 #include "lattice.h"
 #include "solver.h"
-#include "grid.h"
-#include <stdio.h>
-#include <time.h>
 
 int main(int argc, char * argv[]) {
     clock_t startTime, endTime;

@@ -1,6 +1,4 @@
 #include "lattice.h"
-#include <iostream>
-#include <string>
 #include "enums.h"
 
 #define POINT '.'
