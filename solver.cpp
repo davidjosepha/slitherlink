@@ -48,7 +48,7 @@ void Solver::solveDepth(int depth) {
 
 void Solver::makeHLineGuess(int i, int j, int depth) {
     assert(0 <= i && i < grid_->getHeight()+1 && 0 <= j && j < grid_->getWidth());
-    assert(depth > 0);
+    assert(depth >= 0);
 
     if (grid_->getHLine(i, j) == EMPTY) {
         /* there is only one case where the grid
@@ -95,7 +95,7 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
 
 void Solver::makeVLineGuess(int i, int j, int depth) {
     assert(0 <= i && i < grid_->getHeight() && 0 <= j && j < grid_->getWidth()+1);
-    assert(depth > 0);
+    assert(depth >= 0);
 
     if (grid_->getVLine(i, j) == EMPTY) {
         /* there is only one case where the grid
