@@ -15,6 +15,8 @@ class Solver {
     private:
         void solve();
         void makeGuesses();
+    
+        bool spiralNext(int startm, int startn, int *prevm, int *prevn);
 
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
 
@@ -22,6 +24,7 @@ class Solver {
         void applyRules();
         void applyRule(int i, int j, Rule & rule, Orientation orient);
         bool ruleApplies(int i, int j, Rule & rule, Orientation orient);
+        
 
         void initContradictions();
         bool contradictionApplies(int i, int j, Contradiction & contradiction, Orientation orient);
