@@ -1,9 +1,9 @@
 #include "export.h"
 #include <iostream>
 #include <string>
+#include "constants.h"
 #include "enums.h"
 #include "lattice.h"
-#include "symbols.h"
 
 /* Constructor taking as input a lattice to be exported */
 Export::Export(Lattice const & lattice) {

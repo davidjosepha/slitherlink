@@ -4,6 +4,7 @@
 #include "grid.h"
 #include "import.h"
 #include "lattice.h"
+#include "rules.h"
 #include "solver.h"
 
 int main(int argc, char * argv[]) {
@@ -16,15 +17,17 @@ int main(int argc, char * argv[]) {
     std::cout << "Before:" << std::endl;
     exporter.print();
 
-    Solver solver = Solver(grid, 1);
+    Rule rules[NUM_RULES];
+    initRules(rules);
+    Solver solver = Solver(grid, rules, 2);
 
     std::cout << "After:" << std::endl;
     exporter.print();
 
     if (grid.isSolved()) {
-        std::cout << "we solved it!\n";
+        std::cout << "We solved it!\n";
     } else {
-        std::cout << "still not solved!\n";
+        std::cout << "Still not solved!\n";
     }
 
     endTime = clock();
