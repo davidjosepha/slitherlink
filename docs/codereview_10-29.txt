@@ -1,0 +1,23 @@
+Sherri Code Reivew:
+
+    -mac C++ make files
+    -clang (on mac at least) isntead of gcc
+    -push corrected README
+    -don't read from STDIN, command line arguments
+    -profiler
+
+    -comments at top of h files
+    -comments at top of functions
+
+    -(in code or seperate file) have algorithms written out in English (high level solver & lower level
+    functions too)
+
+    -isSolved, numberSatisfied (keep track of numbers Satisfied/isSolved throughout solving)
+    -isSolved first if statement logic :P
+
+    -yay use const.
+
+    -How to seperate solver into smaller classes?
+        -class diagrams?
+        -"I wouldn't get overly perfectionist"
+

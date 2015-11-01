@@ -1,5 +1,12 @@
 # slitherlink
 
+Setup:
+# run the make file
+$ make
+# pipe in the .slk puzzle you wish to solve, such as 04.slk
+$ ./slitherlink < puzzles/04.slk
+
+
 Here's links to some docs we are currently using:
 
 [Literature](https://docs.google.com/a/carleton.edu/document/d/1JIbNOp1rgz-ut7pTf2QnSlT59Fw72w0DB6UZx1eAnsY/edit?usp=sharing)

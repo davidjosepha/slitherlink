@@ -1,26 +1,31 @@
 #ifndef SOLVER_H
 #define SOLVER_H
+#include "constants.h"
 #include "enums.h"
 #include "grid.h"
 #include "rule.h"
 #include "contradiction.h"
 
-#define NUM_RULES 34
 #define NUM_CONTS 11
 
 class Solver {
     public:
-        Solver(Grid & grid, int depth);
+        Solver(Grid & grid, Rule rules[NUM_RULES], int depth);
 
     private:
         void solve();
+<<<<<<< HEAD
         void makeGuesses();
     
         bool spiralNext(int startm, int startn, int *prevm, int *prevn);
+=======
+        void solveDepth(int depth);
+        void makeHLineGuess(int i, int j, int depth);
+        void makeVLineGuess(int i, int j, int depth);
+>>>>>>> 04105eb2c483232662139e1e117fdfaedf9c0651
 
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
 
-        void initRules();
         void applyRules();
         void applyRule(int i, int j, Rule & rule, Orientation orient);
         bool ruleApplies(int i, int j, Rule & rule, Orientation orient);
@@ -32,9 +37,7 @@ class Solver {
 
         Grid * grid_;
         int depth_;
-        Rule rules_[NUM_RULES];
-        Lattice beforeLattices_[NUM_RULES];
-        Lattice afterLattices_[NUM_RULES];
+        Rule * rules_;
         Contradiction contradictions_[NUM_CONTS];
         Lattice contLattices_[NUM_CONTS];
 

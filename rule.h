@@ -6,11 +6,11 @@
 class Rule {
     public:
         Rule() { };
-        Rule(Lattice const & before, Lattice const & after);
+        void initLattices(int m, int n);
         int getHeight() const { return m_; };
         int getWidth() const { return n_; };
-        Lattice const * getBefore() const { return before_; };
-        Lattice const * getAfter() const { return after_; };
+        Lattice * getBefore() { return &before_; };
+        Lattice * getAfter() { return &after_; };
 
         int getNumberHeight(Orientation orient) const;
         int getNumberWidth(Orientation orient) const;
@@ -30,8 +30,8 @@ class Rule {
     private:
         int m_;
         int n_;
-        Lattice const * before_;
-        Lattice const * after_;
+        Lattice before_;
+        Lattice after_;
 };
 
 #endif

@@ -1,13 +1,21 @@
 #include "rule.h"
+#include <iostream>
 #include "enums.h"
 
-/* Constructor instantiates new rule based on before and
- * after lattices. */
-Rule::Rule(Lattice const & before, Lattice const & after) {
-    m_ = before.getHeight();
-    n_ = before.getWidth();
-    before_ = &before;
-    after_ = &after;
+/* Instantiates new rule based on dimensions
+ * of before and after lattices, where before
+ * reflects the necessary condition for the
+ * rule to be applied and after represents
+ * only the additional lines and nlines added
+ * as a result of the rule. The constructor then
+ * instantiates each of the lattices with
+ * dimensions m by n. */
+void Rule::initLattices(int m, int n) {
+    m_ = m;
+    n_ = n;
+
+    before_.initArrays(m_, n_);
+    after_.initArrays(m_, n_);
 }
 
 /* Gives the height of the number grid based on a given
@@ -64,7 +72,6 @@ int Rule::getHLineHeight(Orientation orient) const {
 /* Gives the width of the horizontal line grid based on a given
  * orientation. In its upright position, its width is n_. */
 int Rule::getHLineWidth(Orientation orient) const {
-
     switch (orient) {
         case UP:
         case DOWN:
@@ -82,7 +89,6 @@ int Rule::getHLineWidth(Orientation orient) const {
 /* Gives the height of the vertical line grid based on a given
  * orientation. In its upright position, its height is m_. */
 int Rule::getVLineHeight(Orientation orient) const {
-
     switch (orient) {
         case UP:
         case DOWN:
@@ -123,19 +129,19 @@ Number Rule::getNumberBefore(int i, int j, Orientation orient) const {
         case UPFLIP:
             i = m_ - i - 1;
         case UP:
-            return before_->getNumber(i, j);
+            return before_.getNumber(i, j);
         case DOWNFLIP:
             i = m_ - i - 1;
         case DOWN:
-            return before_->getNumber(m_-i-1, n_-j-1);
+            return before_.getNumber(m_-i-1, n_-j-1);
         case LEFTFLIP:
             i = n_ - i - 1;
         case LEFT:
-            return before_->getNumber(j, n_-i-1);
+            return before_.getNumber(j, n_-i-1);
         case RIGHTFLIP:
             i = n_ - i - 1;
         case RIGHT:
-            return before_->getNumber(m_-j-1, i);
+            return before_.getNumber(m_-j-1, i);
     }
 }
 
@@ -148,19 +154,19 @@ Edge Rule::getHLineBefore(int i, int j, Orientation orient) const {
         case UPFLIP:
             i = m_ - i;
         case UP:
-            return before_->getHLine(i, j);
+            return before_.getHLine(i, j);
         case DOWNFLIP:
             i = m_ - i;
         case DOWN:
-            return before_->getHLine(m_-i, n_-j-1);
+            return before_.getHLine(m_-i, n_-j-1);
         case LEFTFLIP:
             i = n_ - i;
         case LEFT:
-            return before_->getVLine(j, n_-i);
+            return before_.getVLine(j, n_-i);
         case RIGHTFLIP:
             i = n_ - i;
         case RIGHT:
-            return before_->getVLine(m_-j-1, i);
+            return before_.getVLine(m_-j-1, i);
     }
 }
 
@@ -173,19 +179,19 @@ Edge Rule::getVLineBefore(int i, int j, Orientation orient) const {
         case UPFLIP:
             i = m_ - i - 1;
         case UP:
-            return before_->getVLine(i, j);
+            return before_.getVLine(i, j);
         case DOWNFLIP:
             i = m_ - i - 1;
         case DOWN:
-            return before_->getVLine(m_-i-1, n_-j);
+            return before_.getVLine(m_-i-1, n_-j);
         case LEFTFLIP:
             i = n_ - i - 1;
         case LEFT:
-            return before_->getHLine(j, n_-i-1);
+            return before_.getHLine(j, n_-i-1);
         case RIGHTFLIP:
             i = n_ - i - 1;
         case RIGHT:
-            return before_->getHLine(m_-j, i);
+            return before_.getHLine(m_-j, i);
     }
 }
 
@@ -198,19 +204,19 @@ Number Rule::getNumberAfter(int i, int j, Orientation orient) const {
         case UPFLIP:
             i = m_ - i - 1;
         case UP:
-            return after_->getNumber(i, j);
+            return after_.getNumber(i, j);
         case DOWNFLIP:
             i = m_ - i - 1;
         case DOWN:
-            return after_->getNumber(m_-i-1, n_-j-1);
+            return after_.getNumber(m_-i-1, n_-j-1);
         case LEFTFLIP:
             i = n_ - i - 1;
         case LEFT:
-            return after_->getNumber(j, n_-i-1);
+            return after_.getNumber(j, n_-i-1);
         case RIGHTFLIP:
             i = n_ - i - 1;
         case RIGHT:
-            return after_->getNumber(m_-j-1, i);
+            return after_.getNumber(m_-j-1, i);
     }
 }
 
@@ -223,19 +229,19 @@ Edge Rule::getHLineAfter(int i, int j, Orientation orient) const {
         case UPFLIP:
             i = m_ - i;
         case UP:
-            return after_->getHLine(i, j);
+            return after_.getHLine(i, j);
         case DOWNFLIP:
             i = m_ - i;
         case DOWN:
-            return after_->getHLine(m_-i, n_-j-1);
+            return after_.getHLine(m_-i, n_-j-1);
         case LEFTFLIP:
             i = n_ - i;
         case LEFT:
-            return after_->getVLine(j, n_-i);
+            return after_.getVLine(j, n_-i);
         case RIGHTFLIP:
             i = n_ - i;
         case RIGHT:
-            return after_->getVLine(m_-j-1, i);
+            return after_.getVLine(m_-j-1, i);
     }
 }
 
@@ -248,18 +254,18 @@ Edge Rule::getVLineAfter(int i, int j, Orientation orient) const {
         case UPFLIP:
             i = m_ - i - 1;
         case UP:
-            return after_->getVLine(i, j);
+            return after_.getVLine(i, j);
         case DOWNFLIP:
             i = m_ - i - 1;
         case DOWN:
-            return after_->getVLine(m_-i-1, n_-j);
+            return after_.getVLine(m_-i-1, n_-j);
         case LEFTFLIP:
             i = n_ - i - 1;
         case LEFT:
-            return after_->getHLine(j, n_-i-1);
+            return after_.getHLine(j, n_-i-1);
         case RIGHTFLIP:
             i = n_ - i - 1;
         case RIGHT:
-            return after_->getHLine(m_-j, i);
+            return after_.getHLine(m_-j, i);
     }
 }

@@ -1,8 +1,8 @@
 #include "grid.h"
+#include <cassert>
 #include <vector>
 #include "contour.h"
 #include "enums.h"
-#include <stdio.h>
 
 
 /*
@@ -30,15 +30,14 @@ void Grid::mergeContours(Contour & newContour) {
  */
 void Grid::copy(Grid & newGrid) {
     newGrid.initArrays(getHeight(), getWidth());
+    newGrid.contours_ = std::vector<Contour>(contours_);
+
     for (int i = 0; i < getHeight(); i++) {
         for (int j = 0; j < getWidth(); j++) {
             newGrid.setNumber(i, j, getNumber(i,j));
         }
     }
-    
-    std::vector<Contour> newContours_(contours_);
-    newGrid.contours_ = newContours_;
-    
+
     for (int i = 0; i < getHeight()+1; i++) {
         for (int j = 0; j < getWidth(); j++) {
             newGrid.setHLine(i, j, getHLine(i,j));
@@ -58,6 +57,8 @@ void Grid::copy(Grid & newGrid) {
  * attempt to merge that contour to any adjacent contours.
  */
 bool Grid::setHLine(int i, int j, Edge edge) {
+    assert(0 <= i && i < m_+1 && 0 <= j && j < n_);
+
     Edge prevEdge = getHLine(i, j);
     if (prevEdge == EMPTY) {
         hlines_[i][j] = edge;
@@ -80,6 +81,8 @@ bool Grid::setHLine(int i, int j, Edge edge) {
  * attempt to merge that contour to any adjacent contours.
  */
 bool Grid::setVLine(int i, int j, Edge edge) {
+    assert(0 <= i && i < m_ && 0 <= j && j < n_+1);
+
     Edge prevEdge = getVLine(i, j);
     if (prevEdge == EMPTY) {
         vlines_[i][j] = edge;
@@ -101,6 +104,8 @@ bool Grid::setVLine(int i, int j, Edge edge) {
  * surrounding it.
  */
 bool Grid::numberSatisfied(int i, int j) {
+    assert(0 <= i && i < m_ && 0 <= j && j < n_);
+
     Number number = numbers_[i][j];
 
     /* determine number of lines around number */
@@ -124,7 +129,7 @@ bool Grid::numberSatisfied(int i, int j) {
 }
 
 bool Grid::isSolved() {
-    if (contours_.size() != 1 || (contours_.size() > 0 && !contours_[0].isClosed())) {
+    if (contours_.size() != 1 || !contours_[0].isClosed()) {
         return false;
     }
 

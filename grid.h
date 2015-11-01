@@ -13,12 +13,12 @@ class Grid : public Lattice {
         bool numberSatisfied(int i, int j);
         bool isSolved();
         void copy(Grid & newGrid);
-        bool getIsValid() {return isValid_;};
-        bool setIsValid(bool validity) { if (isValid_) {isValid_ = validity;}};
+        bool getValid() { return valid_; };
+        void setValid(bool validity) { valid_ = validity && valid_; };
 
     private:
         void mergeContours(Contour & newContour);
-        bool isValid_ = true;
+        bool valid_ = true;
 
         std::vector<Contour> contours_;
 };
