@@ -32,8 +32,6 @@ class Solver {
         Grid * grid_;
         int depth_;
         Rule rules_[NUM_RULES];
-        Lattice beforeLattices_[NUM_RULES];
-        Lattice afterLattices_[NUM_RULES];
         Contradiction contradictions_[NUM_CONTS];
         Lattice contLattices_[NUM_CONTS];
 
