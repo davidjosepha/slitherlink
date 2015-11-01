@@ -1,5 +1,6 @@
 #include "import.h"
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "enums.h"
 #include "grid.h"
@@ -14,57 +15,64 @@
 Import::Import() { }
 
 /* Constructor taking as input a lattice to be imported into */
-Import::Import(Grid & lattice) {
+Import::Import(Grid & lattice, std::string filename) {
     lattice_ = &lattice;
-    buildLattice();
+    buildLattice(filename);
 }
 
 /* Reads from stdin and initializes a lattice based on given
  * dimensions and three separate grids, one each for numbers,
  * horizontal lines, and vertical lines. */
-void Import::buildLattice() {
+void Import::buildLattice(std::string filename) {
     std::string buffer;
+    std::ifstream slkfile(filename);
 
-    /* source info */
-    std::getline(std::cin, buffer);
+    if (slkfile.is_open()) {
 
-    /* get dimensions */
-    int m, n;
-    std::cin >> m;
-    std::cin >> n;
-    lattice_->initArrays(m+2, n+2);
+        /* source info */
+        std::getline(slkfile, buffer);
 
-    /* blank lines */
-    std::getline(std::cin, buffer);
-    std::getline(std::cin, buffer);
+        /* get dimensions */
+        int m, n;
+        slkfile >> m;
+        slkfile >> n;
+        lattice_->initArrays(m+2, n+2);
 
-    /* numbers */
-    for (int i = 0; i < m; i++) {
-        std::getline(std::cin, buffer);
-        importNumberRow(i+1, buffer);
-    }
+        /* blank lines */
+        std::getline(slkfile, buffer);
+        std::getline(slkfile, buffer);
 
-    /* blank line */
-    std::getline(std::cin, buffer);
+        /* numbers */
+        for (int i = 0; i < m; i++) {
+            std::getline(slkfile, buffer);
+            importNumberRow(i+1, buffer);
+        }
 
-    /* horizontal lines */
-    for (int i = 0; i < m+1; i++) {
-        std::getline(std::cin, buffer);
-        importHLineRow(i+1, buffer);
-    }
+        /* blank line */
+        std::getline(slkfile, buffer);
 
-    /* blank line */
-    std::getline(std::cin, buffer);
+        /* horizontal lines */
+        for (int i = 0; i < m+1; i++) {
+            std::getline(slkfile, buffer);
+            importHLineRow(i+1, buffer);
+        }
 
-    /* vertical lines */
-    for (int j = 1; j < n+2; j++) {
-        lattice_->setVLine(0, j, NLINE);
-        lattice_->setVLine(m+1, j, NLINE);
-    }
+        /* blank line */
+        std::getline(slkfile, buffer);
 
-    for (int i = 0; i < m; i++) {
-        std::getline(std::cin, buffer);
-        importVLineRow(i+1, buffer);
+        /* vertical lines */
+        for (int j = 1; j < n+2; j++) {
+            lattice_->setVLine(0, j, NLINE);
+            lattice_->setVLine(m+1, j, NLINE);
+        }
+
+        for (int i = 0; i < m; i++) {
+            std::getline(slkfile, buffer);
+            importVLineRow(i+1, buffer);
+        }
+        slkfile.close();
+    } else {
+        std::cout << "Unable to open file\n";
     }
 }
 

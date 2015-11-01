@@ -7,10 +7,10 @@
 class Import {
     public:
         Import();
-        Import(Grid & lattice);
+        Import(Grid & lattice, std::string filename);
 
     private:
-        void buildLattice();
+        void buildLattice(std::string filename);
         void importNumberRow(int i, std::string row);
         void importHLineRow(int i, std::string row);
         void importVLineRow(int i, std::string row);
