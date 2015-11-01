@@ -129,7 +129,7 @@ bool Grid::numberSatisfied(int i, int j) {
 }
 
 bool Grid::isSolved() {
-    if (contours_.size() != 1 || (contours_.size() > 0 && !contours_[0].isClosed())) {
+    if (contours_.size() != 1 || !contours_[0].isClosed()) {
         return false;
     }
 
