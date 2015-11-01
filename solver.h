@@ -14,15 +14,10 @@ class Solver {
 
     private:
         void solve();
-<<<<<<< HEAD
-        void makeGuesses();
-    
         bool spiralNext(int startm, int startn, int *prevm, int *prevn);
-=======
         void solveDepth(int depth);
         void makeHLineGuess(int i, int j, int depth);
         void makeVLineGuess(int i, int j, int depth);
->>>>>>> 04105eb2c483232662139e1e117fdfaedf9c0651
 
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
 
