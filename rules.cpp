@@ -21,17 +21,13 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .    .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addHLinePattern(1, 0, NLINE);
+    rules[i].addHLinePattern(1, 1, NLINE);
+    rules[i].addVLinePattern(0, 1, NLINE);
 
-    before->setHLine(1, 1, NLINE);
-    before->setHLine(1, 0, NLINE);
-    before->setVLine(0, 1, NLINE);
-
-    after->setVLine(1, 1, NLINE);
+    rules[i].addVLineDiff(1, 1, NLINE);
 
     i++;
 
@@ -45,17 +41,13 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .    .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addHLinePattern(1, 0, LINE);
+    rules[i].addVLinePattern(0, 1, LINE);
 
-    before->setHLine(1, 0, LINE);
-    before->setVLine(0, 1, LINE);
-
-    after->setVLine(1, 1, NLINE);
-    after->setHLine(1, 1, NLINE);
+    rules[i].addVLineDiff(1, 1, NLINE);
+    rules[i].addHLineDiff(1, 1, NLINE);
 
     i++;
 
@@ -70,17 +62,13 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .    .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addHLinePattern(1, 0, LINE);
+    rules[i].addHLinePattern(1, 1, LINE);
 
-    before->setHLine(1, 0, LINE);
-    before->setHLine(1, 1, LINE);
-
-    after->setVLine(0, 1, NLINE);
-    after->setVLine(1, 1, NLINE);
+    rules[i].addVLineDiff(0, 1, NLINE);
+    rules[i].addVLineDiff(1, 1, NLINE);
 
     i++;
 
@@ -94,17 +82,13 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .    .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addHLinePattern(1, 0, LINE);
+    rules[i].addVLinePattern(0, 1, NLINE);
+    rules[i].addVLinePattern(1, 1, NLINE);
 
-    before->setHLine(1, 0, LINE);
-    before->setVLine(0, 1, NLINE);
-    before->setVLine(1, 1, NLINE);
-
-    after->setHLine(1, 1, LINE);
+    rules[i].addHLineDiff(1, 1, LINE);
 
     i++;
 
@@ -118,17 +102,13 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .    .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addHLinePattern(1, 0, LINE);
+    rules[i].addHLinePattern(1, 1, NLINE);
+    rules[i].addVLinePattern(0, 1, NLINE);
 
-    before->setHLine(1, 0, LINE);
-    before->setHLine(1, 1, NLINE);
-    before->setVLine(0, 1, NLINE);
-
-    after->setVLine(1, 1, LINE);
+    rules[i].addVLineDiff(1, 1, LINE);
 
     i++;
 
@@ -140,18 +120,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .    . x .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, ONE);
+    rules[i].addHLinePattern(0, 0, LINE);
 
-    before->setNumber(0, 0, ONE);
-    before->setHLine(0, 0, LINE);
-
-    after->setHLine(1, 0, NLINE);
-    after->setVLine(0, 0, NLINE);
-    after->setVLine(0, 1, NLINE);
+    rules[i].addHLineDiff(1, 0, NLINE);
+    rules[i].addVLineDiff(0, 0, NLINE);
+    rules[i].addVLineDiff(0, 1, NLINE);
 
     i++;
 
@@ -163,18 +139,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * . x .    .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, ONE);
+    rules[i].addHLinePattern(1, 0, NLINE);
+    rules[i].addVLinePattern(0, 0, NLINE);
+    rules[i].addVLinePattern(0, 1, NLINE);
 
-    before->setNumber(0, 0, ONE);
-    before->setHLine(1, 0, NLINE);
-    before->setVLine(0, 0, NLINE);
-    before->setVLine(0, 1, NLINE);
-
-    after->setHLine(0, 0, LINE);
+    rules[i].addHLineDiff(0, 0, LINE);
 
     i++;
 
@@ -186,18 +158,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .    . x .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, TWO);
+    rules[i].addHLinePattern(0, 0, LINE);
+    rules[i].addVLinePattern(0, 0, LINE);
 
-    before->setNumber(0, 0, TWO);
-    before->setHLine(0, 0, LINE);
-    before->setVLine(0, 0, LINE);
-
-    after->setHLine(1, 0, NLINE);
-    after->setVLine(0, 1, NLINE);
+    rules[i].addHLineDiff(1, 0, NLINE);
+    rules[i].addVLineDiff(0, 1, NLINE);
 
     i++;
 
@@ -209,18 +177,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * . x .    .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, TWO);
+    rules[i].addHLinePattern(1, 0, NLINE);
+    rules[i].addVLinePattern(0, 1, NLINE);
 
-    before->setNumber(0, 0, TWO);
-    before->setHLine(1, 0, NLINE);
-    before->setVLine(0, 1, NLINE);
-
-    after->setHLine(0, 0, LINE);
-    after->setVLine(0, 0, LINE);
+    rules[i].addHLineDiff(0, 0, LINE);
+    rules[i].addVLineDiff(0, 0, LINE);
 
     i++;
 
@@ -232,18 +196,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * . - .    .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, TWO);
+    rules[i].addHLinePattern(0, 0, LINE);
+    rules[i].addHLinePattern(1, 0, LINE);
 
-    before->setNumber(0, 0, TWO);
-    before->setHLine(0, 0, LINE);
-    before->setHLine(1, 0, LINE);
-
-    after->setVLine(0, 0, NLINE);
-    after->setVLine(0, 1, NLINE);
+    rules[i].addVLineDiff(0, 0, NLINE);
+    rules[i].addVLineDiff(0, 1, NLINE);
 
     i++;
 
@@ -255,18 +215,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .    . - .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, TWO);
+    rules[i].addVLinePattern(0, 0, NLINE);
+    rules[i].addVLinePattern(0, 1, NLINE);
 
-    before->setNumber(0, 0, TWO);
-    before->setVLine(0, 0, NLINE);
-    before->setVLine(0, 1, NLINE);
-
-    after->setHLine(0, 0, LINE);
-    after->setHLine(1, 0, LINE);
+    rules[i].addHLineDiff(0, 0, LINE);
+    rules[i].addHLineDiff(1, 0, LINE);
 
     i++;
 
@@ -278,18 +234,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * . - .    .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, THREE);
+    rules[i].addVLinePattern(0, 0, LINE);
+    rules[i].addVLinePattern(0, 1, LINE);
+    rules[i].addHLinePattern(1, 0, LINE);
 
-    before->setNumber(0, 0, THREE);
-    before->setVLine(0, 0, LINE);
-    before->setVLine(0, 1, LINE);
-    before->setHLine(1, 0, LINE);
-
-    after->setHLine(0, 0, NLINE);
+    rules[i].addHLineDiff(0, 0, NLINE);
 
     i++;
 
@@ -301,18 +253,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .    . - .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, THREE);
+    rules[i].addHLinePattern(0, 0, NLINE);
 
-    before->setNumber(0, 0, THREE);
-    before->setHLine(0, 0, NLINE);
-
-    after->setVLine(0, 0, LINE);
-    after->setVLine(0, 1, LINE);
-    after->setHLine(1, 0, LINE);
+    rules[i].addVLineDiff(0, 0, LINE);
+    rules[i].addVLineDiff(0, 1, LINE);
+    rules[i].addHLineDiff(1, 0, LINE);
 
     i++;
 
@@ -324,18 +272,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .    . x .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, ZERO);
 
-    before->setNumber(0, 0, ZERO);
-
-    after->setHLine(0, 0, NLINE);
-    after->setHLine(1, 0, NLINE);
-    after->setVLine(0, 0, NLINE);
-    after->setVLine(0, 1, NLINE);
+    rules[i].addHLineDiff(0, 0, NLINE);
+    rules[i].addHLineDiff(1, 0, NLINE);
+    rules[i].addVLineDiff(0, 0, NLINE);
+    rules[i].addVLineDiff(0, 1, NLINE);
 
     i++;
 
@@ -351,18 +295,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 1, ONE);
+    rules[i].addVLinePattern(0, 2, LINE);
+    rules[i].addHLinePattern(1, 2, NLINE);
 
-    before->setNumber(1, 1, ONE);
-    before->setVLine(0, 2, LINE);
-    before->setHLine(1, 2, NLINE);
-
-    after->setVLine(1, 1, NLINE);
-    after->setHLine(2, 1, NLINE);
+    rules[i].addVLineDiff(1, 1, NLINE);
+    rules[i].addHLineDiff(2, 1, NLINE);
 
     i++;
 
@@ -378,18 +318,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 1, ONE);
+    rules[i].addVLinePattern(0, 2, LINE);
+    rules[i].addVLinePattern(1, 1, NLINE);
+    rules[i].addHLinePattern(2, 1, NLINE);
 
-    before->setNumber(1, 1, ONE);
-    before->setVLine(0, 2, LINE);
-    before->setVLine(1, 1, NLINE);
-    before->setHLine(2, 1, NLINE);
-
-    after->setHLine(1, 2, NLINE);
+    rules[i].addHLineDiff(1, 2, NLINE);
 
     i++;
 
@@ -405,18 +341,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 1, ONE);
+    rules[i].addVLinePattern(2, 1, NLINE);
+    rules[i].addHLinePattern(2, 0, NLINE);
 
-    before->setNumber(1, 1, ONE);
-    before->setVLine(2, 1, NLINE);
-    before->setHLine(2, 0, NLINE);
-
-    after->setVLine(1, 1, NLINE);
-    after->setHLine(2, 1, NLINE);
+    rules[i].addVLineDiff(1, 1, NLINE);
+    rules[i].addHLineDiff(2, 1, NLINE);
 
     i++;
 
@@ -432,19 +364,15 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 1, ONE);
+    rules[i].addVLinePattern(0, 1, LINE);
+    rules[i].addVLinePattern(0, 2, LINE);
+    rules[i].addHLinePattern(1, 2, NLINE);
+    rules[i].addHLinePattern(1, 0, NLINE);
 
-    before->setNumber(1, 1, ONE);
-    before->setVLine(0, 1, LINE);
-    before->setVLine(0, 2, LINE);
-    before->setHLine(1, 2, NLINE);
-    before->setHLine(1, 0, NLINE);
-
-    after->setHLine(1, 1, LINE);
+    rules[i].addHLineDiff(1, 1, LINE);
 
     i++;
 
@@ -460,19 +388,15 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 1, TWO);
+    rules[i].addVLinePattern(2, 1, NLINE);
+    rules[i].addHLinePattern(2, 0, NLINE);
+    rules[i].addHLinePattern(1, 1, NLINE);
 
-    before->setNumber(1, 1, TWO);
-    before->setVLine(2, 1, NLINE);
-    before->setHLine(2, 0, NLINE);
-    before->setHLine(1, 1, NLINE);
-
-    after->setHLine(2, 1, LINE);
-    after->setVLine(1, 1, LINE);
+    rules[i].addHLineDiff(2, 1, LINE);
+    rules[i].addVLineDiff(1, 1, LINE);
 
     i++;
 
@@ -488,20 +412,16 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 1, TWO);
+    rules[i].addVLinePattern(0, 1, NLINE);
+    rules[i].addVLinePattern(0, 2, NLINE);
+    rules[i].addHLinePattern(1, 2, NLINE);
+    rules[i].addHLinePattern(2, 2, NLINE);
 
-    before->setNumber(1, 1, TWO);
-    before->setVLine(0, 1, NLINE);
-    before->setVLine(0, 2, NLINE);
-    before->setHLine(1, 2, NLINE);
-    before->setHLine(2, 2, NLINE);
-
-    after->setHLine(1, 0, LINE);
-    after->setVLine(2, 2, LINE);
+    rules[i].addHLineDiff(1, 0, LINE);
+    rules[i].addVLineDiff(2, 2, LINE);
 
     i++;
 
@@ -517,18 +437,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 1, TWO);
+    rules[i].addVLinePattern(0, 1, NLINE);
+    rules[i].addVLinePattern(0, 2, NLINE);
+    rules[i].addHLinePattern(1, 2, NLINE);
 
-    before->setNumber(1, 1, TWO);
-    before->setVLine(0, 1, NLINE);
-    before->setVLine(0, 2, NLINE);
-    before->setHLine(1, 2, NLINE);
-
-    after->setHLine(1, 0, LINE);
+    rules[i].addHLineDiff(1, 0, LINE);
 
     i++;
 
@@ -544,18 +460,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 1, THREE);
+    rules[i].addVLinePattern(0, 2, LINE);
 
-    before->setNumber(1, 1, THREE);
-    before->setVLine(0, 2, LINE);
-
-    after->setHLine(2, 1, LINE);
-    after->setHLine(1, 2, NLINE);
-    after->setVLine(1, 1, LINE);
+    rules[i].addHLineDiff(2, 1, LINE);
+    rules[i].addHLineDiff(1, 2, NLINE);
+    rules[i].addVLineDiff(1, 1, LINE);
 
     i++;
 
@@ -571,18 +483,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 1, THREE);
+    rules[i].addVLinePattern(2, 1, NLINE);
+    rules[i].addHLinePattern(2, 0, NLINE);
 
-    before->setNumber(1, 1, THREE);
-    before->setVLine(2, 1, NLINE);
-    before->setHLine(2, 0, NLINE);
-
-    after->setHLine(2, 1, LINE);
-    after->setVLine(1, 1, LINE);
+    rules[i].addHLineDiff(2, 1, LINE);
+    rules[i].addVLineDiff(1, 1, LINE);
 
     i++;
 
@@ -596,19 +504,15 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .    . _ .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 0, THREE);
+    rules[i].addNumberPattern(0, 1, THREE);
 
-    before->setNumber(1, 0, THREE);
-    before->setNumber(0, 1, THREE);
-
-    after->setHLine(0, 1, LINE);
-    after->setHLine(2, 0, LINE);
-    after->setVLine(1, 0, LINE);
-    after->setVLine(0, 2, LINE);
+    rules[i].addHLineDiff(0, 1, LINE);
+    rules[i].addHLineDiff(2, 0, LINE);
+    rules[i].addVLineDiff(1, 0, LINE);
+    rules[i].addVLineDiff(0, 2, LINE);
 
     i++;
 
@@ -624,20 +528,16 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .    .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 2);
+    rules[i] = Rule(3, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(1, 0, THREE);
+    rules[i].addNumberPattern(1, 1, THREE);
 
-    before->setNumber(1, 0, THREE);
-    before->setNumber(1, 1, THREE);
-
-    after->setVLine(1, 0, LINE);
-    after->setVLine(1, 1, LINE);
-    after->setVLine(1, 2, LINE);
-    after->setVLine(0, 1, NLINE);
-    after->setVLine(2, 1, NLINE);
+    rules[i].addVLineDiff(1, 0, LINE);
+    rules[i].addVLineDiff(1, 1, LINE);
+    rules[i].addVLineDiff(1, 2, LINE);
+    rules[i].addVLineDiff(0, 1, NLINE);
+    rules[i].addVLineDiff(2, 1, NLINE);
 
     i++;
 
@@ -651,18 +551,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, THREE);
+    rules[i].addNumberPattern(0, 1, ONE);
+    rules[i].addVLinePattern(1, 0, NLINE);
+    rules[i].addVLinePattern(1, 1, NLINE);
 
-    before->setNumber(0, 0, THREE);
-    before->setNumber(0, 1, ONE);
-    before->setVLine(1, 0, NLINE);
-    before->setVLine(1, 1, NLINE);
-
-    after->setHLine(1, 0, LINE);
+    rules[i].addHLineDiff(1, 0, LINE);
 
     i++;
 
@@ -678,21 +574,17 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(3, 3);
+    rules[i] = Rule(3, 3);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addVLinePattern(0, 1, NLINE);
+    rules[i].addVLinePattern(0, 2, NLINE);
+    rules[i].addVLinePattern(2, 2, NLINE);
+    rules[i].addHLinePattern(1, 2, LINE);
+    rules[i].addHLinePattern(1, 0, NLINE);
+    rules[i].addHLinePattern(2, 0, NLINE);
+    rules[i].addHLinePattern(2, 2, NLINE);
 
-    before->setVLine(0, 1, NLINE);
-    before->setVLine(0, 2, NLINE);
-    before->setVLine(2, 2, NLINE);
-    before->setHLine(1, 2, LINE);
-    before->setHLine(1, 0, NLINE);
-    before->setHLine(2, 0, NLINE);
-    before->setHLine(2, 2, NLINE);
-
-    after->setVLine(2, 1, LINE);
+    rules[i].addVLineDiff(2, 1, LINE);
 
     i++;
 
@@ -705,17 +597,13 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      *
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(1, 1);
+    rules[i] = Rule(1, 1);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addVLinePattern(0, 0, LINE);
+    rules[i].addVLinePattern(0, 1, LINE);
+    rules[i].addHLinePattern(0, 0, LINE);
 
-    before->setVLine(0, 0, LINE);
-    before->setVLine(0, 1, LINE);
-    before->setHLine(0, 0, LINE);
-
-    after->setHLine(1, 0, NLINE);
+    rules[i].addHLineDiff(1, 0, NLINE);
 
     i++;
 
@@ -729,19 +617,15 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .     .   . x .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, ONE);
+    rules[i].addNumberPattern(1, 1, ONE);
+    rules[i].addVLinePattern(0, 0, NLINE);
+    rules[i].addHLinePattern(0, 0, NLINE);
 
-    before->setNumber(0, 0, ONE);
-    before->setNumber(1, 1, ONE);
-    before->setVLine(0, 0, NLINE);
-    before->setHLine(0, 0, NLINE);
-
-    after->setHLine(2, 1, NLINE);
-    after->setVLine(1, 2, NLINE);
+    rules[i].addHLineDiff(2, 1, NLINE);
+    rules[i].addVLineDiff(1, 2, NLINE);
 
     i++;
 
@@ -755,19 +639,15 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .     .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
-
-    before->setNumber(1, 1, ONE);
-    before->setVLine(0, 1, NLINE);
-    before->setHLine(1, 0, NLINE);
+    rules[i].addNumberPattern(1, 1, ONE);
+    rules[i].addVLinePattern(0, 1, NLINE);
+    rules[i].addHLinePattern(1, 0, NLINE);
 
 
-    after->setHLine(1, 1, NLINE);
-    after->setVLine(1, 1, NLINE);
+    rules[i].addHLineDiff(1, 1, NLINE);
+    rules[i].addVLineDiff(1, 1, NLINE);
 
     i++;
 
@@ -781,19 +661,15 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .     .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
-
-    before->setNumber(0, 1, TWO);
-    before->setHLine(0, 1, NLINE);
-    before->setHLine(1, 0, LINE);
+    rules[i].addNumberPattern(0, 1, TWO);
+    rules[i].addHLinePattern(0, 1, NLINE);
+    rules[i].addHLinePattern(1, 0, LINE);
 
 
-    after->setVLine(0, 2, LINE);
-    after->setVLine(1, 1, NLINE);
+    rules[i].addVLineDiff(0, 2, LINE);
+    rules[i].addVLineDiff(1, 1, NLINE);
 
     i++;
 
@@ -807,18 +683,14 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .     .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 1, TWO);
+    rules[i].addHLinePattern(1, 0, LINE);
+    rules[i].addVLinePattern(1, 1, LINE);
 
-    before->setNumber(0, 1, TWO);
-    before->setHLine(1, 0, LINE);
-    before->setVLine(1, 1, LINE);
-
-    after->setHLine(0, 1, LINE);
-    after->setVLine(0, 2, LINE);
+    rules[i].addHLineDiff(0, 1, LINE);
+    rules[i].addVLineDiff(0, 2, LINE);
 
     i++;
 
@@ -832,19 +704,15 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   .   .     .   . x .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, THREE);
+    rules[i].addNumberPattern(1, 1, ONE);
+    rules[i].addHLinePattern(0, 0, LINE);
+    rules[i].addVLinePattern(0, 0, LINE);
 
-    before->setNumber(0, 0, THREE);
-    before->setNumber(1, 1, ONE);
-    before->setHLine(0, 0, LINE);
-    before->setVLine(0, 0, LINE);
-
-    after->setHLine(2, 1, NLINE);
-    after->setVLine(1, 2, NLINE);
+    rules[i].addHLineDiff(2, 1, NLINE);
+    rules[i].addVLineDiff(1, 2, NLINE);
 
     i++;
 
@@ -858,19 +726,15 @@ void initRules(Rule (& rules)[NUM_RULES]) {
      * .   . x .     .   .   .
      */
 
-    rules[i] = Rule();
-    rules[i].initLattices(2, 2);
+    rules[i] = Rule(2, 2);
 
-    before = rules[i].getBefore();
-    after = rules[i].getAfter();
+    rules[i].addNumberPattern(0, 0, THREE);
+    rules[i].addNumberPattern(1, 1, ONE);
+    rules[i].addHLinePattern(2, 1, NLINE);
+    rules[i].addVLinePattern(1, 2, NLINE);
 
-    before->setNumber(0, 0, THREE);
-    before->setNumber(1, 1, ONE);
-    before->setHLine(2, 1, NLINE);
-    before->setVLine(1, 2, NLINE);
-
-    after->setHLine(0, 0, LINE);
-    after->setVLine(0, 0, LINE);
+    rules[i].addHLineDiff(0, 0, LINE);
+    rules[i].addVLineDiff(0, 0, LINE);
 
     i++;
 }
