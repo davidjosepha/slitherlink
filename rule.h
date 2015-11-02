@@ -1,18 +1,17 @@
 #ifndef RULE_H
 #define RULE_H
 #include <vector>
+#include "coordinates.h"
 #include "enums.h"
 #include "lattice.h"
 
 struct NumberPosition {
-    int i;
-    int j;
+    Coordinates coords;
     Number num;
 };
 
 struct EdgePosition {
-    int i;
-    int j;
+    Coordinates coords;
     Edge edge;
 };
 
@@ -32,11 +31,21 @@ class Rule {
         int getNumberHeight(Orientation orient) const;
         int getNumberWidth(Orientation orient) const;
 
-        void addNumberPattern(int i, int j, Number num) { numberPattern_.push_back(NumberPosition { i, j, num }); };
-        void addHLinePattern(int i, int j, Edge edge) { hLinePattern_.push_back(EdgePosition { i, j, edge }); };
-        void addVLinePattern(int i, int j, Edge edge) { vLinePattern_.push_back(EdgePosition { i, j, edge }); };
-        void addHLineDiff(int i, int j, Edge edge) { hLineDiff_.push_back(EdgePosition { i, j, edge }); };
-        void addVLineDiff(int i, int j, Edge edge) { vLineDiff_.push_back(EdgePosition { i, j, edge }); };
+        void addNumberPattern(int i, int j, Number num) {
+            numberPattern_.push_back(NumberPosition { Coordinates { i, j }, num });
+        };
+        void addHLinePattern(int i, int j, Edge edge) {
+            hLinePattern_.push_back(EdgePosition { Coordinates { i, j }, edge });
+        };
+        void addVLinePattern(int i, int j, Edge edge) {
+            vLinePattern_.push_back(EdgePosition { Coordinates { i, j }, edge });
+        };
+        void addHLineDiff(int i, int j, Edge edge) {
+            hLineDiff_.push_back(EdgePosition { Coordinates { i, j }, edge });
+        };
+        void addVLineDiff(int i, int j, Edge edge) {
+            vLineDiff_.push_back(EdgePosition { Coordinates { i, j }, edge });
+        };
 
     private:
         int m_;

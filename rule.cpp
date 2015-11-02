@@ -1,7 +1,5 @@
 #include "rule.h"
-#include <iostream>
 #include "enums.h"
-#include "rotate.h"
 
 Rule::Rule(int m, int n) {
     m_ = m;

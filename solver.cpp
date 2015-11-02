@@ -283,7 +283,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     std::vector<EdgePosition> const * hLineDiff = rule.getHLineDiff();
     for (int k = 0; k < hLineDiff->size(); k++) {
         EdgePosition pattern = (*hLineDiff)[k];
-        Coordinates adjusted = rotateHLine(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateHLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
         switch (orient) {
             case UPFLIP:
@@ -310,7 +310,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     std::vector<EdgePosition> const * vLineDiff = rule.getVLineDiff();
     for (int k = 0; k < vLineDiff->size(); k++) {
         EdgePosition pattern = (*vLineDiff)[k];
-        Coordinates adjusted = rotateVLine(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateVLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
         switch (orient) {
             case UPFLIP:
@@ -346,7 +346,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) const {
     std::vector<NumberPosition> const * numberPattern = rule.getNumberPattern();
     for (int k = 0; k < numberPattern->size(); k++) {
         NumberPosition pattern = (*numberPattern)[k];
-        Coordinates adjusted = rotateNumber(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateNumber(pattern.coords.i, pattern.coords.j, m, n, orient);
 
         if (pattern.num != grid_->getNumber(adjusted.i + i, adjusted.j + j)) {
             return false;
@@ -356,7 +356,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) const {
     std::vector<EdgePosition> const * hLinePattern = rule.getHLinePattern();
     for (int k = 0; k < hLinePattern->size(); k++) {
         EdgePosition pattern = (*hLinePattern)[k];
-        Coordinates adjusted = rotateHLine(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateHLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
         switch (orient) {
             case UPFLIP:
@@ -381,7 +381,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) const {
     std::vector<EdgePosition> const * vLinePattern = rule.getVLinePattern();
     for (int k = 0; k < vLinePattern->size(); k++) {
         EdgePosition pattern = (*vLinePattern)[k];
-        Coordinates adjusted = rotateVLine(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateVLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
         switch (orient) {
             case UPFLIP:
