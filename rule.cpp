@@ -1,6 +1,8 @@
 #include "rule.h"
 #include <iostream>
+#include <utility>
 #include "enums.h"
+#include "rotate.h"
 
 /* Instantiates new rule based on dimensions
  * of before and after lattices, where before
@@ -125,24 +127,8 @@ int Rule::getVLineWidth(Orientation orient) const {
  * canonical orientation and returns the value of that number
  * on the before_ lattice. */
 Number Rule::getNumberBefore(int i, int j, Orientation orient) const {
-    switch (orient) {
-        case UPFLIP:
-            i = m_ - i - 1;
-        case UP:
-            return before_.getNumber(i, j);
-        case DOWNFLIP:
-            i = m_ - i - 1;
-        case DOWN:
-            return before_.getNumber(m_-i-1, n_-j-1);
-        case LEFTFLIP:
-            i = n_ - i - 1;
-        case LEFT:
-            return before_.getNumber(j, n_-i-1);
-        case RIGHTFLIP:
-            i = n_ - i - 1;
-        case RIGHT:
-            return before_.getNumber(m_-j-1, i);
-    }
+    std::pair<int, int> adjusted = rotateNumber(i, j, m_, n_, orient);
+    return before_.getNumber(adjusted.first, adjusted.second);
 }
 
 /* Translates coordinates for a horizontal line on a rule in a
@@ -150,23 +136,19 @@ Number Rule::getNumberBefore(int i, int j, Orientation orient) const {
  * canonical orientation and returns the value of that line
  * on the before_ lattice. */
 Edge Rule::getHLineBefore(int i, int j, Orientation orient) const {
+    std::pair<int, int> adjusted = rotateHLine(i, j, m_, n_, orient);
+
     switch (orient) {
         case UPFLIP:
-            i = m_ - i;
         case UP:
-            return before_.getHLine(i, j);
         case DOWNFLIP:
-            i = m_ - i;
         case DOWN:
-            return before_.getHLine(m_-i, n_-j-1);
+            return before_.getHLine(adjusted.first, adjusted.second);
         case LEFTFLIP:
-            i = n_ - i;
         case LEFT:
-            return before_.getVLine(j, n_-i);
         case RIGHTFLIP:
-            i = n_ - i;
         case RIGHT:
-            return before_.getVLine(m_-j-1, i);
+            return before_.getVLine(adjusted.first, adjusted.second);
     }
 }
 
@@ -175,23 +157,19 @@ Edge Rule::getHLineBefore(int i, int j, Orientation orient) const {
  * canonical orientation and returns the value of that line
  * on the before_ lattice. */
 Edge Rule::getVLineBefore(int i, int j, Orientation orient) const {
+    std::pair<int, int> adjusted = rotateVLine(i, j, m_, n_, orient);
+
     switch (orient) {
         case UPFLIP:
-            i = m_ - i - 1;
         case UP:
-            return before_.getVLine(i, j);
         case DOWNFLIP:
-            i = m_ - i - 1;
         case DOWN:
-            return before_.getVLine(m_-i-1, n_-j);
+            return before_.getVLine(adjusted.first, adjusted.second);
         case LEFTFLIP:
-            i = n_ - i - 1;
         case LEFT:
-            return before_.getHLine(j, n_-i-1);
         case RIGHTFLIP:
-            i = n_ - i - 1;
         case RIGHT:
-            return before_.getHLine(m_-j, i);
+            return before_.getHLine(adjusted.first, adjusted.second);
     }
 }
 
@@ -200,24 +178,8 @@ Edge Rule::getVLineBefore(int i, int j, Orientation orient) const {
  * canonical orientation and returns the value of that number
  * on the after_ lattice. */
 Number Rule::getNumberAfter(int i, int j, Orientation orient) const {
-    switch (orient) {
-        case UPFLIP:
-            i = m_ - i - 1;
-        case UP:
-            return after_.getNumber(i, j);
-        case DOWNFLIP:
-            i = m_ - i - 1;
-        case DOWN:
-            return after_.getNumber(m_-i-1, n_-j-1);
-        case LEFTFLIP:
-            i = n_ - i - 1;
-        case LEFT:
-            return after_.getNumber(j, n_-i-1);
-        case RIGHTFLIP:
-            i = n_ - i - 1;
-        case RIGHT:
-            return after_.getNumber(m_-j-1, i);
-    }
+    std::pair<int, int> adjusted = rotateNumber(i, j, m_, n_, orient);
+    return after_.getNumber(adjusted.first, adjusted.second);
 }
 
 /* Translates coordinates for a horizontal line on a rule in a
@@ -225,23 +187,19 @@ Number Rule::getNumberAfter(int i, int j, Orientation orient) const {
  * canonical orientation and returns the value of that line
  * on the after_ lattice. */
 Edge Rule::getHLineAfter(int i, int j, Orientation orient) const {
+    std::pair<int, int> adjusted = rotateHLine(i, j, m_, n_, orient);
+
     switch (orient) {
         case UPFLIP:
-            i = m_ - i;
         case UP:
-            return after_.getHLine(i, j);
         case DOWNFLIP:
-            i = m_ - i;
         case DOWN:
-            return after_.getHLine(m_-i, n_-j-1);
+            return after_.getHLine(adjusted.first, adjusted.second);
         case LEFTFLIP:
-            i = n_ - i;
         case LEFT:
-            return after_.getVLine(j, n_-i);
         case RIGHTFLIP:
-            i = n_ - i;
         case RIGHT:
-            return after_.getVLine(m_-j-1, i);
+            return after_.getVLine(adjusted.first, adjusted.second);
     }
 }
 
@@ -250,22 +208,18 @@ Edge Rule::getHLineAfter(int i, int j, Orientation orient) const {
  * canonical orientation and returns the value of that line
  * on the after_ lattice. */
 Edge Rule::getVLineAfter(int i, int j, Orientation orient) const {
+    std::pair<int, int> adjusted = rotateVLine(i, j, m_, n_, orient);
+
     switch (orient) {
         case UPFLIP:
-            i = m_ - i - 1;
         case UP:
-            return after_.getVLine(i, j);
         case DOWNFLIP:
-            i = m_ - i - 1;
         case DOWN:
-            return after_.getVLine(m_-i-1, n_-j);
+            return after_.getVLine(adjusted.first, adjusted.second);
         case LEFTFLIP:
-            i = n_ - i - 1;
         case LEFT:
-            return after_.getHLine(j, n_-i-1);
         case RIGHTFLIP:
-            i = n_ - i - 1;
         case RIGHT:
-            return after_.getHLine(m_-j, i);
+            return after_.getHLine(adjusted.first, adjusted.second);
     }
 }
