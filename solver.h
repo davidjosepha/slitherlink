@@ -14,7 +14,7 @@ class Solver {
 
     private:
         void solve();
-        bool spiralNext(int startm, int startn, int *prevm, int *prevn);
+        bool spiralNext(int startm, int startn, int & prevm, int & prevn) const;
         void solveDepth(int depth);
         void makeHLineGuess(int i, int j, int depth);
         void makeVLineGuess(int i, int j, int depth);

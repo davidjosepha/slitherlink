@@ -10,10 +10,10 @@ class Grid : public Lattice {
         Grid() { };
         virtual bool setHLine(int i, int j, Edge edge);
         virtual bool setVLine(int i, int j, Edge edge);
-        bool numberSatisfied(int i, int j);
-        bool isSolved();
+        bool numberSatisfied(int i, int j) const;
+        bool isSolved() const;
         void copy(Grid & newGrid);
-        bool getValid() { return valid_; };
+        bool getValid() const { return valid_; };
         void setValid(bool validity) { valid_ = validity && valid_; };
 
     private:

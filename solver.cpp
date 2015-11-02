@@ -15,15 +15,13 @@
 Solver::Solver(Grid & grid, Rule rules[NUM_RULES], int depth) {
     grid_ = &grid;
     depth_ = depth;
-    int * prevm, * prevn;
+
     int x = 4;
     int y = 4;
-    prevm = &x;
-    prevn = &y;
     
     int done = 0;
     while (done == 0) {
-        bool result = spiralNext(4, 4, prevm, prevn);
+        bool result = spiralNext(4, 4, x, y);
         if (!result) {
             done = 1;
         }
@@ -161,47 +159,49 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
     }
 }
 
-bool Solver::spiralNext(int startm, int startn, int *prevm, int *prevn) {
-    int tempm = *prevm;
-    int tempn = *prevn;
-    if (*prevm+*prevn == startm+startn) {
-        if (*prevn >= startn) {
-            (*prevn)++;
+bool Solver::spiralNext(int startm, int startn, int & prevm, int & prevn) const {
+    int tempm = prevm;
+    int tempn = prevn;
+
+    if (prevm + prevn == startm + startn) {
+        if (prevn >= startn) {
+            prevn++;
         } else {
-            (*prevm)--;
+            prevm--;
         }
-    } else if ((startm - *prevm) == (startn - *prevn)) {
-        if (*prevm > startm) {
-            (*prevn)--;
+    } else if ((startm - prevm) == (startn - prevn)) {
+        if (prevm > startm) {
+            prevn--;
         } else {
-            (*prevn)++;
+            prevn++;
         }
-    } else if (*prevm > *prevn) {
-        if (*prevm + *prevn > startm + startn) {
-            if (*prevm > startm) {
-                (*prevn)--;
+    } else if (prevm > prevn) {
+        if (prevm + prevn > startm + startn) {
+            if (prevm > startm) {
+                prevn--;
             }
         } else {
-            if (*prevn < startn) {
-                (*prevm)--;
+            if (prevn < startn) {
+                prevm--;
             }
         }
     } else {
-        if (*prevm + *prevn > startm + startn) {
-            if (*prevn > startn) {
-                (*prevm)++;
+        if (prevm + prevn > startm + startn) {
+            if (prevn > startn) {
+                prevm++;
             }
         } else {
-            if (*prevm < startm) {
-                (*prevn)++;
+            if (prevm < startm) {
+                prevn++;
             }
         }
     }
-    if ((tempm == *prevm && tempn == *prevn) || *prevm < 0 || *prevn < 0 || *prevm >= grid_->getHeight() || *prevn >= grid_->getWidth()) {
-        return 0;
-    } else {
-        return 1;
-    }
+
+    return !((tempm == prevm && tempn == prevn) ||
+              prevm < 0 ||
+              prevn < 0 ||
+              prevm >= grid_->getHeight() ||
+              prevn >= grid_->getWidth());
 }
 
 

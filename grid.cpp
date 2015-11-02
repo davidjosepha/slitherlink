@@ -103,7 +103,7 @@ bool Grid::setVLine(int i, int j, Edge edge) {
  * Check whether a given number has been satisfied with the proper number of lines
  * surrounding it.
  */
-bool Grid::numberSatisfied(int i, int j) {
+bool Grid::numberSatisfied(int i, int j) const {
     assert(0 <= i && i < m_ && 0 <= j && j < n_);
 
     Number number = numbers_[i][j];
@@ -128,7 +128,7 @@ bool Grid::numberSatisfied(int i, int j) {
     }
 }
 
-bool Grid::isSolved() {
+bool Grid::isSolved() const {
     if (contours_.size() != 1 || !contours_[0].isClosed()) {
         return false;
     }

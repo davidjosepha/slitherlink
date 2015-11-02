@@ -7,7 +7,7 @@
 class Export {
     public:
         Export(Lattice const & lattice);
-        void print();
+        void print() const;
 
     private:
         char formatNumber(int i, int j) const;

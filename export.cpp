@@ -11,7 +11,7 @@ Export::Export(Lattice const & lattice) {
 }
 
 /* Outputs a lattice to stdout in a human readable format */
-void Export::print() {
+void Export::print() const {
     int m = lattice_->getHeight();
     int n = lattice_->getWidth();
 

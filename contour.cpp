@@ -11,7 +11,7 @@ Contour::Contour(int starti, int startj, int endi, int endj) {
 
 /* Checks whether the contour instance passed as
  * input shares an end point with this contour. */
-bool Contour::sharesEndpoint(Contour & contour) {
+bool Contour::sharesEndpoint(Contour const & contour) const {
     return ((start_[0] == contour.start_[0] && start_[1] == contour.start_[1]) ||
             (start_[0] == contour.end_[0] && start_[1] == contour.end_[1]) ||
             (end_[0] == contour.start_[0] && end_[1] == contour.start_[1]) ||
