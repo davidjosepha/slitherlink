@@ -1,9 +1,12 @@
 #include <iostream>
 #include <time.h>
+#include "contradiction.h"
+#include "contradictions.h"
 #include "export.h"
 #include "grid.h"
 #include "import.h"
 #include "lattice.h"
+#include "rule.h"
 #include "rules.h"
 #include "solver.h"
 
@@ -31,7 +34,9 @@ int main(int argc, char * argv[]) {
 
     Rule rules[NUM_RULES];
     initRules(rules);
-    Solver solver = Solver(grid, rules, depth);
+    Contradiction contradictions[NUM_CONTRADICTIONS];
+    initContradictions(contradictions);
+    Solver solver = Solver(grid, rules, contradictions, depth);
 
     std::cout << "After:" << std::endl;
     exporter.print();

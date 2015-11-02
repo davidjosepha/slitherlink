@@ -1,19 +1,9 @@
 #ifndef RULE_H
 #define RULE_H
 #include <vector>
-#include "coordinates.h"
 #include "enums.h"
 #include "lattice.h"
-
-struct NumberPosition {
-    Coordinates coords;
-    Number num;
-};
-
-struct EdgePosition {
-    Coordinates coords;
-    Edge edge;
-};
+#include "structs.h"
 
 class Rule {
     public:

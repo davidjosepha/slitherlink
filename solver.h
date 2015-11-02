@@ -1,41 +1,36 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 #include "constants.h"
+#include "contradiction.h"
 #include "enums.h"
 #include "grid.h"
 #include "rule.h"
-#include "contradiction.h"
-
-#define NUM_CONTS 11
 
 class Solver {
     public:
-        Solver(Grid & grid, Rule rules[NUM_RULES], int depth);
+        Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth);
 
     private:
         void solve();
-        bool spiralNext(int startm, int startn, int & prevm, int & prevn) const;
         void solveDepth(int depth);
         void makeHLineGuess(int i, int j, int depth);
         void makeVLineGuess(int i, int j, int depth);
+
+        bool spiralNext(int startm, int startn, int & prevm, int & prevn) const;
 
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
 
         void applyRules();
         void applyRule(int i, int j, Rule & rule, Orientation orient);
-        bool ruleApplies(int i, int j, Rule & rule, Orientation orient) const;
+        bool ruleApplies(int i, int j, Rule const & rule, Orientation orient) const;
         
-
-        void initContradictions();
-        bool contradictionApplies(int i, int j, Contradiction const & contradiction, Orientation orient) const;
         bool testContradictions() const;
+        bool contradictionApplies(int i, int j, Contradiction const & contradiction, Orientation orient) const;
 
         Grid * grid_;
         int depth_;
         Rule * rules_;
-        Contradiction contradictions_[NUM_CONTS];
-        Lattice contLattices_[NUM_CONTS];
-
+        Contradiction * contradictions_;
 };
 
 #endif

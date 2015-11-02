@@ -1,5 +1,5 @@
 #include "contour.h"
-#include "coordinates.h"
+#include "structs.h"
 
 /* Initialize a contour with end points
  * (starti, startj) and (endi, endj) */

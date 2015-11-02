@@ -1,7 +1,7 @@
 #ifndef CONTOUR_H
 #define CONTOUR_H
 
-#include "coordinates.h"
+#include "structs.h"
 
 class Contour {
     public:
