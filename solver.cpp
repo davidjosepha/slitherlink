@@ -257,7 +257,7 @@ void Solver::applyRules() {
 /* Runs a loop testing each contradiction in each orientation in
  * each valid position on the grid, checking if the contradiction
  * applies, and, if so, returning true. */
-bool Solver::testContradictions() {
+bool Solver::testContradictions() const {
     for (int x = 0; x < NUM_CONTS; x++) {
         for (Orientation orient: (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
             for (int i = 0; i <= grid_->getHeight() - contradictions_[x].getNumberHeight(orient); i++) {
@@ -340,7 +340,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
  * region of the grid by checking all non-empty values in the
  * before_ lattice and verifying they correspond to the values
  * in the grid. */
-bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
+bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) const {
     int m = rule.getHeight();
     int n = rule.getWidth();
 
@@ -412,7 +412,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) {
  * region of the grid by checking all non-empty values in the
  * cont_ lattice and verifying they correspond to the values
  * in the grid. */
-bool Solver::contradictionApplies(int i, int j, Contradiction & contradiction, Orientation orient) {
+bool Solver::contradictionApplies(int i, int j, Contradiction const & contradiction, Orientation orient) const {
     for (int k = 0; k < contradiction.getNumberHeight(orient); k++) {
         for (int l = 0; l < contradiction.getNumberWidth(orient); l++) {
             if (contradiction.getNumber(k, l, orient) != NONE &&

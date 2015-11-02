@@ -23,12 +23,12 @@ class Solver {
 
         void applyRules();
         void applyRule(int i, int j, Rule & rule, Orientation orient);
-        bool ruleApplies(int i, int j, Rule & rule, Orientation orient);
+        bool ruleApplies(int i, int j, Rule & rule, Orientation orient) const;
         
 
         void initContradictions();
-        bool contradictionApplies(int i, int j, Contradiction & contradiction, Orientation orient);
-        bool testContradictions();
+        bool contradictionApplies(int i, int j, Contradiction const & contradiction, Orientation orient) const;
+        bool testContradictions() const;
 
         Grid * grid_;
         int depth_;
