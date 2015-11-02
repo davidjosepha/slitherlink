@@ -56,14 +56,22 @@ void Import::buildLattice(std::string filename) {
             std::getline(slkfile, buffer);
             importHLineRow(i+1, buffer);
         }
+        for (int j = 0; j < n+2; j++) {
+            lattice_->setHLine(0, j, NLINE);
+            lattice_->setHLine(m+2, j, NLINE);
+        }
 
         /* blank line */
         std::getline(slkfile, buffer);
 
         /* vertical lines */
-        for (int j = 1; j < n+2; j++) {
+        for (int j = 0; j < n+3; j++) {
             lattice_->setVLine(0, j, NLINE);
             lattice_->setVLine(m+1, j, NLINE);
+        }
+        for (int i = 0; i < m+2; i++) {
+            lattice_->setVLine(i, 0, NLINE);
+            lattice_->setVLine(i, n+2, NLINE);
         }
 
         for (int i = 0; i < m; i++) {
