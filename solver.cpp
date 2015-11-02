@@ -3,12 +3,11 @@
 #include <vector>
 #include "constants.h"
 #include "contradiction.h"
+#include "coordinates.h"
 #include "enums.h"
 #include "grid.h"
 #include "rotate.h"
 #include "rule.h"
-#include "contradiction.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 /* Constructor takes a grid as input to solve */
@@ -284,15 +283,15 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     std::vector<EdgePosition> const * hLineDiff = rule.getHLineDiff();
     for (int k = 0; k < hLineDiff->size(); k++) {
         EdgePosition pattern = (*hLineDiff)[k];
-        std::pair<int, int> adjusted = rotateHLine(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateHLine(pattern.i, pattern.j, m, n, orient);
 
         switch (orient) {
             case UPFLIP:
             case UP:
             case DOWNFLIP:
             case DOWN:
-                if (grid_->getHLine(adjusted.first + i, adjusted.second + j) == EMPTY) {
-                    grid_->setValid(grid_->setHLine(adjusted.first + i, adjusted.second + j, pattern.edge));
+                if (grid_->getHLine(adjusted.i + i, adjusted.j + j) == EMPTY) {
+                    grid_->setValid(grid_->setHLine(adjusted.i + i, adjusted.j + j, pattern.edge));
                     grid_->setUpdated(true);
                 }
                 break;
@@ -300,8 +299,8 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
             case LEFT:
             case RIGHTFLIP:
             case RIGHT:
-                if (grid_->getVLine(adjusted.first + i, adjusted.second + j) == EMPTY) {
-                    grid_->setValid(grid_->setVLine(adjusted.first + i, adjusted.second + j, pattern.edge));
+                if (grid_->getVLine(adjusted.i + i, adjusted.j + j) == EMPTY) {
+                    grid_->setValid(grid_->setVLine(adjusted.i + i, adjusted.j + j, pattern.edge));
                     grid_->setUpdated(true);
                 }
                 break;
@@ -311,15 +310,15 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
     std::vector<EdgePosition> const * vLineDiff = rule.getVLineDiff();
     for (int k = 0; k < vLineDiff->size(); k++) {
         EdgePosition pattern = (*vLineDiff)[k];
-        std::pair<int, int> adjusted = rotateVLine(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateVLine(pattern.i, pattern.j, m, n, orient);
 
         switch (orient) {
             case UPFLIP:
             case UP:
             case DOWNFLIP:
             case DOWN:
-                if (grid_->getVLine(adjusted.first + i, adjusted.second + j) == EMPTY) {
-                    grid_->setValid(grid_->setVLine(adjusted.first + i, adjusted.second + j, pattern.edge));
+                if (grid_->getVLine(adjusted.i + i, adjusted.j + j) == EMPTY) {
+                    grid_->setValid(grid_->setVLine(adjusted.i + i, adjusted.j + j, pattern.edge));
                     grid_->setUpdated(true);
                 }
                 break;
@@ -327,8 +326,8 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
             case LEFT:
             case RIGHTFLIP:
             case RIGHT:
-                if (grid_->getHLine(adjusted.first + i, adjusted.second + j) == EMPTY) {
-                    grid_->setValid(grid_->setHLine(adjusted.first + i, adjusted.second + j, pattern.edge));
+                if (grid_->getHLine(adjusted.i + i, adjusted.j + j) == EMPTY) {
+                    grid_->setValid(grid_->setHLine(adjusted.i + i, adjusted.j + j, pattern.edge));
                     grid_->setUpdated(true);
                 }
                 break;
@@ -347,10 +346,9 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) const {
     std::vector<NumberPosition> const * numberPattern = rule.getNumberPattern();
     for (int k = 0; k < numberPattern->size(); k++) {
         NumberPosition pattern = (*numberPattern)[k];
-        std::pair<int, int> adjusted = rotateNumber(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateNumber(pattern.i, pattern.j, m, n, orient);
 
-        //printf("%d : (%d, %d), (%d, %d)\n", orient, pattern.i, pattern.j, adjusted.first, adjusted.second);
-        if (pattern.num != grid_->getNumber(adjusted.first + i, adjusted.second + j)) {
+        if (pattern.num != grid_->getNumber(adjusted.i + i, adjusted.j + j)) {
             return false;
         }
     }
@@ -358,14 +356,14 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) const {
     std::vector<EdgePosition> const * hLinePattern = rule.getHLinePattern();
     for (int k = 0; k < hLinePattern->size(); k++) {
         EdgePosition pattern = (*hLinePattern)[k];
-        std::pair<int, int> adjusted = rotateHLine(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateHLine(pattern.i, pattern.j, m, n, orient);
 
         switch (orient) {
             case UPFLIP:
             case UP:
             case DOWNFLIP:
             case DOWN:
-                if (pattern.edge != grid_->getHLine(adjusted.first + i, adjusted.second + j)) {
+                if (pattern.edge != grid_->getHLine(adjusted.i + i, adjusted.j + j)) {
                     return false;
                 }
                 break;
@@ -373,7 +371,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) const {
             case LEFT:
             case RIGHTFLIP:
             case RIGHT:
-                if (pattern.edge != grid_->getVLine(adjusted.first + i, adjusted.second + j)) {
+                if (pattern.edge != grid_->getVLine(adjusted.i + i, adjusted.j + j)) {
                     return false;
                 }
                 break;
@@ -383,14 +381,14 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) const {
     std::vector<EdgePosition> const * vLinePattern = rule.getVLinePattern();
     for (int k = 0; k < vLinePattern->size(); k++) {
         EdgePosition pattern = (*vLinePattern)[k];
-        std::pair<int, int> adjusted = rotateVLine(pattern.i, pattern.j, m, n, orient);
+        Coordinates adjusted = rotateVLine(pattern.i, pattern.j, m, n, orient);
 
         switch (orient) {
             case UPFLIP:
             case UP:
             case DOWNFLIP:
             case DOWN:
-                if (pattern.edge != grid_->getVLine(adjusted.first + i, adjusted.second + j)) {
+                if (pattern.edge != grid_->getVLine(adjusted.i + i, adjusted.j + j)) {
                     return false;
                 }
                 break;
@@ -398,7 +396,7 @@ bool Solver::ruleApplies(int i, int j, Rule & rule, Orientation orient) const {
             case LEFT:
             case RIGHTFLIP:
             case RIGHT:
-                if (pattern.edge != grid_->getHLine(adjusted.first + i, adjusted.second + j)) {
+                if (pattern.edge != grid_->getHLine(adjusted.i + i, adjusted.j + j)) {
                     return false;
                 }
                 break;

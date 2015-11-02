@@ -1,6 +1,8 @@
 #ifndef CONTOUR_H
 #define CONTOUR_H
 
+#include "coordinates.h"
+
 class Contour {
     public:
         Contour() { };
@@ -13,9 +15,8 @@ class Contour {
     private:
         int length_ = 0;
         bool closed_ = false;
-        /* TODO: Replace with std::pain<int, int> */
-        int start_[2];
-        int end_[2];
+        Coordinates start_;
+        Coordinates end_;
 };
 
 #endif

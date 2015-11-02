@@ -1,11 +1,11 @@
 #ifndef ROTATE_H
 #define ROTATE_H
 
-#include <utility>
+#include "coordinates.h"
 #include "enums.h"
 
-std::pair<int, int> rotateNumber(int i, int j, int m, int n, Orientation orient);
-std::pair<int, int> rotateHLine(int i, int j, int m, int n, Orientation orient);
-std::pair<int, int> rotateVLine(int i, int j, int m, int n, Orientation orient);
+Coordinates rotateNumber(int i, int j, int m, int n, Orientation orient);
+Coordinates rotateHLine(int i, int j, int m, int n, Orientation orient);
+Coordinates rotateVLine(int i, int j, int m, int n, Orientation orient);
 
 #endif
