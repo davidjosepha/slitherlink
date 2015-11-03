@@ -4,44 +4,24 @@
 #include <vector>
 #include "structs.h"
 
-class epq
-{
-
+class epq {
     class ComparePrioEdge {
-    public:
-        bool operator()(PrioEdge& e1, PrioEdge& e2)
-        {
-            if (e1.priority < e2.priority) return true;
-            return false;
-        }
+        public:
+            bool operator()(PrioEdge & e1, PrioEdge & e2) const { return e1.priority < e2.priority; };
     };
 
     public:
         epq() {};
-        ~epq() {};
         void initEPQ(int m, int n);
-        PrioEdge createPrioEdge(double prio, int m, int n, bool hLine);
+        PrioEdge createPrioEdge(double prio, int i, int j, bool hLine);
 
         bool empty();
         int size();
         PrioEdge top();
         void push(PrioEdge pe);
         void pop();
-        void emplace(double prio, int m, int n, bool hLine);
+        void emplace(double prio, int i, int j, bool hLine);
         void swap(epq ep2);
-    
-        /*
-        void setPriority(double prio) {priority = prio;};
-        void setM(int i) {m = i;};
-        void setN(int i) {n = i;};
-        void setH(bool b) {h = b;};
-        void setV(bool b) {h = !b;};
-        double getPriority() {return priority;};
-        int getM() {return m;};
-        int getN() {return n};
-        bool getH() {return h;};
-        bool getV() {return !h;};
-        */
 
     protected:
         int m_;

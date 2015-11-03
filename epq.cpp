@@ -1,13 +1,7 @@
 #include "epq.h"
-#include <queue>
 #include <cassert>
+#include <queue>
 #include "structs.h"
-
-/*
-epq::epq() {
-    std::priority_queue<PrioEdge, vector<PrioEdge>, ComparePrioEdge> pq;
-}
-*/
 
 void epq::initEPQ(int m, int n)  {
     assert(m > 0 && n > 0);
@@ -15,27 +9,30 @@ void epq::initEPQ(int m, int n)  {
     m_ = m;
     n_ = n;
 
-    for (int i = 0; i < m, i++) {
+    for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             pq.push(createPrioEdge(0, i, j, true)); 
             pq.push(createPrioEdge(0, i, j, false));
         }
-        pq.push(createPrioEdge(0, i, n, false);
+        pq.push(createPrioEdge(0, i, n, false));
     }
+
     for (int j = 0; j < n; j++) {
         pq.push(createPrioEdge(0, m, j, true));
     }
 }
 
-PrioEdge epq::createPrioEdge(double prio, int m, int n, bool hLine) {
-    assert(m < m_ && n > n_);
-    assert(m >= 0 && n >= 0);
+PrioEdge epq::createPrioEdge(double prio, int i, int j, bool hLine) {
+    assert(i < m_ && j > n_);
+    assert(i >= 0 && j >= 0);
 
     PrioEdge pe;
     pe.priority = prio;
-    pe.coords.i = m;
-    pe.coords.j = n;
+    pe.coords.i = i;
+    pe.coords.j = j;
     pe.h = hLine;
+
+    return pe;
 }
 
 bool epq::empty() {
@@ -46,24 +43,24 @@ int epq::size() {
     return pq.size();
 }
 
-prioEdge epq::top() {
+PrioEdge epq::top() {
     return pq.top();
 }
 
 void epq::push(PrioEdge pe) {
-    void pq.push(pe);
+    pq.push(pe);
 }
 
 void epq::pop() {
     pq.pop();
 }
 
-void epq::emplace(double prio, int m, int n, bool hLine) {
-    pq.push(createPrioEdge(prio, m, n, hLine));
+void epq::emplace(double prio, int i, int j, bool hLine) {
+    pq.push(createPrioEdge(prio, i, j, hLine));
 }
 
 void epq::swap(epq ep2) {
-    pq.swap(ep2);
+    /* pq.swap(ep2); */
 }
 
 /*

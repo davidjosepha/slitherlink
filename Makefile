@@ -16,6 +16,6 @@ else
 endif
 
 all:
-	$(CC) main.cpp solver.cpp import.cpp export.cpp lattice.cpp grid.cpp contour.cpp rotate.cpp rules.cpp rule.cpp contradictions.cpp contradiction.cpp -o slitherlink $(CCFLAGS)
+	$(CC) main.cpp solver.cpp epq.cpp import.cpp export.cpp lattice.cpp grid.cpp contour.cpp rotate.cpp rules.cpp rule.cpp contradictions.cpp contradiction.cpp -o slitherlink $(CCFLAGS)
 clean:
 	rm *.o slitherlink
