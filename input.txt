@@ -1,0 +1,2 @@
+puzzles/02.slk
+1
