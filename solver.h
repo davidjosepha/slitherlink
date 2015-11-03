@@ -3,6 +3,7 @@
 #include "constants.h"
 #include "contradiction.h"
 #include "enums.h"
+#include "epq.h"
 #include "grid.h"
 #include "rule.h"
 
@@ -31,6 +32,7 @@ class Solver {
         int depth_;
         Rule * rules_;
         Contradiction * contradictions_;
+        epq epq_;
 };
 
 #endif

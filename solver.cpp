@@ -4,6 +4,7 @@
 #include "constants.h"
 #include "contradiction.h"
 #include "enums.h"
+#include "epq.h"
 #include "grid.h"
 #include "rotate.h"
 #include "rule.h"
@@ -16,6 +17,9 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
     int x = 4;
     int y = 4;
+
+    // epq epq_;
+    // epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
     
     int done = 0;
     while (done == 0) {
@@ -46,6 +50,25 @@ void Solver::solve() {
 
 /* Make a guess in each valid position in the graph */
 void Solver::solveDepth(int depth) {
+    // for (int i = 0; i < epq_.size(); i++){
+    //     PrioEdge pe = epq_.top();
+    //     epq_.pop();
+    //     if (pe.h) {
+    //         makeHLineGuess(pe.coords.i, pe.coords.j, depth);
+    //         if (grid_->getHLine(pe.coords.i, pe.coords.j) == EMPTY) {
+    //             pe.priority = pe.priority - 1;
+    //             epq_.push(pe);
+    //         }
+    //     } else {
+    //         makeVLineGuess(pe.coords.i, pe.coords.j, depth);
+    //         if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
+    //             pe.priority = pe.priority - 1;
+    //             epq_.push(pe);
+    //         }
+    //     }
+    // }
+
+
     for (int i = 0; i < grid_->getHeight()+1; i++) {
         for (int j = 0; j < grid_->getWidth(); j++) {
             applyRules();
