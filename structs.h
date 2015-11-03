@@ -18,7 +18,7 @@ struct EdgePosition {
     Edge edge;
 };
 
-struct prioEdge{
+struct PrioEdge{
 	Coordinates coords;
 	double priority;
 	bool h;
