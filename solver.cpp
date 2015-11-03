@@ -92,30 +92,40 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
         Grid lineGuess;
         grid_->copy(lineGuess);
 
+        // make a LINE guess
         lineGuess.setHLine(i, j, LINE);
         Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth);
 
+        // ensure that if the guess happens to solve the puzzle, we notice
         if (lineGuess.isSolved()) {
             lineGuess.copy(*grid_);
             return;
-        } else if (lineSolver.testContradictions()) {
+        } 
+        // test for contradictions; if we encounter one we set the opposite line
+        else if (lineSolver.testContradictions()) {
             grid_->setHLine(i, j, NLINE);
             return;
         } else {
             Grid nLineGuess;
             grid_->copy(nLineGuess);
 
+            // make an NLINE guess
             nLineGuess.setHLine(i, j, NLINE);
             Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth);
 
+            // again check if solved
             if (nLineGuess.isSolved()) {
                 nLineGuess.copy(*grid_);
                 return;
-            } else if (nLineSolver.testContradictions()) {
+            }
+            // again check for contradictions
+            else if (nLineSolver.testContradictions()) {
                 grid_->setHLine(i, j, LINE);
                 return;
             } else {
                 grid_->setUpdated(false);
+                
+                //check for things that happen when we make both guesses; if we find any, we know they must happen
                 intersectGrids(lineGuess, nLineGuess);
 
                 if (grid_->getUpdated()) {
@@ -140,32 +150,41 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
         Grid lineGuess;
         grid_->copy(lineGuess);
 
+        // make a LINE guess
         lineGuess.setVLine(i, j, LINE);
         Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth);
 
+        // ensure that if the guess happens to solve the puzzle, we notice
         if (lineGuess.isSolved()) {
             lineGuess.copy(*grid_);
             //free(lineGuess.contours_);
             return;
-        } else if (lineSolver.testContradictions()) {
+        }
+        // test for contradictions; if we encounter one we set the opposite line
+        else if (lineSolver.testContradictions()) {
             grid_->setVLine(i, j, NLINE);
             return;
         } else {
             Grid nLineGuess;
             grid_->copy(nLineGuess);
 
+            // make an NLINE guess
             nLineGuess.setVLine(i, j, NLINE);
             Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth);
 
+            // again check if solved
             if (nLineGuess.isSolved()) {
                 nLineGuess.copy(*grid_);
                 return;
-            } else if (nLineSolver.testContradictions()) {
+            }
+            // again check for contradictions
+            else if (nLineSolver.testContradictions()) {
                 grid_->setVLine(i, j, LINE);
                 return;
             } else {
-                //TODO: we only want to set it to false if the intersection is empty
                 grid_->setUpdated(false);
+                
+                //check for things that happen when we make both guesses; if we find any, we know they must happen
                 intersectGrids(lineGuess, nLineGuess);
 
                 if (grid_->getUpdated()) {
