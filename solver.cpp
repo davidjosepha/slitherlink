@@ -15,19 +15,11 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     grid_ = &grid;
     depth_ = depth;
 
-    int x = 4;
-    int y = 4;
+    /*
+    epq epq_;
+    epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
+    */
 
-    // epq epq_;
-    // epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
-    
-    int done = 0;
-    while (done == 0) {
-        bool result = spiralNext(4, 4, x, y);
-        if (!result) {
-            done = 1;
-        }
-    }
     rules_ = rules;
     contradictions_ = contradictions;
 
@@ -50,23 +42,25 @@ void Solver::solve() {
 
 /* Make a guess in each valid position in the graph */
 void Solver::solveDepth(int depth) {
-    // for (int i = 0; i < epq_.size(); i++){
-    //     PrioEdge pe = epq_.top();
-    //     epq_.pop();
-    //     if (pe.h) {
-    //         makeHLineGuess(pe.coords.i, pe.coords.j, depth);
-    //         if (grid_->getHLine(pe.coords.i, pe.coords.j) == EMPTY) {
-    //             pe.priority = pe.priority - 1;
-    //             epq_.push(pe);
-    //         }
-    //     } else {
-    //         makeVLineGuess(pe.coords.i, pe.coords.j, depth);
-    //         if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
-    //             pe.priority = pe.priority - 1;
-    //             epq_.push(pe);
-    //         }
-    //     }
-    // }
+    /*
+    for (int i = 0; i < epq_.size(); i++){
+        PrioEdge pe = epq_.top();
+        epq_.pop();
+        if (pe.h) {
+            makeHLineGuess(pe.coords.i, pe.coords.j, depth);
+            if (grid_->getHLine(pe.coords.i, pe.coords.j) == EMPTY) {
+                pe.priority = pe.priority - 1;
+                epq_.push(pe);
+            }
+        } else {
+            makeVLineGuess(pe.coords.i, pe.coords.j, depth);
+            if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
+                pe.priority = pe.priority - 1;
+                epq_.push(pe);
+            }
+        }
+    }
+    */
 
 
     for (int i = 0; i < grid_->getHeight()+1; i++) {

@@ -23,17 +23,6 @@ int main(int argc, char * argv[]) {
     std::string fileName;
     std::getline(inputFile, fileName);
     inputFile >> depth;
-    
-
-    /*if (argc == 3) {
-        filename = argv[1];
-        depth = std::stoi(argv[2]);
-    } else if (argc == 2) {
-        filename = argv[1];
-    } else {
-        std::cout << "Usage: ./slitherlink <slk-file-location> <depth>\n";
-        return 0;
-    }*/
 
     Grid grid;
     Import importer = Import(grid, fileName);
