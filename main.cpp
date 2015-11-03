@@ -1,4 +1,7 @@
 #include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include <string>
 #include <time.h>
 #include "contradiction.h"
 #include "contradictions.h"
@@ -13,10 +16,16 @@
 int main(int argc, char * argv[]) {
     clock_t startTime, endTime;
     startTime = clock();
-    std::string filename;
     int depth = 1;
+    
+    std::ifstream inputFile;
+    inputFile.open("input.txt");
+    std::string fileName;
+    std::getline(inputFile, fileName);
+    inputFile >> depth;
+    
 
-    if (argc == 3) {
+    /*if (argc == 3) {
         filename = argv[1];
         depth = std::stoi(argv[2]);
     } else if (argc == 2) {
@@ -24,10 +33,10 @@ int main(int argc, char * argv[]) {
     } else {
         std::cout << "Usage: ./slitherlink <slk-file-location> <depth>\n";
         return 0;
-    }
+    }*/
 
     Grid grid;
-    Import importer = Import(grid, filename);
+    Import importer = Import(grid, fileName);
     Export exporter = Export(grid);
     std::cout << "Before:" << std::endl;
     exporter.print();
