@@ -78,7 +78,7 @@ void Solver::solveDepth(int depth) {
     }
 }
 
-/* TODO: Comment this function */
+// Horizontal guess at the given location to the given depth
 void Solver::makeHLineGuess(int i, int j, int depth) {
     assert(0 <= i && i < grid_->getHeight()+1 && 0 <= j && j < grid_->getWidth());
     assert(depth >= 0);
@@ -136,7 +136,7 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
     }
 }
 
-/* TODO: Comment this function */
+// Vertical guess at the given location to the given depth
 void Solver::makeVLineGuess(int i, int j, int depth) {
     assert(0 <= i && i < grid_->getHeight() && 0 <= j && j < grid_->getWidth()+1);
     assert(depth >= 0);
