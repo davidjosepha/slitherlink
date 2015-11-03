@@ -8,6 +8,7 @@ Contour::Contour(int starti, int startj, int endi, int endj) {
     start_.j = startj;
     end_.i = endi;
     end_.j = endj;
+    length_ = 1;
 }
 
 /* Checks whether the contour instance passed as
@@ -42,7 +43,7 @@ void Contour::addContour(Contour & contour) {
         length_++;
     }
 
-    if (start_.i == end_.i && start_.j == start_.j) {
+    if (start_.i == end_.i && start_.j == end_.j) {
         closed_ = true;
     }
 }

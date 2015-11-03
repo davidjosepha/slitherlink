@@ -81,7 +81,7 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
         if (lineGuess.isSolved()) {
             lineGuess.copy(*grid_);
             return;
-        } else if (!lineGuess.getValid()) {
+        } else if (lineSolver.testContradictions()) {
             grid_->setHLine(i, j, NLINE);
             return;
         } else {
@@ -94,7 +94,7 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
             if (nLineGuess.isSolved()) {
                 nLineGuess.copy(*grid_);
                 return;
-            } else if (!nLineGuess.getValid()) {
+            } else if (nLineSolver.testContradictions()) {
                 grid_->setHLine(i, j, LINE);
                 return;
             } else {
@@ -130,7 +130,7 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
             lineGuess.copy(*grid_);
             //free(lineGuess.contours_);
             return;
-        } else if (!lineGuess.getValid()) {
+        } else if (lineSolver.testContradictions()) {
             grid_->setVLine(i, j, NLINE);
             return;
         } else {
@@ -143,10 +143,11 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
             if (nLineGuess.isSolved()) {
                 nLineGuess.copy(*grid_);
                 return;
-            } else if (!nLineGuess.getValid()) {
+            } else if (nLineSolver.testContradictions()) {
                 grid_->setVLine(i, j, LINE);
                 return;
             } else {
+                //TODO: we only want to set it to false if the intersection is empty
                 grid_->setUpdated(false);
                 intersectGrids(lineGuess, nLineGuess);
 

@@ -30,7 +30,7 @@ void Grid::mergeContours(Contour & newContour) {
  */
 void Grid::copy(Grid & newGrid) {
     newGrid.initArrays(getHeight(), getWidth());
-    newGrid.contours_ = std::vector<Contour>(contours_);
+    newGrid.contours_.clear();
 
     for (int i = 0; i < getHeight(); i++) {
         for (int j = 0; j < getWidth(); j++) {
