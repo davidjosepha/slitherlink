@@ -15,13 +15,12 @@ class epq {
         void initEPQ(int m, int n);
         PrioEdge createPrioEdge(double prio, int i, int j, bool hLine);
 
-        bool empty();
-        int size();
-        PrioEdge top();
+        bool empty() const;
+        int size() const;
+        PrioEdge top() const;
         void push(PrioEdge pe);
         void pop();
         void emplace(double prio, int i, int j, bool hLine);
-        void swap(epq ep2);
 
     protected:
         int m_;
