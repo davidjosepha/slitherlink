@@ -4,14 +4,14 @@
 #include <vector>
 #include "structs.h"
 
-class epq {
+class EPQ {
     class ComparePrioEdge {
         public:
             bool operator()(PrioEdge & e1, PrioEdge & e2) const { return e1.priority < e2.priority; };
     };
 
     public:
-        epq() { };
+        EPQ() { };
         void initEPQ(int m, int n);
         PrioEdge createPrioEdge(double prio, int i, int j, bool hLine);
 

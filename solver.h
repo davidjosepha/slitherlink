@@ -32,7 +32,7 @@ class Solver {
         int depth_;
         Rule * rules_;
         Contradiction * contradictions_;
-        epq epq_;
+        EPQ epq_;
 };
 
 #endif
