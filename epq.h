@@ -11,7 +11,7 @@ class epq {
     };
 
     public:
-        epq() {};
+        epq() { };
         void initEPQ(int m, int n);
         PrioEdge createPrioEdge(double prio, int i, int j, bool hLine);
 

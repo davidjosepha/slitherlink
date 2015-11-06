@@ -15,10 +15,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     grid_ = &grid;
     depth_ = depth;
 
-    /*
-    epq epq_;
     epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
-    */
 
     rules_ = rules;
     contradictions_ = contradictions;
@@ -42,43 +39,49 @@ void Solver::solve() {
 
 /* Make a guess in each valid position in the graph */
 void Solver::solveDepth(int depth) {
-    /*
-    for (int i = 0; i < epq_.size(); i++){
-        PrioEdge pe = epq_.top();
-        epq_.pop();
-        if (pe.h) {
-            makeHLineGuess(pe.coords.i, pe.coords.j, depth);
-            if (grid_->getHLine(pe.coords.i, pe.coords.j) == EMPTY) {
-                pe.priority = pe.priority - 1;
-                epq_.push(pe);
-            }
-        } else {
-            makeVLineGuess(pe.coords.i, pe.coords.j, depth);
-            if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
-                pe.priority = pe.priority - 1;
-                epq_.push(pe);
+    bool usingPrioQueue = true;
+    if (usingPrioQueue) {
+        int initSize = epq_.size();
+        int guesses = 0;
+
+        while (!epq_.empty() && guesses++ < initSize) {
+            applyRules();
+
+            PrioEdge pe = epq_.top();
+            epq_.pop();
+
+            if (pe.h) {
+                makeHLineGuess(pe.coords.i, pe.coords.j, depth);
+                if (grid_->getHLine(pe.coords.i, pe.coords.j) == EMPTY) {
+                    pe.priority = pe.priority - 1;
+                    epq_.push(pe);
+                }
+            } else {
+                makeVLineGuess(pe.coords.i, pe.coords.j, depth);
+                if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
+                    pe.priority = pe.priority - 1;
+                    epq_.push(pe);
+                }
             }
         }
-    }
-    */
-
-
-    for (int i = 0; i < grid_->getHeight()+1; i++) {
-        for (int j = 0; j < grid_->getWidth(); j++) {
-            applyRules();
-            makeHLineGuess(i, j, depth);
+    } else {
+        for (int i = 0; i < grid_->getHeight()+1; i++) {
+            for (int j = 0; j < grid_->getWidth(); j++) {
+                applyRules();
+                makeHLineGuess(i, j, depth);
+            }
         }
-    }
 
-    for (int i = 0; i < grid_->getHeight(); i++) {
-        for (int j = 0; j < grid_->getWidth()+1; j++) {
-            applyRules();
-            makeVLineGuess(i, j, depth);
+        for (int i = 0; i < grid_->getHeight(); i++) {
+            for (int j = 0; j < grid_->getWidth()+1; j++) {
+                applyRules();
+                makeVLineGuess(i, j, depth);
+            }
         }
     }
 }
 
-// Horizontal guess at the given location to the given depth
+/* Horizontal guess at the given location to the given depth */
 void Solver::makeHLineGuess(int i, int j, int depth) {
     assert(0 <= i && i < grid_->getHeight()+1 && 0 <= j && j < grid_->getWidth());
     assert(depth >= 0);
@@ -92,16 +95,16 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
         Grid lineGuess;
         grid_->copy(lineGuess);
 
-        // make a LINE guess
+        /* make a LINE guess */
         lineGuess.setHLine(i, j, LINE);
         Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth);
 
-        // ensure that if the guess happens to solve the puzzle, we notice
+        /* ensure that if the guess happens to solve the puzzle, we notice */
         if (lineGuess.isSolved()) {
             lineGuess.copy(*grid_);
             return;
-        } 
-        // test for contradictions; if we encounter one we set the opposite line
+        }
+        /* test for contradictions; if we encounter one we set the opposite line */
         else if (lineSolver.testContradictions()) {
             grid_->setHLine(i, j, NLINE);
             return;
@@ -109,23 +112,24 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
             Grid nLineGuess;
             grid_->copy(nLineGuess);
 
-            // make an NLINE guess
+            /* make an NLINE guess */
             nLineGuess.setHLine(i, j, NLINE);
             Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth);
 
-            // again check if solved
+            /* again check if solved */
             if (nLineGuess.isSolved()) {
                 nLineGuess.copy(*grid_);
                 return;
             }
-            // again check for contradictions
+            /* again check for contradictions */
             else if (nLineSolver.testContradictions()) {
                 grid_->setHLine(i, j, LINE);
                 return;
             } else {
                 grid_->setUpdated(false);
-                
-                //check for things that happen when we make both guesses; if we find any, we know they must happen
+
+                /* check for things that happen when we make both
+                 * guesses; if we find any, we know they must happen */
                 intersectGrids(lineGuess, nLineGuess);
 
                 if (grid_->getUpdated()) {
@@ -136,7 +140,7 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
     }
 }
 
-// Vertical guess at the given location to the given depth
+/* Vertical guess at the given location to the given depth */
 void Solver::makeVLineGuess(int i, int j, int depth) {
     assert(0 <= i && i < grid_->getHeight() && 0 <= j && j < grid_->getWidth()+1);
     assert(depth >= 0);
@@ -150,17 +154,17 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
         Grid lineGuess;
         grid_->copy(lineGuess);
 
-        // make a LINE guess
+        /* make a LINE guess */
         lineGuess.setVLine(i, j, LINE);
         Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth);
 
-        // ensure that if the guess happens to solve the puzzle, we notice
+        /* ensure that if the guess happens to solve the puzzle, we notice */
         if (lineGuess.isSolved()) {
             lineGuess.copy(*grid_);
             //free(lineGuess.contours_);
             return;
         }
-        // test for contradictions; if we encounter one we set the opposite line
+        /* test for contradictions; if we encounter one we set the opposite line */
         else if (lineSolver.testContradictions()) {
             grid_->setVLine(i, j, NLINE);
             return;
@@ -168,23 +172,24 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
             Grid nLineGuess;
             grid_->copy(nLineGuess);
 
-            // make an NLINE guess
+            /* make an NLINE guess */
             nLineGuess.setVLine(i, j, NLINE);
             Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth);
 
-            // again check if solved
+            /* again check if solved */
             if (nLineGuess.isSolved()) {
                 nLineGuess.copy(*grid_);
                 return;
             }
-            // again check for contradictions
+            /* again check for contradictions */
             else if (nLineSolver.testContradictions()) {
                 grid_->setVLine(i, j, LINE);
                 return;
             } else {
                 grid_->setUpdated(false);
-                
-                //check for things that happen when we make both guesses; if we find any, we know they must happen
+
+                /* check for things that happen when we make both
+                 * guesses; if we find any, we know they must happen */
                 intersectGrids(lineGuess, nLineGuess);
 
                 if (grid_->getUpdated()) {
