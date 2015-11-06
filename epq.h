@@ -25,7 +25,7 @@ class EPQ {
     protected:
         int m_;
         int n_;
-        std::priority_queue<PrioEdge, std::vector<PrioEdge>, ComparePrioEdge> pq;
+        std::priority_queue<PrioEdge, std::vector<PrioEdge>, ComparePrioEdge> pq_;
 };
 
 #endif

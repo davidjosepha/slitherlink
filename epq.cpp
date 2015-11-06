@@ -11,14 +11,14 @@ void EPQ::initEPQ(int m, int n)  {
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            pq.push(createPrioEdge(0, i, j, true)); 
-            pq.push(createPrioEdge(0, i, j, false));
+            pq_.push(createPrioEdge(0, i, j, true)); 
+            pq_.push(createPrioEdge(0, i, j, false));
         }
-        pq.push(createPrioEdge(0, i, n, false));
+        pq_.push(createPrioEdge(0, i, n, false));
     }
 
     for (int j = 0; j < n; j++) {
-        pq.push(createPrioEdge(0, m, j, true));
+        pq_.push(createPrioEdge(0, m, j, true));
     }
 }
 
@@ -29,25 +29,25 @@ PrioEdge EPQ::createPrioEdge(double prio, int i, int j, bool hLine) {
 }
 
 bool EPQ::empty() const {
-    return pq.empty();
+    return pq_.empty();
 }
 
 int EPQ::size() const {
-    return pq.size();
+    return pq_.size();
 }
 
 PrioEdge EPQ::top() const {
-    return pq.top();
+    return pq_.top();
 }
 
 void EPQ::push(PrioEdge pe) {
-    pq.push(pe);
+    pq_.push(pe);
 }
 
 void EPQ::pop() {
-    pq.pop();
+    pq_.pop();
 }
 
 void EPQ::emplace(double prio, int i, int j, bool hLine) {
-    pq.push(createPrioEdge(prio, i, j, hLine));
+    pq_.push(createPrioEdge(prio, i, j, hLine));
 }
