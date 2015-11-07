@@ -143,3 +143,12 @@ bool Grid::isSolved() const {
 
     return true;
 }
+
+bool Grid::containsClosedContours() const {
+    for (int i = 0; i < contours_.size(); i++) {
+        if (contours_[i].isClosed()) {
+            return true;
+        }
+    }
+    return false;
+}

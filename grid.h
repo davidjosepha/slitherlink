@@ -15,6 +15,7 @@ class Grid : public Lattice {
         void copy(Grid & newGrid);
         bool getValid() const { return valid_; };
         void setValid(bool validity) { valid_ = validity && valid_; };
+        bool containsClosedContours() const;
 
     private:
         void mergeContours(Contour & newContour);

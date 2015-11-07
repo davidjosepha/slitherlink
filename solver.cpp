@@ -45,7 +45,9 @@ void Solver::solveDepth(int depth) {
         int guesses = 0;
 
         while (!epq_.empty() && guesses++ < initSize) {
-            applyRules();
+            if (grid_->getUpdated()) {
+                applyRules();
+            }
 
             PrioEdge pe = epq_.top();
             epq_.pop();
@@ -433,6 +435,9 @@ bool Solver::ruleApplies(int i, int j, Rule const & rule, Orientation orient) co
  * each valid position on the grid, checking if the contradiction
  * applies, and, if so, returning true. */
 bool Solver::testContradictions() const {
+    if (grid_->containsClosedContours()) {
+        return true;
+    }
     for (int x = 0; x < NUM_CONTRADICTIONS; x++) {
         for (Orientation orient: (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
             for (int i = 0; i <= grid_->getHeight() - contradictions_[x].getNumberHeight(orient); i++) {
