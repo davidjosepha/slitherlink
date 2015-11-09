@@ -70,6 +70,16 @@ void EPQ::copyPQ(EPQ orig) {
     }
 }
 
+void EPQ::copySubsetPQ(EPQ orig) {
+    PrioEdge pe = orig.top();
+    std::vector<PrioEdge> prioEdgeVec = orig.copyPQToVector();
+    for (int i = 0; i < prioEdgeVec.size(); i++) {
+        PrioEdge cur = prioEdgeVec[i];
+        if (cur.coords.i < pe.coords.i && cur.coords.j < pe.coords.j)
+            pq_.push(prioEdgeVec[i]);
+    }
+}
+
 
 
 

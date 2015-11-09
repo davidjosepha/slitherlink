@@ -23,6 +23,7 @@ class EPQ {
         void emplace(double prio, int i, int j, bool hLine);
         std::vector<PrioEdge> copyPQToVector();
         void copyPQ(EPQ orig);
+        void copySubsetPQ(EPQ orig);
 
     protected:
         int m_;

@@ -23,6 +23,23 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     solve();
 }
 
+/* Constructor for when the EPQ should be passed down. */
+Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth, EPQ oldEPQ) {
+    grid_ = &grid;
+    depth_ = depth;
+
+    if (oldEPQ.size() == 0) {
+        epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
+    } else {
+        epq_.copySubsetPQ(oldEPQ);
+    }
+
+    rules_ = rules;
+    contradictions_ = contradictions;
+
+    solve();
+}
+
 /* Apply a combination of deterministic rules and
  * recursive guessing to find a solution to a puzzle */
 void Solver::solve() {
@@ -50,7 +67,6 @@ void Solver::solveDepth(int depth) {
             }
 
             PrioEdge pe = epq_.top();
-            epq_.pop();
 
             if (pe.h) {
                 makeHLineGuess(pe.coords.i, pe.coords.j, depth);
@@ -65,6 +81,7 @@ void Solver::solveDepth(int depth) {
                     epq_.push(pe);
                 }
             }
+            epq_.pop();
         }
     } else {
         for (int i = 0; i < grid_->getHeight()+1; i++) {
@@ -99,7 +116,7 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
 
         /* make a LINE guess */
         lineGuess.setHLine(i, j, LINE);
-        Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth);
+        Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth, epq_);
 
         /* ensure that if the guess happens to solve the puzzle, we notice */
         if (lineGuess.isSolved()) {
@@ -116,7 +133,7 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
 
             /* make an NLINE guess */
             nLineGuess.setHLine(i, j, NLINE);
-            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
 
             /* again check if solved */
             if (nLineGuess.isSolved()) {
@@ -158,7 +175,7 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
 
         /* make a LINE guess */
         lineGuess.setVLine(i, j, LINE);
-        Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth);
+        Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth, epq_);
 
         /* ensure that if the guess happens to solve the puzzle, we notice */
         if (lineGuess.isSolved()) {
@@ -176,7 +193,7 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
 
             /* make an NLINE guess */
             nLineGuess.setVLine(i, j, NLINE);
-            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
 
             /* again check if solved */
             if (nLineGuess.isSolved()) {
