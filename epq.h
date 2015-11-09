@@ -21,6 +21,7 @@ class EPQ {
         void push(PrioEdge pe);
         void pop();
         void emplace(double prio, int i, int j, bool hLine);
+        std::vector<PrioEdge> copyToVector();
 
     protected:
         int m_;
