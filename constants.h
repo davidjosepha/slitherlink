@@ -7,7 +7,7 @@
 #define EX 'x'
 #define BLANK ' '
 
-#define NUM_RULES 34
+#define NUM_RULES 33
 #define NUM_CONTRADICTIONS 11
 
 #endif

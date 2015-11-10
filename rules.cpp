@@ -12,7 +12,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     Lattice * after;
 
     /**
-     * Rule #01
+     * Rule #1
      * Before       After
      * .   .   .    .   .   .
      *     x
@@ -32,7 +32,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     i++;
 
     /**
-     * Rule #02
+     * Rule #2
      * Before       After
      * .   .   .    .   .   .
      *     |
@@ -53,7 +53,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
 
     /**
-     * Rule #03
+     * Rule #3
      * Before       After
      * .   .   .    .   .   .
      *                  x
@@ -73,7 +73,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     i++;
 
     /**
-     * Rule #04
+     * Rule #4
      * Before       After
      * .   .   .    .   .   .
      *     x
@@ -93,7 +93,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     i++;
 
     /**
-     * Rule #05
+     * Rule #5
      * Before       After
      * .   .   .    .   .   .
      *     x
@@ -113,7 +113,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     i++;
 
     /**
-     * Rule #06
+     * Rule #6
      * Before   After
      * . - .    .   .
      *   1      x   x
@@ -132,7 +132,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     i++;
 
     /**
-     * Rule #07
+     * Rule #7
      * Before   After
      * .   .    . - .
      * x 1 x
@@ -151,7 +151,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     i++;
 
     /**
-     * Rule #08
+     * Rule #8
      * Before   After
      * . - .    .   .
      * | 2          x
@@ -170,7 +170,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     i++;
 
     /**
-     * Rule #09
+     * Rule #9
      * Before   After
      * .   .    . - .
      *   2 x    |
@@ -229,25 +229,6 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     /**
      * Rule #12
      * Before   After
-     * .   .    . x .
-     * | 3 |
-     * . - .    .   .
-     */
-
-    rules[i] = Rule(1, 1);
-
-    rules[i].addNumberPattern(0, 0, THREE);
-    rules[i].addVLinePattern(0, 0, LINE);
-    rules[i].addVLinePattern(0, 1, LINE);
-    rules[i].addHLinePattern(1, 0, LINE);
-
-    rules[i].addHLineDiff(0, 0, NLINE);
-
-    i++;
-
-    /**
-     * Rule #13
-     * Before   After
      * . x .    .   .
      *   3      |   |
      * .   .    . - .
@@ -264,26 +245,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /**
-     * Rule #14
-     * Before   After
-     * .   .    . x .
-     *   0      x   x
-     * .   .    . x .
-     */
-
-    rules[i] = Rule(1, 1);
-
-    rules[i].addNumberPattern(0, 0, ZERO);
-
-    rules[i].addHLineDiff(0, 0, NLINE);
-    rules[i].addHLineDiff(1, 0, NLINE);
-    rules[i].addVLineDiff(0, 0, NLINE);
-    rules[i].addVLineDiff(0, 1, NLINE);
-
-    i++;
-
-    /** Rule 15
+    /** Rule 13
      * Before         After
      * .   .   .   .      .   .   .   .
      *         |
@@ -306,7 +268,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 16
+    /** Rule 14
      * Before         After
      * .   .   .   .      .   .   .   .
      *         |
@@ -329,7 +291,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 17
+    /** Rule 15
      * Before         After
      * .   .   .   .      .   .   .   .
      *
@@ -352,7 +314,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 18
+    /** Rule 16
      * Before         After
      * .   .   .   .      .   .   .   .
      *     |   |
@@ -376,7 +338,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 19
+    /** Rule 17
      * Before         After
      * .   .   .   .      .   .   .   .
      *
@@ -400,7 +362,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 20
+    /** Rule 18
      * Before         After
      * .   .   .   .      .   .   .   .
      *     x   x
@@ -425,7 +387,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 21
+    /** Rule 19
      * Before         After
      * .   .   .   .      .   .   .   .
      *     x   x
@@ -448,7 +410,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 22
+    /** Rule 20
      * Before         After
      * .   .   .   .      .   .   .   .
      *         |
@@ -471,7 +433,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 23
+    /** Rule 21
      * Before         After
      * .   .   .   .      .   .   .   .
      *
@@ -494,54 +456,8 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /**
-     * Rule 24
-     * Before       After
-     * .   .   .    .   . _ .
-     *       3              |
-     * .   .   .    .   .   .
-     *   3          |
-     * .   .   .    . _ .   .
-     */
 
-    rules[i] = Rule(2, 2);
-
-    rules[i].addNumberPattern(1, 0, THREE);
-    rules[i].addNumberPattern(0, 1, THREE);
-
-    rules[i].addHLineDiff(0, 1, LINE);
-    rules[i].addHLineDiff(2, 0, LINE);
-    rules[i].addVLineDiff(1, 0, LINE);
-    rules[i].addVLineDiff(0, 2, LINE);
-
-    i++;
-
-    /**
-     * Rule 25
-     * Before       After
-     * .   .   .    .   .   .
-     *                  x
-     * .   .   .    .   .   .
-     *   3   3      |   |   |
-     * .   .   .    .   .   .
-     *                  x
-     * .   .   .    .   .   .
-     */
-
-    rules[i] = Rule(3, 2);
-
-    rules[i].addNumberPattern(1, 0, THREE);
-    rules[i].addNumberPattern(1, 1, THREE);
-
-    rules[i].addVLineDiff(1, 0, LINE);
-    rules[i].addVLineDiff(1, 1, LINE);
-    rules[i].addVLineDiff(1, 2, LINE);
-    rules[i].addVLineDiff(0, 1, NLINE);
-    rules[i].addVLineDiff(2, 1, NLINE);
-
-    i++;
-
-    /** Rule 26
+    /** Rule 22
      * Before         After
      * .   .   .      .   .   .
      *   3   1
@@ -562,7 +478,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 27
+    /** Rule 23
      * Before         After
      * .   .   .   .      .   .   .   .
      *     x   x
@@ -588,7 +504,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 28
+    /** Rule 24
      * Before         After
      *
      * . _ .      .   .
@@ -607,7 +523,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 29
+    /** Rule 25
      * Before         After
      *
      * . x .   .     .   .   .
@@ -629,7 +545,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 30
+    /** Rule 26
      * Before         After
      *
      * .   .   .     .   .   .
@@ -651,7 +567,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 31
+    /** Rule 27
      * Before         After
      *
      * .   . x .     .   .   .
@@ -673,7 +589,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 32
+    /** Rule 28
      * Before         After
      *
      * .   .   .     .   . - .
@@ -694,7 +610,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 33
+    /** Rule 29
      * Before         After
      *
      * . - .   .     .   .   .
@@ -716,7 +632,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     i++;
 
-    /** Rule 34
+    /** Rule 30
      * Before         After
      *
      * .   .   .     . - .   .
@@ -735,6 +651,72 @@ void initRules(Rule (& rules)[NUM_RULES]) {
 
     rules[i].addHLineDiff(0, 0, LINE);
     rules[i].addVLineDiff(0, 0, LINE);
+
+    i++;
+    
+    /**
+     * Rule #31
+     * Before   After
+     * .   .    . x .
+     *   0      x   x
+     * .   .    . x .
+     */
+
+    rules[i] = Rule(1, 1);
+
+    rules[i].addNumberPattern(0, 0, ZERO);
+
+    rules[i].addHLineDiff(0, 0, NLINE);
+    rules[i].addHLineDiff(1, 0, NLINE);
+    rules[i].addVLineDiff(0, 0, NLINE);
+    rules[i].addVLineDiff(0, 1, NLINE);
+
+    i++;
+    
+    /**
+     * Rule 32
+     * Before       After
+     * .   .   .    .   . _ .
+     *       3              |
+     * .   .   .    .   .   .
+     *   3          |
+     * .   .   .    . _ .   .
+     */
+
+    rules[i] = Rule(2, 2);
+
+    rules[i].addNumberPattern(1, 0, THREE);
+    rules[i].addNumberPattern(0, 1, THREE);
+
+    rules[i].addHLineDiff(0, 1, LINE);
+    rules[i].addHLineDiff(2, 0, LINE);
+    rules[i].addVLineDiff(1, 0, LINE);
+    rules[i].addVLineDiff(0, 2, LINE);
+
+    i++;
+    
+    /**
+     * Rule 33
+     * Before       After
+     * .   .   .    .   .   .
+     *                  x
+     * .   .   .    .   .   .
+     *   3   3      |   |   |
+     * .   .   .    .   .   .
+     *                  x
+     * .   .   .    .   .   .
+     */
+
+    rules[i] = Rule(3, 2);
+
+    rules[i].addNumberPattern(1, 0, THREE);
+    rules[i].addNumberPattern(1, 1, THREE);
+
+    rules[i].addVLineDiff(1, 0, LINE);
+    rules[i].addVLineDiff(1, 1, LINE);
+    rules[i].addVLineDiff(1, 2, LINE);
+    rules[i].addVLineDiff(0, 1, NLINE);
+    rules[i].addVLineDiff(2, 1, NLINE);
 
     i++;
 }
