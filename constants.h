@@ -8,6 +8,7 @@
 #define BLANK ' '
 
 #define NUM_RULES 33
+#define NUM_CONST_RULES 3
 #define NUM_CONTRADICTIONS 11
 
 #endif

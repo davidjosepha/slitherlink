@@ -44,7 +44,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
  * recursive guessing to find a solution to a puzzle */
 void Solver::solve() {
     while (grid_->getUpdated() && !grid_->isSolved()) {
-        applyRules();
+        applyRules(NUM_RULES);
 
         for (int d = 0; d < depth_; d++) {
             if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved()) {
@@ -63,7 +63,7 @@ void Solver::solveDepth(int depth) {
 
         while (!epq_.empty() && guesses++ < initSize) {
             if (grid_->getUpdated()) {
-                applyRules();
+                applyRules(NUM_RULES - NUM_CONST_RULES);
             }
 
             PrioEdge pe = epq_.top();
@@ -86,14 +86,14 @@ void Solver::solveDepth(int depth) {
     } else {
         for (int i = 0; i < grid_->getHeight()+1; i++) {
             for (int j = 0; j < grid_->getWidth(); j++) {
-                applyRules();
+                applyRules(NUM_RULES - NUM_CONST_RULES);
                 makeHLineGuess(i, j, depth);
             }
         }
 
         for (int i = 0; i < grid_->getHeight(); i++) {
             for (int j = 0; j < grid_->getWidth()+1; j++) {
-                applyRules();
+                applyRules(NUM_RULES - NUM_CONST_RULES);
                 makeVLineGuess(i, j, depth);
             }
         }
@@ -297,11 +297,11 @@ void Solver::intersectGrids(Grid const & lineGuess, Grid const & nLineGuess) {
  * position on the grid, checking if the rule applies, and, if so,
  * applying it, and continue updating them until there are no longer
  * any changes being made. */
-void Solver::applyRules() {
+void Solver::applyRules(int numRules) {
     while (grid_->getUpdated()) {
         grid_->setUpdated(false);
 
-        for (int x = 0; x < NUM_RULES; x++) {
+        for (int x = 0; x < numRules; x++) {
             for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
                 for (int i = 0; i <= grid_->getHeight() - rules_[x].getNumberHeight(orient); i++) {
                     for (int j = 0; j <= grid_->getWidth() - rules_[x].getNumberWidth(orient); j++) {

@@ -22,7 +22,7 @@ class Solver {
 
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
 
-        void applyRules();
+        void applyRules(int numRules);
         void applyRule(int i, int j, Rule & rule, Orientation orient);
         bool ruleApplies(int i, int j, Rule const & rule, Orientation orient) const;
         
