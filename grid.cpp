@@ -1,4 +1,4 @@
-#include "grid.h"
+ #include "grid.h"
 #include <cassert>
 #include <vector>
 #include "contour.h"
@@ -51,7 +51,7 @@ void Grid::copy(Grid & newGrid) {
     }
 }
 
-/*
+/*;
  * Set a horizontal line to a given edge type, checking to see if this change overwrites
  * any previous value set to that position. If a line is added, create a new contour and
  * attempt to merge that contour to any adjacent contours.
@@ -128,6 +128,10 @@ bool Grid::numberSatisfied(int i, int j) const {
     }
 }
 
+/*
+ * Checks if the puzzle is solved by assuring that there is only one contour
+ * and that each number has been satisfied
+ */
 bool Grid::isSolved() const {
     if (contours_.size() != 1 || !contours_[0].isClosed()) {
         return false;
@@ -144,6 +148,10 @@ bool Grid::isSolved() const {
     return true;
 }
 
+/*
+ * Checks if there are any closed contours with the intention of detecting
+ * prematurely closed contours
+ */
 bool Grid::containsClosedContours() const {
     for (int i = 0; i < contours_.size(); i++) {
         if (contours_[i].isClosed()) {

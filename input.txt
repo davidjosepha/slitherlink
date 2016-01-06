@@ -1,2 +1,2 @@
-puzzles/02.slk
+puzzles/06.slk
 1
