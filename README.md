@@ -11,6 +11,9 @@ puzzles/02.slk
 
 1
 
+# finally, run slitherlink
+$ ./slitherlink
+
 
 # Here's links to some docs we are currently using:
 
