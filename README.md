@@ -1,6 +1,5 @@
-# slitherlink
+# slitherlink setup process:
 
-Setup:
 # run the make file
 $ make
 # create input.txt as follows
