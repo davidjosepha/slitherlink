@@ -5,9 +5,11 @@ Setup:
 $ make
 # create input.txt as follows
 [path of the puzzle file]
+
 [depth]
 # example
 puzzles/02.slk
+
 1
 
 
