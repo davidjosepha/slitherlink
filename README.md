@@ -3,8 +3,12 @@
 Setup:
 # run the make file
 $ make
-# pipe in the .slk puzzle you wish to solve, such as 04.slk
-$ ./slitherlink < puzzles/04.slk
+# create input.txt as follows
+[path of the puzzle file]
+[depth]
+# example
+puzzles/02.slk
+1
 
 
 Here's links to some docs we are currently using:
