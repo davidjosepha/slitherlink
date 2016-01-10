@@ -22,8 +22,6 @@ int main(int argc, char * argv[]) {
     std::string fileName;
     std::getline(inputFile, fileName);
     inputFile >> depth;
-    
-    depth = 10;
 
     Grid grid;
     Import importer = Import(grid, fileName);
