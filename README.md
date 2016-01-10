@@ -1,21 +1,19 @@
 # slitherlink setup process:
 
-# run the make file
-$ make
-# create input.txt as follows
+## create input.txt as follows
 [path of the puzzle file]
 
 [depth]
-# example
+### example
 puzzles/02.slk
 
 1
 
-# finally, run slitherlink
+## finally, run slitherlink
 $ ./slitherlink
 
 
-# Here's links to some docs we are currently using:
+## Docs we're using
 
 [Literature](https://docs.google.com/a/carleton.edu/document/d/1JIbNOp1rgz-ut7pTf2QnSlT59Fw72w0DB6UZx1eAnsY/edit?usp=sharing)
 
