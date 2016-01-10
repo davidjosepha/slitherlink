@@ -11,6 +11,7 @@ class Solver {
     public:
         Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth);
         Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth, EPQ oldEPQ);
+        bool testContradictions() const;
 
     private:
         void solve();
@@ -26,7 +27,7 @@ class Solver {
         void applyRule(int i, int j, Rule & rule, Orientation orient);
         bool ruleApplies(int i, int j, Rule const & rule, Orientation orient) const;
         
-        bool testContradictions() const;
+        
         bool contradictionApplies(int i, int j, Contradiction const & contradiction, Orientation orient) const;
 
         Grid * grid_;
