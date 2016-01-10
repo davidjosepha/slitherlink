@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <time.h>
+#include "generator.h"
 
 int main(int argc, char * argv[]) {
     clock_t startTime, endTime;
