@@ -41,7 +41,11 @@ int main(int argc, char * argv[]) {
     if (grid.isSolved()) {
         std::cout << "We solved it!\n";
     } else {
-        std::cout << "Still not solved!\n";
+        if (solver.testContradictions()) {
+            std::cout << "Stopped solving due to a contradiction\n";
+        } else {
+            std::cout << "Still not solved!\n";
+        }
     }
 
     endTime = clock();

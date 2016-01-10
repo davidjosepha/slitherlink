@@ -1,2 +1,2 @@
-../puzzles/01.slk
+../puzzles/09.slk
 10
