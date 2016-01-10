@@ -1,2 +1,0 @@
-puzzles/09.slk
-10
