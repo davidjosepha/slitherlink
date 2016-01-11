@@ -1,5 +1,10 @@
 # compiled files
 slitherlink
+slsolver
+slgenerator
 
 # ignore vim .swp files
 *.swp
+
+# comeeeee onnnnn
+.DS_STORE

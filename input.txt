@@ -1,2 +1,0 @@
-puzzles/06.slk
-1

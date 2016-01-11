@@ -40,6 +40,28 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     solve();
 }
 
+/* Runs a loop testing each contradiction in each orientation in
+ * each valid position on the grid, checking if the contradiction
+ * applies, and, if so, returning true. */
+bool Solver::testContradictions() const {
+    if (grid_->containsClosedContours()) {
+        return true;
+    }
+    for (int x = 0; x < NUM_CONTRADICTIONS; x++) {
+        for (Orientation orient: (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
+            for (int i = 0; i <= grid_->getHeight() - contradictions_[x].getNumberHeight(orient); i++) {
+                for (int j = 0; j <= grid_->getWidth() - contradictions_[x].getNumberWidth(orient); j++) {
+                    if (contradictionApplies(i, j, contradictions_[x], orient)) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 /* Apply a combination of deterministic rules and
  * recursive guessing to find a solution to a puzzle */
 void Solver::solve() {
@@ -446,28 +468,6 @@ bool Solver::ruleApplies(int i, int j, Rule const & rule, Orientation orient) co
     }
 
     return true;
-}
-
-/* Runs a loop testing each contradiction in each orientation in
- * each valid position on the grid, checking if the contradiction
- * applies, and, if so, returning true. */
-bool Solver::testContradictions() const {
-    if (grid_->containsClosedContours()) {
-        return true;
-    }
-    for (int x = 0; x < NUM_CONTRADICTIONS; x++) {
-        for (Orientation orient: (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
-            for (int i = 0; i <= grid_->getHeight() - contradictions_[x].getNumberHeight(orient); i++) {
-                for (int j = 0; j <= grid_->getWidth() - contradictions_[x].getNumberWidth(orient); j++) {
-                    if (contradictionApplies(i, j, contradictions_[x], orient)) {
-                        return true;
-                    }
-                }
-            }
-        }
-    }
-
-    return false;
 }
 
 /* Checks if a contradiction in a given orientation applies to
