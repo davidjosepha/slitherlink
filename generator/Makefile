@@ -16,6 +16,6 @@ else
 endif
 
 all:
-	$(CC) main.cpp ../solver/solver.cpp ../solver/epq.cpp ../solver/import.cpp ../solver/export.cpp ../solver/lattice.cpp ../solver/grid.cpp ../solver/contour.cpp ../solver/rotate.cpp ../solver/rules.cpp ../solver/rule.cpp ../solver/contradictions.cpp ../solver/contradiction.cpp -o slgenerator $(CCFLAGS)
+	$(CC) main.cpp generator.cpp ../solver/solver.cpp ../solver/epq.cpp ../solver/import.cpp ../solver/export.cpp ../solver/lattice.cpp ../solver/grid.cpp ../solver/contour.cpp ../solver/rotate.cpp ../solver/rules.cpp ../solver/rule.cpp ../solver/contradictions.cpp ../solver/contradiction.cpp -o slgenerator $(CCFLAGS)
 clean:
 	rm *.o slitherlink

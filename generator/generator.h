@@ -4,10 +4,16 @@
 
 class Generator {
     public:
-        Generator();
+        Generator(int m, int n);
 
     private:
-        Grid grid;
+        void genPuzzle();
+        void genLoop();
+        void reduceNumbers();
+
+        Grid grid_;
+        int m_;
+        int n_;
 };
 
 #endif
