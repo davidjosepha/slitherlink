@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <time.h>
 #include "contradiction.h"
@@ -11,11 +12,46 @@
 #include "rule.h"
 #include "rules.h"
 #include "solver.h"
+#include <dirent.h>
 
 int main(int argc, char * argv[]) {
+    int depth = 1;
+    
+    DIR *pDir;
+    struct dirent *pDirent;
+    char * dirname = "../puzzles/";
+    pDir = opendir(dirname);
+    while ((pDirent = readdir(pDir)) != NULL) {
+        std::stringstream ss;
+        std::string s;
+        ss << pDirent->d_name;
+        ss >> s;
+        if (s.find(".slk") != -1) {
+            
+            std::cout << "puzzles/" << s ;
+            std::string fileName = dirname + s;
+            depth = 10;
+
+            Grid grid;
+            Import importer = Import(grid, fileName);
+            Export exporter = Export(grid);
+
+            Rule rules[NUM_RULES];
+            initRules(rules);
+            Contradiction contradictions[NUM_CONTRADICTIONS];
+            initContradictions(contradictions);
+            Solver solver = Solver(grid, rules, contradictions, depth);
+
+            if (grid.isSolved()) {
+                std::cout << " solved\n";
+            } else {
+                std::cout << " not solved\n";
+            }
+        }
+    }
+    
     clock_t startTime, endTime;
     startTime = clock();
-    int depth = 1;
     
     std::ifstream inputFile;
     inputFile.open("input.txt");
