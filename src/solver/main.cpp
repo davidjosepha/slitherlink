@@ -19,24 +19,21 @@ int main(int argc, char * argv[]) {
     clock_t startTime, endTime;
     startTime = clock();
     
+    Rule rules[NUM_RULES];
+    initRules(rules);
+    Contradiction contradictions[NUM_CONTRADICTIONS];
+    initContradictions(contradictions);
+
     for (int i = 1; i < argc; i++) {
-        printf("%s\n", argv[i]);
-    
-        char * fileName = argv[i];
+        char * filename = argv[i];
+        std::cout << "Puzzle: " << filename << std::endl;
 
         Grid grid;
-        Import importer = Import(grid, fileName);
+        Import importer = Import(grid, filename);
         Export exporter = Export(grid);
-        std::cout << "Before:" << std::endl;
-        exporter.print();
 
-        Rule rules[NUM_RULES];
-        initRules(rules);
-        Contradiction contradictions[NUM_CONTRADICTIONS];
-        initContradictions(contradictions);
         Solver solver = Solver(grid, rules, contradictions, MAX_DEPTH);
 
-        std::cout << "After:" << std::endl;
         exporter.print();
 
         if (grid.isSolved()) {
@@ -52,7 +49,7 @@ int main(int argc, char * argv[]) {
 
     endTime = clock();
     float diff = ((float)endTime - (float)startTime) / CLOCKS_PER_SEC;
-    std::cout << "Time to solve:\t" << diff << " seconds" << std::endl;
+    std::cout << "Total time:\t" << diff << " seconds" << std::endl;
 
-    return 0;
+    return EXIT_SUCCESS;
 }
