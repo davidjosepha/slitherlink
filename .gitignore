@@ -2,6 +2,7 @@
 slitherlink
 slsolver
 slgenerator
+*.o
 
 # ignore vim .swp files
 *.swp

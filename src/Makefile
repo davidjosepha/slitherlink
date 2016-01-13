@@ -1,31 +1,22 @@
 CC = clang++
-CCFLAGS = -g
+CCFLAGS = -g -std=gnu++11
 
-ifeq ($(OS),Windows_NT)
-	CCFLAGS += -mwindows -std=c++11
-else
-	UNAME := $(shell uname)
+SOLVER_SOURCES = solver/lattice.cpp solver/solver.cpp solver/epq.cpp solver/import.cpp solver/export.cpp solver/grid.cpp solver/contour.cpp solver/rotate.cpp solver/rules.cpp solver/rule.cpp solver/contradictions.cpp solver/contradiction.cpp
+GENERATOR_SOURCES = generator/generator.cpp
 
-	ifeq ($(UNAME),Linux)
-		CCFLAGS += -std=gnu++11
-	endif
-
-	ifeq ($(UNAME),Darwin)
-		CCFLAGS += -std=gnu++11
-	endif
-endif
-
-SOLVERDEPS = solver/solver.cpp solver/epq.cpp solver/import.cpp solver/export.cpp solver/lattice.cpp solver/grid.cpp solver/contour.cpp solver/rotate.cpp solver/rules.cpp solver/rule.cpp solver/contradictions.cpp solver/contradiction.cpp
-
-GENERATORDEPS = generator/generator.cpp
+SOLVER_OBJECTS = $(SOLVER_SOURCES:.cpp=.o)
+GENERATOR_OBJECTS = $(GENERATOR_SOURCES:.cpp=.o)
 
 all: slsolver slgenerator
 
-slsolver:
-	$(CC) solver/main.cpp $(SOLVERDEPS) -o slsolver $(CCFLAGS)
+slsolver: $(SOLVER_OBJECTS)
+	$(CC) $(CCFLAGS) solver/main.cpp $^ -o $@
 
-slgenerator:
-	$(CC) generator/main.cpp $(GENERATORDEPS) $(SOLVERDEPS) -o slgenerator $(CCFLAGS)
+slgenerator: $(SOLVER_OBJECTS) $(GENERATOR_OBJECTS)
+	$(CC) $(CCFLAGS) generator/main.cpp $^ -o $@
+
+.cpp.o:
+	$(CC) -c $(CCFLAGS) $< -o $@
 
 clean:
-	rm slsolver slgenerator
+	rm slsolver slgenerator solver/*.o generator/*.o
