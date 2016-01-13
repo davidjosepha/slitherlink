@@ -1,17 +1,5 @@
-# slitherlink setup process:
-
-## create input.txt as follows
-[path of the puzzle file]
-
-[depth]
-### example
-puzzles/02.slk
-
-1
-
-## finally, run slitherlink
-$ ./slitherlink
-
+## run slitherlink
+$ ./slitherlink mypuzzle.slk anotherpuzzle.slk
 
 ## Docs we're using
 
