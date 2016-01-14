@@ -9,8 +9,14 @@ class LoopGen {
 
     private:
         void genLoop();
-        LoopCell getLoopCell(int i, int j, LoopCell ** loop) const;
 
+        void initArray();
+        void destroyArray();
+
+        LoopCell getLoopCell(int i, int j) const;
+        Coordinates chooseNext(int i, int j) const;
+
+        LoopCell ** loop_;
         Grid grid_;
         int m_;
         int n_;
