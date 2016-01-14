@@ -8,7 +8,7 @@ class Generator {
 
     private:
         void genPuzzle();
-        void genLoop();
+
         void reduceNumbers();
 
         Grid grid_;
