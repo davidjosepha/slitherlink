@@ -1,5 +1,5 @@
-## run slitherlink
-$ ./slitherlink mypuzzle.slk anotherpuzzle.slk
+## run slitherlink solver
+$ ./slsolver mypuzzle.slk anotherpuzzle.slk
 
 ## Docs we're using
 
