@@ -41,6 +41,8 @@ int main(int argc, char * argv[]) {
         } else {
             if (solver.testContradictions()) {
                 std::cout << "Invalid puzzle" << std::endl;
+            } else if (solver.hasMultipleSolutions()) {
+                std::cout << "Puzzle has multiple solutions" << std::endl;
             } else {
                 std::cout << "Not solved" << std::endl;
             }

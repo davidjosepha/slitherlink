@@ -15,6 +15,8 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     grid_ = &grid;
     depth_ = depth;
 
+    multipleSolutions_ = false;
+
     epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
 
     rules_ = rules;
@@ -31,8 +33,9 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     if (oldEPQ.size() == 0) {
         epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
     } else {
-        epq_.copySubsetPQ(oldEPQ);
+        epq_.copyPQ(oldEPQ);
     }
+    multipleSolutions_ = false;
 
     rules_ = rules;
     contradictions_ = contradictions;
@@ -44,7 +47,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
  * each valid position on the grid, checking if the contradiction
  * applies, and, if so, returning true. */
 bool Solver::testContradictions() const {
-    if (grid_->containsClosedContours()) {
+    if (grid_->containsClosedContours() && !grid_->isSolved()) {
         return true;
     }
     for (int x = 0; x < NUM_CONTRADICTIONS; x++) {
@@ -69,7 +72,7 @@ void Solver::solve() {
         applyRules(NUM_RULES);
 
         for (int d = 0; d < depth_; d++) {
-            if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved()) {
+            if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved() && !multipleSolutions_) {
                 solveDepth(d);
             }
         }
@@ -83,7 +86,7 @@ void Solver::solveDepth(int depth) {
         int initSize = epq_.size();
         int guesses = 0;
 
-        while (!epq_.empty() && guesses++ < initSize) {
+        while (!epq_.empty() && guesses++ < initSize && !multipleSolutions_) {
             if (grid_->getUpdated()) {
                 applyRules(NUM_RULES - NUM_CONST_RULES);
             }
@@ -140,9 +143,28 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
         lineGuess.setHLine(i, j, LINE);
         Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth, epq_);
 
-        /* ensure that if the guess happens to solve the puzzle, we notice */
+        /* If this guess happens to solve the puzzle we need to make sure that
+         * the opposite guess leads to a contradiction, otherwise we know that
+         * there might be multiple solutions */
         if (lineGuess.isSolved()) {
-            lineGuess.copy(*grid_);
+            Grid nLineGuess;
+            grid_->copy(nLineGuess);
+            nLineGuess.setHLine(i, j, NLINE);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
+            if (nLineSolver.testContradictions()) {
+                /* The opposite guess leads to a contradiction
+                 * so the previous found solution is the only one */
+                lineGuess.copy(*grid_);
+            } else if (nLineGuess.isSolved() || nLineSolver.hasMultipleSolutions()) {
+                /* The opposite guess also led to a solution
+                 * so there are multiple solutions */
+                multipleSolutions_ = true;
+            } else {
+                /* The opposite guess led to neither a solution or
+                 * a contradiction, so we can't say whether there are
+                 * more than one solution */
+                grid_->setUpdated(false);
+            }
             return;
         }
         /* test for contradictions; if we encounter one we set the opposite line */
@@ -157,9 +179,17 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
             nLineGuess.setHLine(i, j, NLINE);
             Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
 
-            /* again check if solved */
-            if (nLineGuess.isSolved()) {
-                nLineGuess.copy(*grid_);
+            /* if both guesses led to multiple solutions, we know this puzzle
+             * must also lead to another solution */
+            if (nLineSolver.hasMultipleSolutions() && lineSolver.hasMultipleSolutions()) {
+                multipleSolutions_ = true;
+                return;
+            }
+            /* again check if solved. In this case we already know that we can't
+             * get to a solution or contradiction with the opposite guess, so
+             * we know we can't conclude whether this is the single solution */
+            else if (nLineGuess.isSolved()) {
+                grid_->setUpdated(false);
                 return;
             }
             /* again check for contradictions */
@@ -199,10 +229,28 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
         lineGuess.setVLine(i, j, LINE);
         Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth, epq_);
 
-        /* ensure that if the guess happens to solve the puzzle, we notice */
+        /* If this guess happens to solve the puzzle we need to make sure that
+         * the opposite guess leads to a contradiction, otherwise we know that
+         * there might be multiple solutions */
         if (lineGuess.isSolved()) {
-            lineGuess.copy(*grid_);
-            //free(lineGuess.contours_);
+            Grid nLineGuess;
+            grid_->copy(nLineGuess);
+            nLineGuess.setVLine(i, j, NLINE);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
+            if (nLineSolver.testContradictions()) {
+                /* The opposite guess leads to a contradiction
+                 * so the previous found solution is the only one */
+                lineGuess.copy(*grid_);
+            } else if (nLineGuess.isSolved() || nLineSolver.hasMultipleSolutions()) {
+                /* The opposite guess also led to a solution
+                 * so there are multiple solutions */
+                multipleSolutions_ = true;
+            } else {
+                /* The opposite guess led to neither a solution or
+                 * a contradiction, so we can't say whether there are
+                 * more than one solution */
+                grid_->setUpdated(false);
+            }
             return;
         }
         /* test for contradictions; if we encounter one we set the opposite line */
@@ -217,9 +265,17 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
             nLineGuess.setVLine(i, j, NLINE);
             Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
 
-            /* again check if solved */
-            if (nLineGuess.isSolved()) {
-                nLineGuess.copy(*grid_);
+            /* if both guesses led to multiple solutions, we know this puzzle
+             * must also lead to another solution */
+            if (nLineSolver.hasMultipleSolutions() && lineSolver.hasMultipleSolutions()) {
+                multipleSolutions_ = true;
+                return;
+            }
+            /* again check if solved. In this case we already know that we can't
+             * get to a solution or contradiction with the opposite guess, so
+             * we know we can't conclude whether this is the single solution */
+            else if (nLineGuess.isSolved()) {
+                grid_->setUpdated(false);
                 return;
             }
             /* again check for contradictions */
