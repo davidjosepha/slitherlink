@@ -1,6 +1,13 @@
 ## run slitherlink solver
 $ ./slsolver mypuzzle.slk anotherpuzzle.slk
 
+## proposed run-time
+O((mn)^(2d+1))
+where d is the maximum allowed depth
+
+## analytic run-time
+pending
+
 ## Docs we're using
 
 [Literature](https://docs.google.com/a/carleton.edu/document/d/1JIbNOp1rgz-ut7pTf2QnSlT59Fw72w0DB6UZx1eAnsY/edit?usp=sharing)
