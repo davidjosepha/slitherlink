@@ -9,16 +9,16 @@ void EPQ::initEPQ(int m, int n)  {
     m_ = m;
     n_ = n;
 
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
+    for (int i = 1; i < m-1; i++) {
+        for (int j = 1; j < n-1; j++) {
             pq_.push(createPrioEdge(0, i, j, true)); 
             pq_.push(createPrioEdge(0, i, j, false));
         }
-        pq_.push(createPrioEdge(0, i, n, false));
+        pq_.push(createPrioEdge(0, i, n-1, false));
     }
 
-    for (int j = 0; j < n; j++) {
-        pq_.push(createPrioEdge(0, m, j, true));
+    for (int j = 1; j < n-1; j++) {
+        pq_.push(createPrioEdge(0, m-1, j, true));
     }
 }
 
