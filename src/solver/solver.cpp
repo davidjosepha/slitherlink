@@ -40,6 +40,10 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     rules_ = rules;
     contradictions_ = contradictions;
 
+    while (grid_->getUpdated()) {
+        applyRules(NUM_RULES);
+    }
+
     solve();
 }
 
@@ -68,8 +72,9 @@ bool Solver::testContradictions() const {
 /* Apply a combination of deterministic rules and
  * recursive guessing to find a solution to a puzzle */
 void Solver::solve() {
+    
     while (grid_->getUpdated() && !grid_->isSolved()) {
-        applyRules(NUM_RULES);
+        applyRules(NUM_RULES - NUM_CONST_RULES);
 
         for (int d = 0; d < depth_; d++) {
             if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved() && !multipleSolutions_) {
