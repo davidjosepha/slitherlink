@@ -77,7 +77,7 @@ def addNewSquare(m,n,available,already,cannotExpandFrom,cur):
 			# IDK if this is something we want, but it does make the alg faster
 			else:
 				# since it isn't ok, if it was in available, it now no longer is
-				if isTupleInList(poss,available):
+				if isTupleInList(poss,available) and rand.random() < .5:
 					available.remove(poss)
 		# If cur can no longer expanded from, let the algorithm know
 		if len(possList) <= 0:
@@ -87,17 +87,33 @@ def addNewSquare(m,n,available,already,cannotExpandFrom,cur):
 				return available, already, cannotExpandFrom, cur
 			# find a new cur
 			else:
-				cur = already[rand.randint(0,len(already)-1)]
+				if rand.random() < .1:
+					cur = already[rand.randint(0,len(already)-1)]
+				else:
+					cur = already[-1]
 				already.remove(cur)
+		elif len(possList) == 1 and len(cannotExpandFrom) < len(already) and rand.random() < .9:
+			already.append(cur)
+			if rand.random() < .1:
+					cur = already[rand.randint(0,len(already)-1)]
+			else:
+				cur = already[-2]
+			already.remove(cur)
 		else:
 			break
 	# cur might be able to be used again, so store it
 	already.append(cur)
 	# the new spot is chosen randomly and is the new cur
-	cur = possList[rand.randint(0, len(possList)-1)]
+	newCur = possList[rand.randint(0, len(possList)-1)]
 	# the new cur is no longer available
-	available.remove(cur)
-	return available, already, cannotExpandFrom, cur
+	available.remove(newCur)
+	# if rand.random() < (len(cannotExpandFrom)+10.0)/(len(already) + len(cannotExpandFrom)+len(available)):
+	# 	if rand.random() < .2:
+	# 		cur = already[rand.randint(0, len(already)-1)]
+	# 	already.remove(cur)
+	# 	already.append(newCur)
+	# 	newCur = cur
+	return available, already, cannotExpandFrom, newCur
 
 # returns list of in bounds spots one away from cur in NSEW directions
 def getAdjacent(m,n,cur):
