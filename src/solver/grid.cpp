@@ -100,6 +100,31 @@ bool Grid::setVLine(int i, int j, Edge edge) {
 }
 
 /*
+ * Set a horizontal line to a given edge type, but allows overwrites.
+ * Intended for the purpose of puzzle creation.
+ */
+bool Grid::changeHLine(int i, int j, Edge edge) {
+    assert(0 <= i && i < m_+1 && 0 <= j && j < n_);
+
+    hlines_[i][j] = edge;
+
+
+    return true;
+}
+
+/*
+ * Set a vertical line to a given edge type, but allows overwrites.
+ * Intended for the purpose of puzzle creation. 
+ */
+bool Grid::changeVLine(int i, int j, Edge edge) {
+    assert(0 <= i && i < m_ && 0 <= j && j < n_+1);
+
+    vlines_[i][j] = edge;
+
+    return true;
+}
+
+/*
  * Check whether a given number has been satisfied with the proper number of lines
  * surrounding it.
  */

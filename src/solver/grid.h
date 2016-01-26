@@ -10,6 +10,8 @@ class Grid : public Lattice {
         Grid() { };
         virtual bool setHLine(int i, int j, Edge edge);
         virtual bool setVLine(int i, int j, Edge edge);
+        virtual bool changeHLine(int i, int j, Edge edge);
+        virtual bool changeVLine(int i, int j, Edge edge);
         bool numberSatisfied(int i, int j) const;
         bool isSolved() const;
         void copy(Grid & newGrid);
