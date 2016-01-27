@@ -21,6 +21,12 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
     rules_ = rules;
     contradictions_ = contradictions;
+    
+    while (grid_->getUpdated()) {
+        applyRules(NUM_RULES);
+    }
+    
+    grid_->setUpdated(true);
 
     solve();
 }
@@ -40,9 +46,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     rules_ = rules;
     contradictions_ = contradictions;
 
-    while (grid_->getUpdated()) {
-        applyRules(NUM_RULES);
-    }
+
 
     solve();
 }
