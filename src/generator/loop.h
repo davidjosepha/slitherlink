@@ -14,7 +14,7 @@ class Loop {
         void makeLoop();
         bool attemptAdd(int i, int j);
         bool checkUse(int i, int j);
-        void unmarkNEdges(int i, int j);
+        void unmarkEdges(int i, int j);
         void clearNEdges();
         Grid * grid_;
         int lengthMin_;

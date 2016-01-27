@@ -99,7 +99,7 @@ bool Loop::attemptAdd(int i, int j) {
                         if (checkBeyond) { 
                             return true; 
                         } else {
-                            unmarkNEdges(i, j);
+                            unmarkEdges(i, j);
                             grid_->changeVLine(i, j, NLINE);
                             length_--;
                         }
@@ -129,7 +129,7 @@ bool Loop::attemptAdd(int i, int j) {
                             return true; 
                         } else {
                             
-                            unmarkNEdges(i + 1, j);
+                            unmarkEdges(i + 1, j);
                             grid_->changeVLine(i, j, NLINE);
                             length_--;
                         }
@@ -158,7 +158,7 @@ bool Loop::attemptAdd(int i, int j) {
                         if (checkBeyond) { 
                             return true; 
                         } else {
-                            unmarkNEdges(i, j);
+                            unmarkEdges(i, j);
                             grid_->changeHLine(i, j, NLINE);
                             length_--;
                         }
@@ -187,7 +187,7 @@ bool Loop::attemptAdd(int i, int j) {
                         if (checkBeyond) {
                             return true; 
                         } else {
-                            unmarkNEdges(i, j + 1);
+                            unmarkEdges(i, j + 1);
                             length_--;
                             grid_->changeHLine(i, j, NLINE);
                         }
