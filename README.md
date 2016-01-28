@@ -3,7 +3,8 @@ $ ./slsolver mypuzzle.slk anotherpuzzle.slk
 
 ## proposed run-time
 O((mn)^(2d+1))
-where d is the maximum allowed depth
+
+where d is depth (the maximum nembe rof consecutive guesses needed to solve a specific puzzle), m is the puzzle's height (in terms of number of squares), and n is the puzzle's width.
 
 Depth 0 (no guessing): 0.610963 seconds
 
@@ -30,15 +31,15 @@ Depth 2: 138.411 seconds (100% completed)
 
 ####Run Time on empty 3x3 puzzle (has to make every possible combination of guesses):
 
-Depth 0: 0.001111
+Depth 0: 0.001111 seconds
 
-Depth 1: 0.033743
+Depth 1: 0.033743 seconds
 
-Depth 2: 1.19998
+Depth 2: 1.19998 seconds
 
-Depth 3: 57.2004
+Depth 3: 57.2004 seconds 
 
-Depth 4: 2587.52
+Depth 4: 2587.52 seconds
 
 ## Docs we're using
 
