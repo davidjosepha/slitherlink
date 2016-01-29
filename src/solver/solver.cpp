@@ -21,11 +21,11 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
     rules_ = rules;
     contradictions_ = contradictions;
-    
+
     while (grid_->getUpdated()) {
         applyRules(NUM_RULES);
     }
-    
+
     grid_->setUpdated(true);
 
     solve();
@@ -76,7 +76,6 @@ bool Solver::testContradictions() const {
 /* Apply a combination of deterministic rules and
  * recursive guessing to find a solution to a puzzle */
 void Solver::solve() {
-    
     while (grid_->getUpdated() && !grid_->isSolved()) {
         applyRules(NUM_RULES - NUM_CONST_RULES);
 
@@ -388,15 +387,18 @@ void Solver::applyRules(int numRules) {
     while (grid_->getUpdated()) {
         grid_->setUpdated(false);
 
-        for (int x = 0; x < numRules; x++) {
-            for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
-                for (int i = 0; i <= grid_->getHeight() - rules_[x].getNumberHeight(orient); i++) {
-                    for (int j = 0; j <= grid_->getWidth() - rules_[x].getNumberWidth(orient); j++) {
-                        if (ruleApplies(i, j, rules_[x], orient)) {
-                            applyRule(i, j, rules_[x], orient);
+        for (int i = 0; i < grid_->getHeight(); i++) {
+            for (int j = 0; j < grid_->getWidth(); j++) {
+                if (grid_->getUpdateMatrix(i, j)) {
+                    for (int x = 0; x < numRules; x++) {
+                        for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
+                            if (ruleApplies(i, j, rules_[x], orient)) {
+                                applyRule(i, j, rules_[x], orient);
+                            }
                         }
                     }
                 }
+                grid_->setUpdateMatrix(i, j, false);
             }
         }
     }
@@ -471,6 +473,9 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
 bool Solver::ruleApplies(int i, int j, Rule const & rule, Orientation orient) const {
     int m = rule.getHeight();
     int n = rule.getWidth();
+    if (i > grid_->getHeight() - rule.getNumberWidth(orient) || j > grid_->getWidth() - rule.getNumberWidth(orient)) {
+        return false;
+    }
 
     std::vector<NumberPosition> const * numberPattern = rule.getNumberPattern();
     for (int k = 0; k < numberPattern->size(); k++) {

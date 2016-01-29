@@ -48,6 +48,7 @@ void Import::buildLattice(std::string filename) {
         slkfile >> m;
         slkfile >> n;
         lattice_->initArrays(m+2, n+2);
+        lattice_->initUpdateMatrix();
 
         /* blank lines */
         std::getline(slkfile, buffer);
