@@ -18,6 +18,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     multipleSolutions_ = false;
 
     epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
+    updateEPQ();
 
     rules_ = rules;
     contradictions_ = contradictions;
@@ -32,7 +33,9 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
     if (oldEPQ.size() == 0) {
         epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
+        updateEPQ();
     } else {
+        epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
         epq_.copyPQ(oldEPQ);
     }
     multipleSolutions_ = false;
@@ -72,10 +75,12 @@ bool Solver::testContradictions() const {
 /* Apply a combination of deterministic rules and
  * recursive guessing to find a solution to a puzzle */
 void Solver::solve() {
-    
     while (grid_->getUpdated() && !grid_->isSolved()) {
         applyRules(NUM_RULES - NUM_CONST_RULES);
-
+        // updatePQ
+        if (epq_.size() < epqSize_/2) {
+            updateEPQ();
+        }
         for (int d = 0; d < depth_; d++) {
             if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved() && !multipleSolutions_) {
                 solveDepth(d);
@@ -84,8 +89,104 @@ void Solver::solve() {
     }
 }
 
+/* */
+void Solver::updateEPQ() {
+    epq_.empty();
+
+    int m = grid_->getHeight();
+    int n = grid_->getWidth();
+    for (int i = 1; i < m ; i++) {
+        for (int j = 1; j < n-1; j++) {
+            if (grid_->getHLine(i,j) != EMPTY) {
+                continue;
+            }
+            float prio = grid_->getHLine(i,j-1) != EMPTY + grid_->getHLine(i,j+1) != EMPTY +
+            grid_->getHLine(i+1,j) != EMPTY + grid_->getHLine(i-1,j) != EMPTY + grid_->getVLine(i-1,j+1) != EMPTY +
+            grid_->getVLine(i-1,j) != EMPTY + grid_->getVLine(i,j) != EMPTY + grid_->getVLine(i,j+1) != EMPTY;
+            // if (grid_->getHLine(i,j-1) != EMPTY) {
+            //     prio = prio + 1;
+            //     //do stuff
+            // }
+            // if (grid_->getHLine(i,j+1) != EMPTY) {
+            //     prio = prio + 1;
+            //     //do stuff
+            // }
+            // if (grid_->getHLine(i+1,j) != EMPTY) {
+            //     prio = prio + .5;
+            //     //do stuff
+            // }
+            // if (grid_->getHLine(i-1,j) != EMPTY) {
+            //     prio = prio + .5;
+            //     //do stuff
+            // }
+            // if (grid_->getVLine(i-1,j+1) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getVLine(i-1,j) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getVLine(i,j) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getVLine(i,j+1) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            if (prio > 0) {
+                epq_.emplace(prio, i, j, true);
+            } 
+        }
+    }
+
+    for (int i = 1; i < m-1; i++) {
+        for (int j = 1; j < n; j++) {
+            if (grid_->getVLine(i,j) != EMPTY) {
+                continue;
+            }
+            float prio = grid_->getVLine(i-1,j) != EMPTY + grid_->getVLine(i+1,j) != EMPTY + 
+            grid_->getVLine(i,j-1) != EMPTY + grid_->getVLine(i,j+1) != EMPTY + grid_->getHLine(i,j-1) != EMPTY +
+            grid_->getHLine(i+1,j-1) != EMPTY + grid_->getHLine(i,j) != EMPTY + grid_->getHLine(i+1,j) != EMPTY;
+            // if (grid_->getVLine(i-1,j) != EMPTY) {
+            //     prio = prio + 1;
+            //     //do stuff
+            // }
+            // if (grid_->getVLine(i+1,j) != EMPTY) {
+            //     prio = prio + 1;
+            //     //do stuff
+            // }
+            // if (grid_->getVLine(i,j-1) != EMPTY) {
+            //     prio = prio + .5;
+            //     //do stuff
+            // }
+            // if (grid_->getVLine(i,j+1) != EMPTY) {
+            //     prio = prio + .5;
+            //     //do stuff
+            // }
+            // if (grid_->getHLine(i,j-1) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getHLine(i+1,j-1) != EMPTY) {
+            //     prio = prio + 1;    
+            // }
+            // if (grid_->getHLine(i,j) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getHLine(i+1,j) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            if (prio > 0) {
+                epq_.emplace(prio, i, j, false);
+            }
+        }
+    }
+    epqSize_ = epq_.size();
+}
+
+
 /* Make a guess in each valid position in the graph */
 void Solver::solveDepth(int depth) {
+    if (epq_.size() < epqSize_/2) {
+        updateEPQ();
+    }
     bool usingPrioQueue = true;
     if (usingPrioQueue) {
         int initSize = epq_.size();
@@ -100,16 +201,20 @@ void Solver::solveDepth(int depth) {
 
             if (pe.h) {
                 makeHLineGuess(pe.coords.i, pe.coords.j, depth);
-                if (grid_->getHLine(pe.coords.i, pe.coords.j) == EMPTY) {
-                    pe.priority = pe.priority - 1;
-                    epq_.push(pe);
-                }
+                // if (grid_->getHLine(pe.coords.i, pe.coords.j) == EMPTY) {
+                //     if (pe.priority > 1) {
+                //         pe.priority = pe.priority - 2;
+                //         epq_.push(pe);
+                //     }
+                // }
             } else {
                 makeVLineGuess(pe.coords.i, pe.coords.j, depth);
-                if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
-                    pe.priority = pe.priority - 1;
-                    epq_.push(pe);
-                }
+                // if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
+                //     if (pe.priority > 1) {
+                //         pe.priority = pe.priority - 2;
+                //         epq_.push(pe);
+                //     }
+                // }
             }
             epq_.pop();
         }

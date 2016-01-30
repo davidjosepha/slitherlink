@@ -20,6 +20,8 @@ class Solver {
         void makeHLineGuess(int i, int j, int depth);
         void makeVLineGuess(int i, int j, int depth);
 
+        void updateEPQ();
+
         bool spiralNext(int startm, int startn, int & prevm, int & prevn) const;
 
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
@@ -36,6 +38,7 @@ class Solver {
         Rule * rules_;
         Contradiction * contradictions_;
         EPQ epq_;
+        int epqSize_;
         bool multipleSolutions_;
 };
 
