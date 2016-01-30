@@ -8,9 +8,11 @@ class Import {
     public:
         Import();
         Import(Grid & lattice, std::string filename);
+        Import(Grid & lattice, int m, int n);
 
     private:
         void buildLattice(std::string filename);
+        void buildEmptyLattice(int m, int n);
         void importNumberRow(int i, std::string row);
         void importHLineRow(int i, std::string row);
         void importVLineRow(int i, std::string row);

@@ -8,8 +8,13 @@
 class Grid : public Lattice {
     public:
         Grid() { };
+        void initUpdateMatrix();
+        int getUpdateMatrix(int i, int j);
+        void setUpdateMatrix(int i, int j, bool b);
         virtual bool setHLine(int i, int j, Edge edge);
         virtual bool setVLine(int i, int j, Edge edge);
+        virtual bool changeHLine(int i, int j, Edge edge);
+        virtual bool changeVLine(int i, int j, Edge edge);
         bool numberSatisfied(int i, int j) const;
         bool isSolved() const;
         void copy(Grid & newGrid);
@@ -19,6 +24,7 @@ class Grid : public Lattice {
 
     private:
         void mergeContours(Contour & newContour);
+        bool ** updateMatrix_;
         bool valid_ = true;
 
         std::vector<Contour> contours_;
