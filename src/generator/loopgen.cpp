@@ -53,6 +53,8 @@ LoopCell LoopGen::getLoopCell(int i, int j) const {
     }
 }
 
+
+
 /* randomly select one of the adjacent cells that is
  * UNKNOWN and set position to those coordinates */
 Coordinates LoopGen::chooseNext(int i, int j) const {
@@ -80,6 +82,52 @@ Coordinates LoopGen::chooseNext(int i, int j) const {
         if (getLoopCell(i, j) == UNKNOWN) {
             foundnext = true;
             return Coordinates { i, j };
+        }
+    }
+}
+
+/* Fills grid with the appropriate numbers for a given loop */
+void LoopGen::fillGrid() {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            int borderCount = 0;
+            if (loop_[i][j] == IN) {
+                if (loop_[i-1][j] == OUT) {
+                    count++;
+                }
+                if (loop_[i+1][j] == OUT) {
+                    count++;
+                }
+                if (loop_[i][j-1] == OUT) {
+                    count++;
+                }
+                if (loop_[i][j+1] == OUT) {
+                    count++;
+                }
+            } else {
+                if (loop_[i-1][j] == IN) {
+                    count++;
+                }
+                if (loop_[i+1][j] == IN) {
+                    count++;
+                }
+                if (loop_[i][j-1] == IN) {
+                    count++;
+                }
+                if (loop_[i][j+1] == IN) {
+                    count++;
+                }
+            }
+            
+            if (borderCount == 0) {
+                grid_->setNumbers(i+1, j+1, ZERO);
+            } else if (borderCount == 1) {
+                grid_->setNumbers(i+1, j+1, ONE);
+            } else if (borderCount == 2) {
+                grid_->setNumbers(i+1, j+1, TWO);
+            } else if (borderCount == 3) {
+                grid_->setNumbers(i+1, j+1, THREE);
+            }
         }
     }
 }
