@@ -18,7 +18,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     multipleSolutions_ = false;
 
     epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
-    updateEPQ();
+    //updateEPQ();
 
     rules_ = rules;
     contradictions_ = contradictions;
@@ -39,9 +39,9 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
     if (oldEPQ.size() == 0) {
         epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
-        updateEPQ();
+        //updateEPQ();
     } else {
-        epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
+        //epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
         epq_.copyPQ(oldEPQ);
     }
     multipleSolutions_ = false;
@@ -82,9 +82,9 @@ void Solver::solve() {
     while (grid_->getUpdated() && !grid_->isSolved()) {
         applyRules(NUM_RULES - NUM_CONST_RULES);
         // updatePQ
-        if (epq_.size() < epqSize_/2) {
-            updateEPQ();
-        }
+        //if (epq_.size() < epqSize_/2) {
+        //    updateEPQ();
+        //}
         for (int d = 0; d < depth_; d++) {
             if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved() && !multipleSolutions_) {
                 solveDepth(d);
@@ -188,9 +188,9 @@ void Solver::updateEPQ() {
 
 /* Make a guess in each valid position in the graph */
 void Solver::solveDepth(int depth) {
-    if (epq_.size() < epqSize_/2) {
-        updateEPQ();
-    }
+    //if (epq_.size() < epqSize_/2) {
+    //    updateEPQ();
+    //}
     bool usingPrioQueue = true;
     if (usingPrioQueue) {
         int initSize = epq_.size();
@@ -205,20 +205,16 @@ void Solver::solveDepth(int depth) {
 
             if (pe.h) {
                 makeHLineGuess(pe.coords.i, pe.coords.j, depth);
-                // if (grid_->getHLine(pe.coords.i, pe.coords.j) == EMPTY) {
-                //     if (pe.priority > 1) {
-                //         pe.priority = pe.priority - 2;
-                //         epq_.push(pe);
-                //     }
-                // }
+                if (grid_->getHLine(pe.coords.i, pe.coords.j) == EMPTY) {
+                    pe.priority = pe.priority - 1;
+                    epq_.push(pe);
+                }
             } else {
                 makeVLineGuess(pe.coords.i, pe.coords.j, depth);
-                // if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
-                //     if (pe.priority > 1) {
-                //         pe.priority = pe.priority - 2;
-                //         epq_.push(pe);
-                //     }
-                // }
+                if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
+                    pe.priority = pe.priority - 1;
+                    epq_.push(pe);
+                }
             }
             epq_.pop();
         }
