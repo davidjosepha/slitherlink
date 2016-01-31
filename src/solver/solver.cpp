@@ -32,6 +32,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     solve();
 }
 
+
 /* Constructor for when the EPQ should be passed down. */
 Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth, EPQ oldEPQ) {
     grid_ = &grid;
@@ -52,6 +53,11 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
 
     solve();
+}
+
+void Solver::resetSolver() {
+    grid_->resetGrid();
+    multipleSolutions_ = false;
 }
 
 /* Runs a loop testing each contradiction in each orientation in

@@ -13,6 +13,7 @@ class Solver {
         Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth, EPQ oldEPQ);
         bool testContradictions() const;
         bool hasMultipleSolutions() const {return multipleSolutions_;};
+        void resetSolver();
 
     private:
         void solve();

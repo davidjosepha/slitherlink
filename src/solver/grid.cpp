@@ -26,6 +26,27 @@ void Grid::mergeContours(Contour & newContour) {
     }
 }
 
+void Grid::resetGrid() {
+    contours_.clear();
+    for (int i = 1; i < getHeight(); i++) {
+        for (int j = 1; j < getWidth()-1; j++) {
+            hlines_[i][j] = EMPTY;
+        }
+    }
+
+    for (int i = 1; i < getHeight()-1; i++) {
+        for (int j = 1; j < getWidth(); j++) {
+            vlines_[i][j] = EMPTY;
+        }
+    }
+
+    for (int i = 0; i < getHeight(); i++) {
+        for (int j = 0; j < getWidth(); j++) {
+            setUpdateMatrix(i, j, true);
+        }
+    }
+}
+
 int Grid::getUpdateMatrix(int i, int j) {
     return updateMatrix_[i][j];
 }
@@ -138,7 +159,7 @@ bool Grid::changeHLine(int i, int j, Edge edge) {
 
 /*
  * Set a vertical line to a given edge type, but allows overwrites.
- * Intended for the purpose of puzzle creation. 
+ * Intended for the purpose of puzzle creation.
  */
 bool Grid::changeVLine(int i, int j, Edge edge) {
     assert(0 <= i && i < m_ && 0 <= j && j < n_+1);
