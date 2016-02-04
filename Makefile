@@ -1,30 +1,38 @@
 CC = clang++
 CCFLAGS = -g -std=gnu++11
 
-SOLVER_SOURCES := $(filter-out src/solver/main.cpp, $(wildcard src/solver/*.cpp))
-GENERATOR_SOURCES := $(filter-out src/generator/main.cpp, $(wildcard src/generator/*.cpp))
-SOLVER_MAIN := src/solver/main.cpp
-GENERATOR_MAIN := src/generator/main.cpp
+OBJ_DIR := obj
+SRC_DIR := src
+SOLVER_DIR := $(SRC_DIR)/solver
+GENERATOR_DIR := $(SRC_DIR)/generator
 
-SOLVER_OBJECTS := $(addprefix obj/, $(notdir $(SOLVER_SOURCES:.cpp=.o)))
-GENERATOR_OBJECTS := $(addprefix obj/, $(notdir $(GENERATOR_SOURCES:.cpp=.o)))
-SOLVER_MAIN_O := $(addprefix obj/, main_solver.o)
-GENERATOR_MAIN_O := $(addprefix obj/, main_generator.o)
+SOLVER_EXEC := slsolver
+GENERATOR_EXEC := slgenerator
 
-all: directories slsolver slgenerator
+SOLVER_SOURCES := $(filter-out $(SOLVER_DIR)/main.cpp, $(wildcard $(SOLVER_DIR)/*.cpp))
+GENERATOR_SOURCES := $(filter-out $(GENERATOR_DIR)/main.cpp, $(wildcard $(GENERATOR_DIR)/*.cpp))
+SOLVER_MAIN := $(SOLVER_DIR)/main.cpp
+GENERATOR_MAIN := $(GENERATOR_DIR)/main.cpp
 
-directories: obj
+SOLVER_OBJECTS := $(addprefix $(OBJ_DIR)/, $(notdir $(SOLVER_SOURCES:.cpp=.o)))
+GENERATOR_OBJECTS := $(addprefix $(OBJ_DIR)/, $(notdir $(GENERATOR_SOURCES:.cpp=.o)))
+SOLVER_MAIN_O := $(addprefix $(OBJ_DIR)/, main_solver.o)
+GENERATOR_MAIN_O := $(addprefix $(OBJ_DIR)/, main_generator.o)
 
-slsolver: $(SOLVER_OBJECTS) $(SOLVER_MAIN_O)
+all: directories $(SOLVER_EXEC) $(GENERATOR_EXEC)
+
+directories: $(OBJ_DIR)
+
+$(SOLVER_EXEC): $(SOLVER_OBJECTS) $(SOLVER_MAIN_O)
 	$(CC) $(CCFLAGS) $^ -o $@
 
-slgenerator: $(SOLVER_OBJECTS) $(GENERATOR_OBJECTS) $(GENERATOR_MAIN_O)
+$(GENERATOR_EXEC): $(SOLVER_OBJECTS) $(GENERATOR_OBJECTS) $(GENERATOR_MAIN_O)
 	$(CC) $(CCFLAGS) $^ -o $@
 
-obj/%.o: src/solver/%.cpp
+$(OBJ_DIR)/%.o: $(SOLVER_DIR)/%.cpp $(SOLVER_DIR)/%.h
 	$(CC) -c $(CCFLAGS) $< -o $@
 
-obj/%.o: src/generator/%.cpp
+$(OBJ_DIR)/%.o: $(GENERATOR_DIR)/%.cpp $(GENERATOR_DIR)/%.h
 	$(CC) -c $(CCFLAGS) $< -o $@
 
 $(SOLVER_MAIN_O): $(SOLVER_MAIN)
@@ -33,8 +41,8 @@ $(SOLVER_MAIN_O): $(SOLVER_MAIN)
 $(GENERATOR_MAIN_O): $(GENERATOR_MAIN)
 	$(CC) -c $(CCFLAGS) $< -o $@
 
-obj:
+$(OBJ_DIR):
 	mkdir -p $@
 
 clean:
-	rm slsolver slgenerator obj/*.o
+	rm $(SOLVER_EXEC) $(GENERATOR_EXEC) $(OBJ_DIR)/*.o
