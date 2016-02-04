@@ -28,6 +28,7 @@ class Grid : public Lattice {
         void mergeContours(Contour & newContour);
         bool ** updateMatrix_;
         bool valid_ = true;
+        bool init_ = false;
 
         std::vector<Contour> contours_;
 };

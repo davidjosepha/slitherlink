@@ -5,8 +5,11 @@
 #include "enums.h"
 
 Grid::~Grid() {
-    for (int i = 0; i < m_; i++) {
-        delete [] updateMatrix_[i];
+    if (init_) {
+        for (int i = 0; i < m_; i++) {
+            delete [] updateMatrix_[i];
+        }
+        delete [] updateMatrix_;
     }
 }
 
@@ -237,11 +240,16 @@ bool Grid::containsClosedContours() const {
 }
 
 void Grid::initUpdateMatrix() {
-    updateMatrix_ = new bool*[getHeight()];
-    for (int i = 0; i < getHeight(); i++) {
-        updateMatrix_[i] = new bool[getWidth()];
-        for (int j = 0; j < getWidth(); j++) {
-            updateMatrix_[i][j] = true;
+
+    if (!init_) {
+        updateMatrix_ = new bool*[m_];
+        for (int i = 0; i < getHeight(); i++) {
+            updateMatrix_[i] = new bool[n_];
+            for (int j = 0; j < getWidth(); j++) {
+                updateMatrix_[i][j] = true;
+            }
         }
     }
+
+    init_ = true;
 };
