@@ -8,6 +8,7 @@
 class Grid : public Lattice {
     public:
         Grid() { };
+        ~Grid();
         void initUpdateMatrix();
         int getUpdateMatrix(int i, int j);
         void setUpdateMatrix(int i, int j, bool b);
