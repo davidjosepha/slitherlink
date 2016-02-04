@@ -100,6 +100,7 @@ void Import::buildLattice(std::string filename) {
 void Import::buildEmptyLattice(int m, int n) {
     
     lattice_->initArrays(m+2, n+2);
+    lattice_->initUpdateMatrix();
     
     for (int i = 0; i < m+1; i++) {
         lattice_->setHLine(i+1, 0, NLINE);
