@@ -19,7 +19,6 @@ class LoopGen {
         void destroyArray();
 
         Coordinates addCell(Coordinates cur);
-        /* void pickDirections(std::vector<Coordinates> & directions, Coordinates cur) const; */
         Coordinates pickDirection(Coordinates cur) const;
         bool isExpandable(Coordinates cur);
         AdjacencyList getAdjacent(Coordinates cur) const;

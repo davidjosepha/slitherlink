@@ -29,6 +29,8 @@ Generator::Generator(int m, int n) {
     Solver solver = Solver(grid_, rules_, contradictions_, 0);
     grid_.resetGrid();
 
+    /* TODO: Clean this shit up */
+    /* please */
     int count = 0;
     while (count < ((m_)*(n_)*2)) {
         count++;
@@ -58,24 +60,3 @@ void Generator::genPuzzle() { }
 
 /* Remove numbers from the grid while keeping exactly one solution */
 void Generator::reduceNumbers() { }
-
-/* Fills grid with the appropriate numbers for a given loop */
-void Generator::fillGrid() {
-    for (int i = 1; i < m_+1; i++) {
-        for (int j = 1; j < n_+1; j++) {
-            int borderCount = int(grid_.getHLine(i,j) == LINE) +
-                          int(grid_.getHLine(i+1,j) == LINE) +
-                          int(grid_.getVLine(i,j) == LINE) +
-                          int(grid_.getVLine(i,j+1) == LINE);
-            if (borderCount == 0) {
-                grid_.setNumber(i, j, ZERO);
-            } else if (borderCount == 1) {
-                grid_.setNumber(i, j, ONE);
-            } else if (borderCount == 2) {
-                grid_.setNumber(i, j, TWO);
-            } else if (borderCount == 3) {
-                grid_.setNumber(i, j, THREE);
-            }
-        }
-    }
-}

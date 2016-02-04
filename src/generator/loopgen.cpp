@@ -21,8 +21,10 @@ LoopGen::LoopGen(int m, int n, Grid & grid) {
     destroyArray();
 }
 
+/* fill the grid with numbers after generating the loop */
 void LoopGen::fillGrid() {
     /*
+     * Prints loop
     for (int i = 0; i < m_; i++) {
         for (int j = 0; j < n_; j++) {
             if (loop_[i][j] != UNKNOWN && loop_[i][j] != OUT) {
@@ -59,6 +61,7 @@ void LoopGen::fillGrid() {
     }
 }
 
+/* count the number of lines adjacent to a given cell */
 int LoopGen::countLines(int i, int j) const {
     int lines = 0;
 
@@ -83,6 +86,7 @@ int LoopGen::countLines(int i, int j) const {
     return lines;
 }
 
+/* check whether a particular cell is inside the loop */
 bool LoopGen::inLoop(int i, int j) const {
     return loop_[i][j] == EXP || loop_[i][j] == NOEXP;
 }
@@ -115,7 +119,6 @@ void LoopGen::genLoop() {
     avail.push_back(cur);
 
     for (int i = 0; i < 300000; i++) {
-        //printf("%d\n", avail.size());
         cur = pickCell(avail);
 
         if (cur.i == -1 || cur.j == -1) {
@@ -134,6 +137,7 @@ void LoopGen::genLoop() {
     }
 }
 
+/* add a cell branching of from an existing cell */
 Coordinates LoopGen::addCell(Coordinates cur) {
     assert(cur.i >= 0 && cur.i < m_ && cur.j >= 0 && cur.j < n_);
 
@@ -150,20 +154,6 @@ Coordinates LoopGen::addCell(Coordinates cur) {
         return cur;
     }
 
-    /*
-    std::vector<Coordinates> directions = std::vector<Coordinates>();
-    pickDirections(directions, cur);
-    Coordinates newpos;
-
-    for (int i = 0; i < directions.size(); i++) {
-        newpos = directions[i];
-        if (inBounds(newpos) && loop_[newpos.i][newpos.j] == UNKNOWN) {
-            break;
-        }
-        return cur;
-    }
-    */
-
     AdjacencyList adjacencyList = getAdjacent(newpos);
 
     if (!adjacencyList.u && !adjacencyList.d && !adjacencyList.l && !adjacencyList.r) {
@@ -174,17 +164,6 @@ Coordinates LoopGen::addCell(Coordinates cur) {
     loop_[newpos.i][newpos.j] = (validCell(newpos, cur)) ? EXP : OUT;
     return newpos;
 }
-
-/*
-void LoopGen::pickDirections(std::vector<Coordinates> & directions, Coordinates cur) const {
-    directions.push_back({ cur.i + 1, cur.j });
-    directions.push_back({ cur.i - 1, cur.j });
-    directions.push_back({ cur.i, cur.j + 1 });
-    directions.push_back({ cur.i, cur.j - 1 });
-
-    std::random_shuffle(directions.begin(), directions.end());
-}
-*/
 
 /* pick some direction up/down/left/right from cur */
 Coordinates LoopGen::pickDirection(Coordinates cur) const {
@@ -219,6 +198,7 @@ AdjacencyList LoopGen::getAdjacent(Coordinates cur) const {
     return adjacencyList;
 }
 
+/* Adds a cell to the vector of available cells, if it is not already in the vector */
 void LoopGen::addAvailable(Coordinates coords, std::vector<Coordinates> & avail) const {
     for (int i = 0; i < avail.size(); i++) {
         if (avail[i].i == coords.i && avail[i].j == coords.j) {
@@ -229,6 +209,7 @@ void LoopGen::addAvailable(Coordinates coords, std::vector<Coordinates> & avail)
     avail.push_back(coords);
 }
 
+/* pick a cell adjacent to the current one--up, down, left, or right */
 Coordinates LoopGen::pickCell(std::vector<Coordinates> & avail) const {
     Coordinates guess;
 
@@ -244,7 +225,7 @@ Coordinates LoopGen::pickCell(std::vector<Coordinates> & avail) const {
     }
 }
 
-/* Don't change this function, David. Like really, don't. You're gonna fuck something up like you always do. */
+/* Don't change this function, David. Like really, don't. */
 bool LoopGen::validCell(Coordinates coords, Coordinates cur) const {
     bool valid = true;
 
@@ -293,11 +274,13 @@ bool LoopGen::validCell(Coordinates coords, Coordinates cur) const {
     return valid;
 }
 
+/* check whether a cell (or, potentially, noncell) is inside the loop */
 bool LoopGen::cellOpen(int i, int j) const {
     Coordinates coords = { i, j };
     return !inBounds(coords) || loop_[coords.i][coords.j] == UNKNOWN || loop_[coords.i][coords.j] == OUT;
 }
 
+/* check whether a particular set of coordinates are within the bounds of the grid */
 bool LoopGen::inBounds(Coordinates coords) const {
     return coords.i >= 0 && coords.j >= 0 && coords.i < m_ && coords.j < n_;
 }

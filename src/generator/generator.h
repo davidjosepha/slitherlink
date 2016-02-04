@@ -11,14 +11,13 @@ class Generator {
     private:
         void genPuzzle();
 
-        void fillGrid();
         void reduceNumbers();
 
+        int m_;
+        int n_;
         Grid grid_;
         Rule * rules_;
         Contradiction * contradictions_;
-        int m_;
-        int n_;
 };
 
 #endif

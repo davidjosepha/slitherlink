@@ -1,6 +1,4 @@
 #include <iostream>
-#include <fstream>
-#include <string>
 #include <time.h>
 #include "generator.h"
 
@@ -9,7 +7,7 @@ int main(int argc, char * argv[]) {
     startTime = clock();
     int depth = 1;
 
-    Generator g = Generator(8, 8); //one square for left/right top/bottom boundries
+    Generator g = Generator(5, 5); //one square for left/right top/bottom boundries
 
     endTime = clock();
     float diff = ((float)endTime - (float)startTime) / CLOCKS_PER_SEC;
