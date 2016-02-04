@@ -9,7 +9,7 @@ int main(int argc, char * argv[]) {
     startTime = clock();
     int depth = 1;
 
-    Generator g = Generator(12,12); //one square for left/right top/bottom boundries
+    Generator g = Generator(8, 8); //one square for left/right top/bottom boundries
 
     endTime = clock();
     float diff = ((float)endTime - (float)startTime) / CLOCKS_PER_SEC;

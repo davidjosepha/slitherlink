@@ -1,4 +1,5 @@
 #include "generator.h"
+#include "loopgen.h"
 #include "../solver/import.h"
 #include "../solver/export.h"
 #include "../solver/contradiction.h"
@@ -13,21 +14,26 @@
 Generator::Generator(int m, int n) {
     m_ = m;
     n_ = n;
+
     srand(time(NULL));
     Rule rules_[NUM_RULES];
     initRules(rules_);
     Contradiction contradictions_[NUM_CONTRADICTIONS];
     initContradictions(contradictions_);
-    Import importer = Import(grid_, "test.slk");
+
+    Import importer = Import(grid_, m_, n_);
     Export exporter = Export(grid_);
-    fillGrid();
+    LoopGen loopgen = LoopGen(m_, n_, grid_);
+    exporter.print();
+
     Solver solver = Solver(grid_, rules_, contradictions_, 0);
     grid_.resetGrid();
+
     int count = 0;
-    while (count < ((m_-2)*(n_-2)*2)) {
+    while (count < ((m_)*(n_)*2)) {
         count++;
-        int y = rand() % (n_-2) + 1;
-        int x = rand() % (m_-2) + 1;
+        int y = rand() % (n_) + 1;
+        int x = rand() % (m_) + 1;
         Number oldNum = grid_.getNumber(y, x);
         grid_.setNumber(y, x, NONE);
         grid_.resetGrid();
@@ -55,8 +61,8 @@ void Generator::reduceNumbers() { }
 
 /* Fills grid with the appropriate numbers for a given loop */
 void Generator::fillGrid() {
-    for (int i = 1; i < m_-1; i++) {
-        for (int j = 1; j < n_-1; j++) {
+    for (int i = 1; i < m_+1; i++) {
+        for (int j = 1; j < n_+1; j++) {
             int borderCount = int(grid_.getHLine(i,j) == LINE) +
                           int(grid_.getHLine(i+1,j) == LINE) +
                           int(grid_.getVLine(i,j) == LINE) +
