@@ -1,6 +1,7 @@
 #include "rules.h"
-#include "constants.h"
 #include "rule.h"
+#include "../shared/constants.h"
+#include "../shared/lattice.h"
 
 /* Initializes the rules array with each deterministic rule
  * used by the Solver to complete the grid. By convention the

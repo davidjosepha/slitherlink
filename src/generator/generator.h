@@ -1,6 +1,6 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H
-#include "../solver/grid.h"
+#include "../shared/grid.h"
 #include "../solver/rule.h"
 #include "../solver/contradiction.h"
 

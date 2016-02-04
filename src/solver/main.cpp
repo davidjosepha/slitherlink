@@ -5,13 +5,13 @@
 #include <time.h>
 #include "contradiction.h"
 #include "contradictions.h"
-#include "export.h"
-#include "grid.h"
-#include "import.h"
-#include "lattice.h"
 #include "rule.h"
 #include "rules.h"
 #include "solver.h"
+#include "../shared/export.h"
+#include "../shared/grid.h"
+#include "../shared/import.h"
+#include "../shared/lattice.h"
 
 #define MAX_DEPTH 10
 

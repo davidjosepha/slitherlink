@@ -1,7 +1,7 @@
 #include "epq.h"
 #include <cassert>
 #include <queue>
-#include "structs.h"
+#include "../shared/structs.h"
 
 void EPQ::initEPQ(int m, int n)  {
     assert(m > 0 && n > 0);

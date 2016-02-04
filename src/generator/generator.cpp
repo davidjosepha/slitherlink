@@ -1,14 +1,14 @@
 #include "generator.h"
+#include <stdlib.h>
+#include <time.h>
 #include "loopgen.h"
-#include "../solver/import.h"
-#include "../solver/export.h"
 #include "../solver/contradiction.h"
 #include "../solver/contradictions.h"
 #include "../solver/rule.h"
 #include "../solver/rules.h"
 #include "../solver/solver.h"
-#include <stdlib.h>
-#include <time.h>
+#include "../shared/export.h"
+#include "../shared/import.h"
 
 /* Generator constructor */
 Generator::Generator(int m, int n) {

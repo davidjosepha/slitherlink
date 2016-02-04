@@ -1,6 +1,6 @@
 #include "rotate.h"
-#include "enums.h"
-#include "structs.h"
+#include "../shared/enums.h"
+#include "../shared/structs.h"
 
 /* Translates coordinates for a number on a lattice in a
  * given orientation to the coordinates for that number

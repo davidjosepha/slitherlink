@@ -1,11 +1,11 @@
 #ifndef SOLVER_H
 #define SOLVER_H
-#include "constants.h"
 #include "contradiction.h"
-#include "enums.h"
 #include "epq.h"
-#include "grid.h"
 #include "rule.h"
+#include "../shared/constants.h"
+#include "../shared/enums.h"
+#include "../shared/grid.h"
 
 class Solver {
     public:

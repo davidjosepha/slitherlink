@@ -1,9 +1,9 @@
 #ifndef LOOPGEN_H
 #define LOOPGEN_H
 #include <vector>
-#include "../solver/enums.h"
-#include "../solver/grid.h"
-#include "../solver/structs.h"
+#include "../shared/enums.h"
+#include "../shared/grid.h"
+#include "../shared/structs.h"
 
 class LoopGen {
     public:

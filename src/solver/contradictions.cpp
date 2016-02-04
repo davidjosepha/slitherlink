@@ -1,6 +1,6 @@
 #include "contradictions.h"
-#include "constants.h"
 #include "contradiction.h"
+#include "../shared/constants.h"
 
 /* Initializes the contradictions array with each contradiction
  * used by the Solver to complete the grid. By convention the

@@ -1,5 +1,5 @@
 #include "contradiction.h"
-#include "enums.h"
+#include "../shared/enums.h"
 
 Contradiction::Contradiction(int m, int n) {
     m_ = m;

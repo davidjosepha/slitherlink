@@ -1,5 +1,5 @@
 #include "rule.h"
-#include "enums.h"
+#include "../shared/enums.h"
 
 Rule::Rule(int m, int n) {
     m_ = m;

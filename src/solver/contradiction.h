@@ -1,9 +1,9 @@
 #ifndef CONTRADICTION_H
 #define CONTRADICTION_H
 #include <vector>
-#include "enums.h"
-#include "lattice.h"
-#include "structs.h"
+#include "../shared/enums.h"
+#include "../shared/lattice.h"
+#include "../shared/structs.h"
 
 class Contradiction {
     public:

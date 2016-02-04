@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <time.h>
 #include <vector>
-#include "../solver/enums.h"
-#include "../solver/grid.h"
-#include "../solver/structs.h"
+#include "../shared/enums.h"
+#include "../shared/grid.h"
+#include "../shared/structs.h"
 
 /* LoopGen constructor */
 LoopGen::LoopGen(int m, int n, Grid & grid) {

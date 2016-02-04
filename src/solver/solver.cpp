@@ -1,14 +1,14 @@
 #include "solver.h"
 #include <cassert>
 #include <vector>
-#include "constants.h"
 #include "contradiction.h"
-#include "enums.h"
 #include "epq.h"
-#include "grid.h"
 #include "rotate.h"
 #include "rule.h"
-#include "structs.h"
+#include "../shared/constants.h"
+#include "../shared/enums.h"
+#include "../shared/grid.h"
+#include "../shared/structs.h"
 
 /* Constructor takes a grid as input to solve */
 Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth) {

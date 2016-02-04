@@ -2,7 +2,7 @@
 #define EPQ_H
 #include <queue>
 #include <vector>
-#include "structs.h"
+#include "../shared/structs.h"
 
 class EPQ {
     class ComparePrioEdge {
