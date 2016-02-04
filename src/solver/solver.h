@@ -13,12 +13,15 @@ class Solver {
         Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth, EPQ oldEPQ);
         bool testContradictions() const;
         bool hasMultipleSolutions() const {return multipleSolutions_;};
+        void resetSolver();
 
     private:
         void solve();
         void solveDepth(int depth);
         void makeHLineGuess(int i, int j, int depth);
         void makeVLineGuess(int i, int j, int depth);
+
+        void updateEPQ();
 
         bool spiralNext(int startm, int startn, int & prevm, int & prevn) const;
 
@@ -36,6 +39,7 @@ class Solver {
         Rule * rules_;
         Contradiction * contradictions_;
         EPQ epq_;
+        int epqSize_;
         bool multipleSolutions_;
 };
 

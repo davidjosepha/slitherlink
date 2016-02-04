@@ -18,12 +18,20 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     multipleSolutions_ = false;
 
     epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
+    //updateEPQ();
 
     rules_ = rules;
     contradictions_ = contradictions;
 
+    while (grid_->getUpdated()) {
+        applyRules(NUM_RULES);
+    }
+
+    grid_->setUpdated(true);
+
     solve();
 }
+
 
 /* Constructor for when the EPQ should be passed down. */
 Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth, EPQ oldEPQ) {
@@ -32,7 +40,9 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
     if (oldEPQ.size() == 0) {
         epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
+        //updateEPQ();
     } else {
+        //epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
         epq_.copyPQ(oldEPQ);
     }
     multipleSolutions_ = false;
@@ -40,7 +50,14 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     rules_ = rules;
     contradictions_ = contradictions;
 
+
+
     solve();
+}
+
+void Solver::resetSolver() {
+    grid_->resetGrid();
+    multipleSolutions_ = false;
 }
 
 /* Runs a loop testing each contradiction in each orientation in
@@ -69,8 +86,11 @@ bool Solver::testContradictions() const {
  * recursive guessing to find a solution to a puzzle */
 void Solver::solve() {
     while (grid_->getUpdated() && !grid_->isSolved()) {
-        applyRules(NUM_RULES);
-
+        applyRules(NUM_RULES - NUM_CONST_RULES);
+        // updatePQ
+        //if (epq_.size() < epqSize_/2) {
+        //    updateEPQ();
+        //}
         for (int d = 0; d < depth_; d++) {
             if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved() && !multipleSolutions_) {
                 solveDepth(d);
@@ -79,8 +99,104 @@ void Solver::solve() {
     }
 }
 
+/* */
+void Solver::updateEPQ() {
+    epq_.empty();
+
+    int m = grid_->getHeight();
+    int n = grid_->getWidth();
+    for (int i = 1; i < m ; i++) {
+        for (int j = 1; j < n-1; j++) {
+            if (grid_->getHLine(i,j) != EMPTY) {
+                continue;
+            }
+            float prio = grid_->getHLine(i,j-1) != EMPTY + grid_->getHLine(i,j+1) != EMPTY +
+            grid_->getHLine(i+1,j) != EMPTY + grid_->getHLine(i-1,j) != EMPTY + grid_->getVLine(i-1,j+1) != EMPTY +
+            grid_->getVLine(i-1,j) != EMPTY + grid_->getVLine(i,j) != EMPTY + grid_->getVLine(i,j+1) != EMPTY;
+            // if (grid_->getHLine(i,j-1) != EMPTY) {
+            //     prio = prio + 1;
+            //     //do stuff
+            // }
+            // if (grid_->getHLine(i,j+1) != EMPTY) {
+            //     prio = prio + 1;
+            //     //do stuff
+            // }
+            // if (grid_->getHLine(i+1,j) != EMPTY) {
+            //     prio = prio + .5;
+            //     //do stuff
+            // }
+            // if (grid_->getHLine(i-1,j) != EMPTY) {
+            //     prio = prio + .5;
+            //     //do stuff
+            // }
+            // if (grid_->getVLine(i-1,j+1) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getVLine(i-1,j) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getVLine(i,j) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getVLine(i,j+1) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            if (prio > 0) {
+                epq_.emplace(prio, i, j, true);
+            } 
+        }
+    }
+
+    for (int i = 1; i < m-1; i++) {
+        for (int j = 1; j < n; j++) {
+            if (grid_->getVLine(i,j) != EMPTY) {
+                continue;
+            }
+            float prio = grid_->getVLine(i-1,j) != EMPTY + grid_->getVLine(i+1,j) != EMPTY + 
+            grid_->getVLine(i,j-1) != EMPTY + grid_->getVLine(i,j+1) != EMPTY + grid_->getHLine(i,j-1) != EMPTY +
+            grid_->getHLine(i+1,j-1) != EMPTY + grid_->getHLine(i,j) != EMPTY + grid_->getHLine(i+1,j) != EMPTY;
+            // if (grid_->getVLine(i-1,j) != EMPTY) {
+            //     prio = prio + 1;
+            //     //do stuff
+            // }
+            // if (grid_->getVLine(i+1,j) != EMPTY) {
+            //     prio = prio + 1;
+            //     //do stuff
+            // }
+            // if (grid_->getVLine(i,j-1) != EMPTY) {
+            //     prio = prio + .5;
+            //     //do stuff
+            // }
+            // if (grid_->getVLine(i,j+1) != EMPTY) {
+            //     prio = prio + .5;
+            //     //do stuff
+            // }
+            // if (grid_->getHLine(i,j-1) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getHLine(i+1,j-1) != EMPTY) {
+            //     prio = prio + 1;    
+            // }
+            // if (grid_->getHLine(i,j) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            // if (grid_->getHLine(i+1,j) != EMPTY) {
+            //     prio = prio + 1;
+            // }
+            if (prio > 0) {
+                epq_.emplace(prio, i, j, false);
+            }
+        }
+    }
+    epqSize_ = epq_.size();
+}
+
+
 /* Make a guess in each valid position in the graph */
 void Solver::solveDepth(int depth) {
+    //if (epq_.size() < epqSize_/2) {
+    //    updateEPQ();
+    //}
     bool usingPrioQueue = true;
     if (usingPrioQueue) {
         int initSize = epq_.size();
@@ -379,15 +495,18 @@ void Solver::applyRules(int numRules) {
     while (grid_->getUpdated()) {
         grid_->setUpdated(false);
 
-        for (int x = 0; x < numRules; x++) {
-            for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
-                for (int i = 0; i <= grid_->getHeight() - rules_[x].getNumberHeight(orient); i++) {
-                    for (int j = 0; j <= grid_->getWidth() - rules_[x].getNumberWidth(orient); j++) {
-                        if (ruleApplies(i, j, rules_[x], orient)) {
-                            applyRule(i, j, rules_[x], orient);
+        for (int i = 0; i < grid_->getHeight(); i++) {
+            for (int j = 0; j < grid_->getWidth(); j++) {
+                if (grid_->getUpdateMatrix(i, j)) {
+                    for (int x = 0; x < numRules; x++) {
+                        for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
+                            if (ruleApplies(i, j, rules_[x], orient)) {
+                                applyRule(i, j, rules_[x], orient);
+                            }
                         }
                     }
                 }
+                grid_->setUpdateMatrix(i, j, false);
             }
         }
     }
@@ -462,6 +581,9 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
 bool Solver::ruleApplies(int i, int j, Rule const & rule, Orientation orient) const {
     int m = rule.getHeight();
     int n = rule.getWidth();
+    if (i > grid_->getHeight() - rule.getNumberWidth(orient) || j > grid_->getWidth() - rule.getNumberWidth(orient)) {
+        return false;
+    }
 
     std::vector<NumberPosition> const * numberPattern = rule.getNumberPattern();
     for (int k = 0; k < numberPattern->size(); k++) {

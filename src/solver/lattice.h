@@ -16,6 +16,8 @@ class Lattice {
         Number getNumber(int i, int j) const;
         Edge getHLine(int i, int j) const;
         Edge getVLine(int i, int j) const;
+        Edge checkEdgeH(int i, int j) const;
+        Edge checkEdgeV(int i, int j) const;
         void setNumber(int i, int j, Number num);
         virtual bool setHLine(int i, int j, Edge edge);
         virtual bool setVLine(int i, int j, Edge edge);

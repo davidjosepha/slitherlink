@@ -25,18 +25,43 @@ void Grid::mergeContours(Contour & newContour) {
         }
     }
 }
+
+void Grid::resetGrid() {
+    contours_.clear();
+    for (int i = 1; i < getHeight(); i++) {
+        for (int j = 1; j < getWidth()-1; j++) {
+            hlines_[i][j] = EMPTY;
+        }
+    }
+
+    for (int i = 1; i < getHeight()-1; i++) {
+        for (int j = 1; j < getWidth(); j++) {
+            vlines_[i][j] = EMPTY;
+        }
+    }
+
+    for (int i = 0; i < getHeight(); i++) {
+        for (int j = 0; j < getWidth(); j++) {
+            setUpdateMatrix(i, j, true);
+        }
+    }
+}
+
+int Grid::getUpdateMatrix(int i, int j) {
+    return updateMatrix_[i][j];
+}
+
+void Grid::setUpdateMatrix(int i, int j, bool b) {
+    updateMatrix_[i][j] = b;
+}
+
 /*
  * Copies grid for the purpose of making a guess.
  */
 void Grid::copy(Grid & newGrid) {
     newGrid.initArrays(getHeight(), getWidth());
+    newGrid.initUpdateMatrix();
     newGrid.contours_.clear();
-
-    for (int i = 0; i < getHeight(); i++) {
-        for (int j = 0; j < getWidth(); j++) {
-            newGrid.setNumber(i, j, getNumber(i,j));
-        }
-    }
 
     for (int i = 0; i < getHeight()+1; i++) {
         for (int j = 0; j < getWidth(); j++) {
@@ -47,6 +72,13 @@ void Grid::copy(Grid & newGrid) {
     for (int i = 0; i < getHeight(); i++) {
         for (int j = 0; j < getWidth()+1; j++) {
             newGrid.setVLine(i, j, getVLine(i,j));
+        }
+    }
+
+    for (int i = 0; i < getHeight(); i++) {
+        for (int j = 0; j < getWidth(); j++) {
+            newGrid.setNumber(i, j, getNumber(i,j));
+            newGrid.setUpdateMatrix(i, j, updateMatrix_[i][j]);
         }
     }
 }
@@ -72,6 +104,13 @@ bool Grid::setHLine(int i, int j, Edge edge) {
         contours_.push_back(newContour);
     }
 
+
+    for (int x = std::max(0, i-3); x < std::min(i+1, getHeight()); x++) {
+        for (int y = std::max(0, j-3); y < std::min(j+1, getWidth()); y++) {
+            updateMatrix_[x][y] = true;
+        }
+    }
+
     return true;
 }
 
@@ -95,6 +134,37 @@ bool Grid::setVLine(int i, int j, Edge edge) {
         mergeContours(newContour);
         contours_.push_back(newContour);
     }
+
+    for (int x = std::max(0, i-3); x < std::min(i+1, getHeight()); x++) {
+        for (int y = std::max(0, j-3); y < std::min(j+1, getWidth()); y++) {
+            updateMatrix_[x][y] = true;
+        }
+    }
+
+    return true;
+}
+
+/*
+ * Set a horizontal line to a given edge type, but allows overwrites.
+ * Intended for the purpose of puzzle creation.
+ */
+bool Grid::changeHLine(int i, int j, Edge edge) {
+    assert(0 <= i && i < m_+1 && 0 <= j && j < n_);
+
+    hlines_[i][j] = edge;
+
+
+    return true;
+}
+
+/*
+ * Set a vertical line to a given edge type, but allows overwrites.
+ * Intended for the purpose of puzzle creation.
+ */
+bool Grid::changeVLine(int i, int j, Edge edge) {
+    assert(0 <= i && i < m_ && 0 <= j && j < n_+1);
+
+    vlines_[i][j] = edge;
 
     return true;
 }
@@ -160,3 +230,13 @@ bool Grid::containsClosedContours() const {
     }
     return false;
 }
+
+void Grid::initUpdateMatrix() {
+    updateMatrix_ = new bool*[getHeight()];
+    for (int i = 0; i < getHeight(); i++) {
+        updateMatrix_[i] = new bool[getWidth()];
+        for (int j = 0; j < getWidth(); j++) {
+            updateMatrix_[i][j] = true;
+        }
+    }
+};

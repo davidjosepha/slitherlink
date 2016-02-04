@@ -14,11 +14,22 @@
 /* Empty constructor */
 Import::Import() { }
 
+
+
+
 /* Constructor taking as input a lattice to be imported into */
 Import::Import(Grid & lattice, std::string filename) {
     lattice_ = &lattice;
     buildLattice(filename);
 }
+
+
+/* Constructor for empty lattice */
+Import::Import(Grid & lattice, int m, int n) {
+    lattice_ = &lattice;
+    buildEmptyLattice(m, n);
+}
+
 
 /* Reads from stdin and initializes a lattice based on given
  * dimensions and three separate grids, one each for numbers,
@@ -37,6 +48,7 @@ void Import::buildLattice(std::string filename) {
         slkfile >> m;
         slkfile >> n;
         lattice_->initArrays(m+2, n+2);
+        lattice_->initUpdateMatrix();
 
         /* blank lines */
         std::getline(slkfile, buffer);
@@ -84,6 +96,37 @@ void Import::buildLattice(std::string filename) {
     }
 }
 
+/* Initializes an empty lattice based on given dimensions */
+void Import::buildEmptyLattice(int m, int n) {
+    
+    lattice_->initArrays(m+2, n+2);
+    
+    for (int i = 0; i < m+1; i++) {
+        lattice_->setHLine(i+1, 0, NLINE);
+    }
+    
+    for (int i = 0; i < m+2; i++) {
+        lattice_->setVLine(i, 0, NLINE);
+        lattice_->setVLine(i, n+2, NLINE);
+    }
+    
+    for (int j = 0; j < n+3; j++) {
+        lattice_->setVLine(0, j, NLINE);
+        lattice_->setVLine(m+1, j, NLINE);
+    }
+    
+    for (int j = 0; j < n+2; j++) {
+        lattice_->setHLine(0, j, NLINE);
+        lattice_->setHLine(m+2, j, NLINE);
+    }
+    
+    for (int j = 0; j < m+3; j++) {
+        lattice_->setHLine(j, 0, NLINE);
+        lattice_->setHLine(j, m+1, NLINE);
+    }
+
+}
+
 /* Helper function for reading a line from stdin and
  * interpreting 0-3 as their corresponding values in
  * the Number enumeration. */
@@ -109,6 +152,7 @@ void Import::importNumberRow(int i, std::string row) {
         }
     }
 }
+
 
 /* Helper function for reading a line from stdin and
  * interpreting '-' and 'x' as their corresponding values in

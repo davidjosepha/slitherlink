@@ -70,6 +70,19 @@ Edge Lattice::getVLine(int i, int j) const {
     return vlines_[i][j];
 }
 
+/* Get value of horizontal edge located at coordinates
+ * (i, j), with no restriction on where they can be obtained. */
+Edge Lattice::checkEdgeH(int i, int j) const {
+    return hlines_[i][j];
+}
+
+/* Get value of vertical edge located at coordinates
+ * (i, j), with no restriction on where they can be obtained. */
+Edge Lattice::checkEdgeV(int i, int j) const {
+    return vlines_[i][j];
+}
+
+
 /* Set value of number located at coordinates (i, j),
  * where i is on the range [0, m_+1] and j is on the
  * range [0, n_]. */

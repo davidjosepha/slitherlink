@@ -53,6 +53,8 @@ LoopCell LoopGen::getLoopCell(int i, int j) const {
     }
 }
 
+
+
 /* randomly select one of the adjacent cells that is
  * UNKNOWN and set position to those coordinates */
 Coordinates LoopGen::chooseNext(int i, int j) const {
@@ -83,3 +85,4 @@ Coordinates LoopGen::chooseNext(int i, int j) const {
         }
     }
 }
+
