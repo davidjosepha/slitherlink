@@ -12,12 +12,16 @@ class Generator {
         void genPuzzle();
 
         void reduceNumbers();
+    
+        void initArray();
+        void destroyArray();
 
         int m_;
         int n_;
         Grid grid_;
         Rule * rules_;
         Contradiction * contradictions_;
+        bool ** canEliminate_;
 };
 
 #endif

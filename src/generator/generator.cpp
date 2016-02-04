@@ -34,15 +34,15 @@ Generator::Generator(int m, int n) {
     int count = 0;
     while (count < ((m_)*(n_)*2)) {
         count++;
-        int y = rand() % (n_) + 1;
-        int x = rand() % (m_) + 1;
-        Number oldNum = grid_.getNumber(y, x);
-        grid_.setNumber(y, x, NONE);
+        int i = rand() % (n_) + 1;
+        int j = rand() % (m_) + 1;
+        Number oldNum = grid_.getNumber(i, j);
+        grid_.setNumber(i, j, NONE);
         grid_.resetGrid();
         exporter.print();
         solver = Solver(grid_, rules_, contradictions_, 1);
         if (!grid_.isSolved()) {
-            grid_.setNumber(y, x, oldNum);
+            grid_.setNumber(i, j, oldNum);
             grid_.resetGrid();
             solver = Solver(grid_, rules_, contradictions_, 1);
         }
@@ -60,3 +60,23 @@ void Generator::genPuzzle() { }
 
 /* Remove numbers from the grid while keeping exactly one solution */
 void Generator::reduceNumbers() { }
+
+/* allocate memory for creating loop */
+void Generator::initArray() {
+    canEliminate_ = new bool*[m_];
+    for (int i = 0; i < m_; i++) {
+        canEliminate_[i] = new bool[n_];
+
+        for (int j = 0; j < n_; j++) {
+            canEliminate_[i][j] = true;
+        }
+    }
+}
+
+/* reallocate memory */
+void Generator::destroyArray() {
+    for (int i = 0; i < m_; i++) {
+        delete [] canEliminate_[i];
+    }
+    delete [] canEliminate_;
+}
