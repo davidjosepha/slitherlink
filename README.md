@@ -1,8 +1,23 @@
+## build
+Navigate to the base directory and run
+```
+$ make 
+```
+
 ## run slitherlink solver
+```
 $ ./slsolver mypuzzle.slk anotherpuzzle.slk
+```
+
+## run slitherlink generator
+```
+$ ./slgenerator
+```
 
 ## proposed run-time
+```
 O((mn)^(2d+1))
+```
 
 where d is depth (the maximum nembe rof consecutive guesses needed to solve a specific puzzle), m is the puzzle's height (in terms of number of squares), and n is the puzzle's width.
 
