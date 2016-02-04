@@ -18,10 +18,14 @@ struct EdgePosition {
     Edge edge;
 };
 
-struct PrioEdge{
+struct PrioEdge {
     Coordinates coords;
     double priority;
     bool h;
+};
+
+struct AdjacencyList {
+    bool u, d, l, r;
 };
 
 #endif
