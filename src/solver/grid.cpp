@@ -4,6 +4,11 @@
 #include "contour.h"
 #include "enums.h"
 
+Grid::~Grid() {
+    for (int i = 0; i < m_; i++) {
+        delete [] updateMatrix_[i];
+    }
+}
 
 /*
  * Merge a newly created contour with other contours if one of their endpoints match.
