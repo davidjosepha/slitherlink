@@ -37,8 +37,7 @@ Generator::Generator(int m, int n) {
         int i = rand() % (n_) + 1;
         int j = rand() % (m_) + 1;
         Number oldNum = grid_.getNumber(i, j);
-        grid_.setNumber(i, j, NONE);
-        grid_.resetGrid();
+        eliminateNumber(i, j);
         exporter.print();
         solver = Solver(grid_, rules_, contradictions_, 1);
         if (!grid_.isSolved()) {
@@ -60,6 +59,13 @@ void Generator::genPuzzle() { }
 
 /* Remove numbers from the grid while keeping exactly one solution */
 void Generator::reduceNumbers() { }
+
+/* Elimates a number at a set of coordinates */
+void Generator::eliminateNumber(int i, int j) {
+    grid_.setNumber(i, j, NONE); 
+    grid_.resetGrid();
+    canEliminate_[i-1][j-1] = false;
+}
 
 /* allocate memory for creating loop */
 void Generator::initArray() {

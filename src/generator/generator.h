@@ -15,6 +15,7 @@ class Generator {
     
         void initArray();
         void destroyArray();
+        void eliminateNumber(int i, int j);
 
         int m_;
         int n_;
