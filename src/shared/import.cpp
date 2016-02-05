@@ -123,7 +123,7 @@ void Import::buildEmptyLattice(int m, int n) {
     
     for (int j = 0; j < m+3; j++) {
         lattice_->setHLine(j, 0, NLINE);
-        lattice_->setHLine(j, m+1, NLINE);
+        lattice_->setHLine(j, n+1, NLINE);
     }
 
 }

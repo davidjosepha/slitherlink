@@ -34,8 +34,8 @@ Generator::Generator(int m, int n) {
     int count = 0;
     while (count < ((m_)*(n_)*2)) {
         count++;
-        int i = rand() % (n_) + 1;
-        int j = rand() % (m_) + 1;
+        int i = rand() % (m_) + 1;
+        int j = rand() % (n_) + 1;
         Number oldNum = grid_.getNumber(i, j);
         eliminateNumber(i, j);
         exporter.print();
