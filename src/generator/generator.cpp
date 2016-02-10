@@ -37,12 +37,18 @@ Generator::Generator(int m, int n) {
     /* TODO: Clean this up */
     /* please */
     int count = 0;
-    while (count < ((m_)*(n_)*2)) {
+    int i = rand() % (m_) + 1;
+    int j = rand() % (n_) + 1;
+    Number oldNum;
+    while (count < ((m_)*(n_)*2/3)) {
         count++;
-        int i = rand() % (m_) + 1;
-        int j = rand() % (n_) + 1;
-        Number oldNum = grid_.getNumber(i, j);
-        
+        while (!eligible(i, j)) {
+            i = rand() % (m_) + 1;
+            j = rand() % (n_) + 1;
+        }
+        oldNum = grid_.getNumber(i, j);
+
+
         if (eligible(i, j)) {
             eliminateNumber(i, j);
             //exporter.print();
@@ -50,11 +56,10 @@ Generator::Generator(int m, int n) {
             if (!grid_.isSolved()) {
                 grid_.setNumber(i, j, oldNum);
                 grid_.resetGrid();
-                solver = Solver(grid_, rules_, contradictions_, 1);
             }
         }
     }
-    solver = Solver(grid_, rules_, contradictions_, 0);
+    solver = Solver(grid_, rules_, contradictions_, 1);
     printf("here's new puzzle:\n");
     exporter.print();
     printf("here is it unsolved:\n");
