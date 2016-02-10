@@ -10,6 +10,7 @@
 #include "../shared/structs.h"
 #include "../shared/export.h"
 #include "../shared/import.h"
+#include <iostream>
 #include <stack>
 
 /* Generator constructor */
@@ -18,6 +19,7 @@ Generator::Generator(int m, int n) {
     n_ = n;
     
     numberCount_ = m_*n_;
+    factor_ = 2;
 
     srand(time(NULL));
     Rule rules_[NUM_RULES];
@@ -30,13 +32,15 @@ Generator::Generator(int m, int n) {
     LoopGen loopgen = LoopGen(m_, n_, grid_);
     exporter.print();
     initArrays();
-
+    
     Solver solver = Solver(grid_, rules_, contradictions_, 0);
+    
     grid_.resetGrid();
+    
 
     /* TODO: Clean this up */
     /* please */
-    int count = 0;
+    /*int count = 0;
     int i = rand() % (m_) + 1;
     int j = rand() % (n_) + 1;
     Number oldNum;
@@ -58,38 +62,18 @@ Generator::Generator(int m, int n) {
                 grid_.resetGrid();
             }
         }
-    }
+    }*/
+    
+    reduceNumbers();
     solver = Solver(grid_, rules_, contradictions_, 1);
-    printf("here's new puzzle:\n");
+    printf("here's a new puzzle:\n");
     exporter.print();
-    printf("here is it unsolved:\n");
+    printf("here it is unsolved:\n");
     grid_.resetGrid();
     exporter.print();
-    
     destroyArrays();
 }
 
-/* Generate a puzzle using other helper methods */
-void Generator::genPuzzle() { }
-
-/* Remove numbers from the grid while keeping exactly one solution */
-void Generator::reduceNumbers() {
-    
-    
-}
-
-
-/* Elimates a number at a set of coordinates */
-void Generator::eliminateNumber(int i, int j) {
-    grid_.setNumber(i, j, NONE); 
-    grid_.resetGrid();
-    canEliminate_[i-1][j-1] = false;
-}
-
-/* Determines if a set of coordinates are eligible for elimination */
-bool Generator::eligible(int i, int j) {
-    return canEliminate_[i-1][j-1];
-}
 
 /* allocate memory for creating loop */
 void Generator::initArrays() {
@@ -114,4 +98,139 @@ void Generator::destroyArrays() {
     }
     delete [] canEliminate_;
     delete [] oldNumbers_;
+}
+
+/* Generate a puzzle using other helper methods */
+void Generator::genPuzzle() { }
+
+
+void Generator::reduceNumbers() {
+    
+    
+    while (numberCount_ > (m_*n_)/2) {
+        std::cout << "Number count:\t" << numberCount_ << std::endl;
+        
+        findNumberToRemove();
+        eligibleCoordinates_.clear();
+        grid_.resetGrid();
+        Export exporter = Export(grid_);
+        exporter.print();
+    }
+}
+
+/* Finds a number to remove from the grid while keeping exactly one solution */
+void Generator::findNumberToRemove() {   
+    fillEligibleVector();
+    bool coordsFound = false;
+    
+    while (!eligibleCoordinates_.empty() && !coordsFound) {
+        int random = rand() % eligibleCoordinates_.size();
+        Coordinates attempt = eligibleCoordinates_.at(random);
+        eligibleCoordinates_.erase(eligibleCoordinates_.begin() + random);
+        //std::cout << "Eligible Size:\t" << eligibleCoordinates_.size()<< std::endl;
+        removeNumber(attempt.i, attempt.j);
+        if (!checkIfSolved()) {
+            setOldNumber(attempt.i, attempt.j);
+            grid_.resetGrid();
+            markNecessary(attempt.i, attempt.j);
+            
+        } else {
+            ineligibleCoordinates_.push_back(attempt);
+            coordsFound = true;
+            numberCount_ --; 
+        }
+    }
+    
+    
+    if (!coordsFound && numberCount_ < m_ * n_) {
+        getNecessaryCoordinate();
+        numberCount_ ++;
+    } else if (!coordsFound) {
+        printf("yikes:\n");
+    } 
+}
+
+/* Adds Coordinates of Numbers that are eligible for elimination to a vector */
+void Generator::fillEligibleVector() {
+    for (int i = 1; i < m_+1; i++) {
+        for (int j = 1; j < n_+1; j++) {
+            if (eligible(i, j)) {
+                Coordinates coords = { i, j };
+                eligibleCoordinates_.push_back(coords);
+            }
+        }
+    }
+}
+
+bool Generator::checkIfSolved() {
+    Rule rules_[NUM_RULES];
+    initRules(rules_);
+    Contradiction contradictions_[NUM_CONTRADICTIONS];
+    initContradictions(contradictions_);
+    grid_.resetGrid();
+    Solver solver = Solver(grid_, rules_, contradictions_, 1);
+    if (grid_.isSolved()) {
+        return true;
+    } else {
+        return false;
+    }
+    grid_.resetGrid();
+}
+
+
+/* Pops Coordinates out of ineligible vector, marking each as eligible
+ * until one is found that has been removed */
+void Generator::getNecessaryCoordinate() {
+    bool found = false;
+    
+    
+    while (!found) {
+        Coordinates popped = ineligibleCoordinates_.back();
+        if (grid_.getNumber(popped.i, popped.j) == NONE) {
+            markNecessary(popped.i, popped.j);
+            setOldNumber(popped.i, popped.j);
+            ineligibleCoordinates_.push_back(popped);
+        } else {
+            ineligibleCoordinates_.pop_back();
+            markEligible(popped.i, popped.j);
+        }
+    }
+}
+
+void Generator::setOldNumber(int i, int j) {
+    grid_.setNumber(i, j, oldNumbers_[i-1][j-1]);
+}
+
+/* Elimates a number at a set of coordinates */
+void Generator::removeNumber(int i, int j) {
+    grid_.setNumber(i, j, NONE); 
+    grid_.resetGrid();
+    Coordinates removed{ i, j };
+    ineligibleCoordinates_.push_back(removed);
+    
+}
+
+/* Elimates a number at a set of coordinates */
+void Generator::eliminateNumber(int i, int j) {
+    grid_.setNumber(i, j, NONE); 
+    grid_.resetGrid();
+    canEliminate_[i-1][j-1] = false;
+}
+
+/* Determines if a Number at Coordinates is eligible for elimination */
+bool Generator::eligible(int i, int j) {
+    if (canEliminate_[i-1][j-1] && (grid_.getNumber(i, j) != NONE)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+                            
+/* Marks a Number at specific Coordinates as eligible for elimination */
+void Generator::markEligible(int i, int j) {
+    canEliminate_[i-1][j-1] = true;
+}
+
+void Generator::markNecessary(int i, int j) {
+    canEliminate_[i-1][j-1] = false;
 }
