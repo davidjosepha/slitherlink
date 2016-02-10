@@ -20,10 +20,16 @@ class Generator {
         void destroyArrays();
         void eliminateNumber(int i, int j);
         bool eligible(int i, int j);
+        bool isBalanced(int i, int j, Number num);
+        void setCounts();
+        void changeCounts(Number num);
         
         int m_;
         int n_;
         int numberCount_;
+        int oneCount_;
+        int twoCount_;
+        int threeCount_;
         Grid grid_;
         Coordinates recentlyNeeded_;
         std::stack <Coordinates> eliminatedCoordinates_;
@@ -32,6 +38,7 @@ class Generator {
         Contradiction * contradictions_;
         bool ** canEliminate_;
         Number ** oldNumbers_;
+
 };
 
 #endif

@@ -18,7 +18,7 @@ Generator::Generator(int m, int n) {
     n_ = n;
     
     numberCount_ = m_*n_;
-
+    // 1count_, 2count_, 3count_ = 0;
     srand(time(NULL));
     Rule rules_[NUM_RULES];
     initRules(rules_);
@@ -28,36 +28,45 @@ Generator::Generator(int m, int n) {
     Import importer = Import(grid_, m_, n_);
     Export exporter = Export(grid_);
     LoopGen loopgen = LoopGen(m_, n_, grid_);
-    exporter.print();
     initArrays();
 
     Solver solver = Solver(grid_, rules_, contradictions_, 0);
+    exporter.print();
     grid_.resetGrid();
+    setCounts();
+    printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
 
     /* TODO: Clean this up */
     /* please */
     int count = 0;
     int i = rand() % (m_) + 1;
     int j = rand() % (n_) + 1;
-    Number oldNum;
+    Number oldNum = grid_.getNumber(i, j);
     while (count < ((m_)*(n_)*2/3)) {
         count++;
-        while (!eligible(i, j)) {
+        int count2 = 0;
+        do {
             i = rand() % (m_) + 1;
             j = rand() % (n_) + 1;
-        }
-        oldNum = grid_.getNumber(i, j);
+            oldNum = grid_.getNumber(i, j);
+            count2 ++;
+            if (count2 > n_*m_/3) 
+                if (eligible(i,j)) {
+                    printf("failure\n");
+                    count+= 10;
+                    break;
+                }
+        } while (!isBalanced(i, j, oldNum));
 
-
-        if (eligible(i, j)) {
-            eliminateNumber(i, j);
-            //exporter.print();
-            solver = Solver(grid_, rules_, contradictions_, 1);
-            if (!grid_.isSolved()) {
-                grid_.setNumber(i, j, oldNum);
-                grid_.resetGrid();
-            }
+        eliminateNumber(i, j);
+        //exporter.print();
+        solver = Solver(grid_, rules_, contradictions_, 1);
+        if (!grid_.isSolved()) {
+            grid_.setNumber(i, j, oldNum);
+        } else {
+            changeCounts(oldNum);
         }
+        grid_.resetGrid();
     }
     solver = Solver(grid_, rules_, contradictions_, 1);
     printf("here's new puzzle:\n");
@@ -65,7 +74,7 @@ Generator::Generator(int m, int n) {
     printf("here is it unsolved:\n");
     grid_.resetGrid();
     exporter.print();
-    
+    printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
     destroyArrays();
 }
 
@@ -89,6 +98,51 @@ void Generator::eliminateNumber(int i, int j) {
 /* Determines if a set of coordinates are eligible for elimination */
 bool Generator::eligible(int i, int j) {
     return canEliminate_[i-1][j-1];
+}
+
+bool Generator::isBalanced(int i, int j, Number num){
+    if (eligible(i, j)){
+        if (num == ZERO) {
+            return true;
+        }
+        int onePlusThree = oneCount_ + threeCount_;
+        if (onePlusThree*1.2-1 > twoCount_) {
+            if (oneCount_*1.2-1 > threeCount_ & num == ONE) {
+                return true;
+            } if (threeCount_*1.2-1 > oneCount_ & num == THREE) {
+                return true;
+            }
+        } if (onePlusThree < twoCount_*1.2-1 & num == TWO) {
+            return true;
+        }
+        
+    }
+    return false;
+}
+
+void Generator::setCounts(){
+    for (int i = 1; i <= m_; i++) {
+        for (int j = 1; j <= n_; j++) {
+            Number oldNum = grid_.getNumber(i, j);
+            if (oldNum == ONE) {
+                oneCount_ ++;
+            } else if (oldNum == TWO) {
+                twoCount_ ++;
+            } else if (oldNum == THREE) {
+                threeCount_ ++;
+            }
+        }
+    }
+}
+
+void Generator::changeCounts(Number num){
+    if (num == ONE) {
+        oneCount_ --;
+    } else if (num == TWO) {
+        twoCount_ --;
+    } else if (num == THREE) {
+        threeCount_ --;
+    }
 }
 
 /* allocate memory for creating loop */
