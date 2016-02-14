@@ -26,6 +26,7 @@ class Generator {
         bool eligible(int i, int j);
 // <<<<<<< HEAD
         // Sam's changes
+        void deleteNumbers();
         bool isBalanced(int i, int j, Number num);
         void setCounts();
         void changeCounts(Number num);
@@ -53,7 +54,6 @@ class Generator {
         std::vector <Coordinates> eligibleCoordinates_;
         std::vector <Coordinates> ineligibleCoordinates_;
         Rule * rules_;
-        
         Contradiction * contradictions_;
         bool ** canEliminate_;
         Number ** oldNumbers_;

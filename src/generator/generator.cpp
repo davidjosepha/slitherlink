@@ -38,8 +38,10 @@ Generator::Generator(int m, int n) {
     // exporter.print();
     grid_.resetGrid();
 
-    /* TODO: Clean this up */
-    /* please */
+    // doesn't work yet :/
+    // deleteNumbers(solver);
+    setCounts();
+    printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
     int count = 0;
     int i = rand() % (m_) + 1;
     int j = rand() % (n_) + 1;
@@ -54,12 +56,13 @@ Generator::Generator(int m, int n) {
             count2 ++;
             if (count2 > n_+m_) {
                 if (eligible(i,j) or oldNum == NONE) {
-                    count+= (m+n)/2;
+                    count+= (m_+n_)/2;
+                    printf("Counts: %i,%i,%i\n", oneCount_, twoCount_, threeCount_);
+                    printf("can't balance: %i, %i, num: %i\n", i, j, oldNum-1);
                     break;
                 }
             }
         } while (!isBalanced(i, j, oldNum));
-
         eliminateNumber(i, j);
         //exporter.print();
         solver = Solver(grid_, rules_, contradictions_, 1);
@@ -70,7 +73,7 @@ Generator::Generator(int m, int n) {
         }
         grid_.resetGrid();
     }
-    
+
     // reduceNumbers();
     solver = Solver(grid_, rules_, contradictions_, 1);
     printf("here's a new puzzle:\n");
@@ -78,7 +81,48 @@ Generator::Generator(int m, int n) {
     printf("here it is unsolved:\n");
     grid_.resetGrid();
     exporter.print();
+    printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
     destroyArrays();
+}
+
+
+void Generator::deleteNumbers(){ 
+    setCounts();
+    printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
+    int count = 0;
+    int i = rand() % (m_) + 1;
+    int j = rand() % (n_) + 1;
+    Number oldNum = grid_.getNumber(i, j);
+    while (count < ((m_)*(n_)*2/3 + 10)) {
+        count++;
+        int count2 = 0;
+        while (true) {
+            i = rand() % (m_) + 1;
+            j = rand() % (n_) + 1;
+            oldNum = grid_.getNumber(i, j);
+            if (isBalanced(i, j, oldNum)) {
+                break;
+            }
+            count2 ++;
+            if (count2 > n_+m_) {
+                if (eligible(i,j) or oldNum == NONE) {
+                    count+= (m_+n_)/2;
+                    // printf("Counts: %i,%i,%i\n", oneCount_, twoCount_, threeCount_);
+                    // printf("can't balance: %i, %i, num: %i\n", i, j, oldNum-1);
+                    break;
+                }
+            }
+        }
+        eliminateNumber(i, j);
+        //exporter.print();
+        Solver solver = Solver(grid_, rules_, contradictions_, 1);
+        if (!grid_.isSolved()) {
+            grid_.setNumber(i, j, oldNum);
+        } else {
+            changeCounts(oldNum);
+        }
+        grid_.resetGrid();
+    }
 }
 
 
@@ -87,17 +131,20 @@ bool Generator::isBalanced(int i, int j, Number num){
         if (num == ZERO) {
             return true;
         } if (num == THREE) {
-            return (threeCount_*1.1+1 > oneCount_ & threeCount_*2.2+1 > twoCount_);
+            return (threeCount_*2.1+1 > 3*oneCount_ & threeCount_*5.2+1 > 3*twoCount_);
         } if (num == ONE) {
-            return (oneCount_*1.2+1 > threeCount_ & oneCount_*2.2+1 > twoCount_);
+            return (oneCount_*3.2+1 > 2*threeCount_ & oneCount_*5.2+1 > 2*twoCount_);
         } if (num == TWO) {
-            return (twoCount_*1.1+1 > 2*oneCount_ & twoCount_*1.1+1 > 2*threeCount_);
+            return (twoCount_*2.1+1 > 5*oneCount_ & twoCount_*3.1+1 > 5*threeCount_);
         }   
     }
     return false;
 }
 
 void Generator::setCounts(){
+    oneCount_ = 0;
+    twoCount_ = 0;
+    threeCount_ = 0;
     for (int i = 1; i <= m_; i++) {
         for (int j = 1; j <= n_; j++) {
             Number oldNum = grid_.getNumber(i, j);
