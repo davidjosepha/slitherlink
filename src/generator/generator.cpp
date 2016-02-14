@@ -35,10 +35,8 @@ Generator::Generator(int m, int n) {
     
     Solver solver = Solver(grid_, rules_, contradictions_, 0);
 
-    exporter.print();
+    // exporter.print();
     grid_.resetGrid();
-    setCounts();
-    printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
 
     /* TODO: Clean this up */
     /* please */
@@ -46,7 +44,7 @@ Generator::Generator(int m, int n) {
     int i = rand() % (m_) + 1;
     int j = rand() % (n_) + 1;
     Number oldNum = grid_.getNumber(i, j);
-    while (count < ((m_)*(n_)*2/3)) {
+    while (count < ((m_)*(n_)*2/3 + 10)) {
         count++;
         int count2 = 0;
         do {
@@ -54,12 +52,12 @@ Generator::Generator(int m, int n) {
             j = rand() % (n_) + 1;
             oldNum = grid_.getNumber(i, j);
             count2 ++;
-            if (count2 > n_*m_/3) 
-                if (eligible(i,j)) {
-                    printf("failure\n");
-                    count+= 10;
+            if (count2 > n_+m_) {
+                if (eligible(i,j) or oldNum == NONE) {
+                    count+= (m+n)/2;
                     break;
                 }
+            }
         } while (!isBalanced(i, j, oldNum));
 
         eliminateNumber(i, j);
@@ -80,7 +78,6 @@ Generator::Generator(int m, int n) {
     printf("here it is unsolved:\n");
     grid_.resetGrid();
     exporter.print();
-    printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
     destroyArrays();
 }
 
@@ -89,18 +86,13 @@ bool Generator::isBalanced(int i, int j, Number num){
     if (eligible(i, j)){
         if (num == ZERO) {
             return true;
-        }
-        int onePlusThree = oneCount_ + threeCount_;
-        if (onePlusThree*1.2-1 > twoCount_) {
-            if (oneCount_*1.2-1 > threeCount_ & num == ONE) {
-                return true;
-            } if (threeCount_*1.2-1 > oneCount_ & num == THREE) {
-                return true;
-            }
-        } if (onePlusThree < twoCount_*1.2-1 & num == TWO) {
-            return true;
-        }
-        
+        } if (num == THREE) {
+            return (threeCount_*1.1+1 > oneCount_ & threeCount_*2.2+1 > twoCount_);
+        } if (num == ONE) {
+            return (oneCount_*1.2+1 > threeCount_ & oneCount_*2.2+1 > twoCount_);
+        } if (num == TWO) {
+            return (twoCount_*1.1+1 > 2*oneCount_ & twoCount_*1.1+1 > 2*threeCount_);
+        }   
     }
     return false;
 }
