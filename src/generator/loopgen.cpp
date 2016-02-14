@@ -122,7 +122,6 @@ void LoopGen::genLoop() {
         cur = pickCell(avail);
 
         if (cur.i == -1 || cur.j == -1) {
-            printf("Oh?");
             return;
         }
 
