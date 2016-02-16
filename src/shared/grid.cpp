@@ -10,6 +10,11 @@ Grid::~Grid() {
             delete [] updateMatrix_[i];
         }
         delete [] updateMatrix_;
+
+        for (int i = 0; i < m_; i++) {
+            delete [] contraMatrix_[i];
+        }
+        delete [] contraMatrix_;
     }
 }
 
@@ -51,6 +56,7 @@ void Grid::resetGrid() {
     for (int i = 0; i < getHeight(); i++) {
         for (int j = 0; j < getWidth(); j++) {
             setUpdateMatrix(i, j, true);
+            setContraMatrix(i, j, true);
         }
     }
 }
@@ -61,6 +67,14 @@ int Grid::getUpdateMatrix(int i, int j) {
 
 void Grid::setUpdateMatrix(int i, int j, bool b) {
     updateMatrix_[i][j] = b;
+}
+
+int Grid::getContraMatrix(int i, int j) {
+    return contraMatrix_[i][j];
+}
+
+void Grid::setContraMatrix(int i, int j, bool b) {
+    contraMatrix_[i][j] = b;
 }
 
 /*
@@ -87,6 +101,7 @@ void Grid::copy(Grid & newGrid) {
         for (int j = 0; j < getWidth(); j++) {
             newGrid.setNumber(i, j, getNumber(i,j));
             newGrid.setUpdateMatrix(i, j, updateMatrix_[i][j]);
+            newGrid.setContraMatrix(i, j, contraMatrix_[i][j]);
         }
     }
 }
@@ -119,6 +134,12 @@ bool Grid::setHLine(int i, int j, Edge edge) {
         }
     }
 
+    for (int x = std::max(0, i-2); x < std::min(i+1, getHeight()); x++) {
+        for (int y = std::max(0, j-2); y < std::min(j+1, getWidth()); y++) {
+            contraMatrix_[x][y] = true;
+        }
+    }
+
     return true;
 }
 
@@ -146,6 +167,12 @@ bool Grid::setVLine(int i, int j, Edge edge) {
     for (int x = std::max(0, i-3); x < std::min(i+1, getHeight()); x++) {
         for (int y = std::max(0, j-3); y < std::min(j+1, getWidth()); y++) {
             updateMatrix_[x][y] = true;
+        }
+    }
+
+    for (int x = std::max(0, i-2); x < std::min(i+1, getHeight()); x++) {
+        for (int y = std::max(0, j-2); y < std::min(j+1, getWidth()); y++) {
+            contraMatrix_[x][y] = true;
         }
     }
 
@@ -247,6 +274,13 @@ void Grid::initUpdateMatrix() {
             updateMatrix_[i] = new bool[n_];
             for (int j = 0; j < getWidth(); j++) {
                 updateMatrix_[i][j] = true;
+            }
+        }
+        contraMatrix_ = new bool*[m_];
+        for (int i = 0; i < getHeight(); i++) {
+            contraMatrix_[i] = new bool[n_];
+            for (int j = 0; j < getWidth(); j++) {
+                contraMatrix_[i][j] = false;
             }
         }
     }

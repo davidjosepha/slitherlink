@@ -12,6 +12,8 @@ class Grid : public Lattice {
         void initUpdateMatrix();
         int getUpdateMatrix(int i, int j);
         void setUpdateMatrix(int i, int j, bool b);
+        int getContraMatrix(int i, int j);
+        void setContraMatrix(int i, int j, bool b);
         virtual bool setHLine(int i, int j, Edge edge);
         virtual bool setVLine(int i, int j, Edge edge);
         virtual bool changeHLine(int i, int j, Edge edge);
@@ -27,6 +29,7 @@ class Grid : public Lattice {
     private:
         void mergeContours(Contour & newContour);
         bool ** updateMatrix_;
+        bool ** contraMatrix_;
         bool valid_ = true;
         bool init_ = false;
 

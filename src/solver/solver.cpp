@@ -18,16 +18,9 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     multipleSolutions_ = false;
 
     epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
-    //updateEPQ();
 
     rules_ = rules;
     contradictions_ = contradictions;
-
-    while (grid_->getUpdated()) {
-        applyRules(NUM_RULES);
-    }
-
-    grid_->setUpdated(true);
 
     solve();
 }
@@ -40,17 +33,13 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
     if (oldEPQ.size() == 0) {
         epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
-        //updateEPQ();
     } else {
-        //epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
         epq_.copyPQ(oldEPQ);
     }
     multipleSolutions_ = false;
 
     rules_ = rules;
     contradictions_ = contradictions;
-
-
 
     solve();
 }
@@ -67,14 +56,17 @@ bool Solver::testContradictions() const {
     if (grid_->containsClosedContours() && !grid_->isSolved()) {
         return true;
     }
-    for (int x = 0; x < NUM_CONTRADICTIONS; x++) {
-        for (Orientation orient: (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
-            for (int i = 0; i <= grid_->getHeight() - contradictions_[x].getNumberHeight(orient); i++) {
-                for (int j = 0; j <= grid_->getWidth() - contradictions_[x].getNumberWidth(orient); j++) {
-                    if (contradictionApplies(i, j, contradictions_[x], orient)) {
-                        return true;
+    for (int i = 0; i < grid_->getHeight(); i++) {
+        for (int j = 0; j < grid_->getWidth(); j++) {
+            if (grid_->getContraMatrix(i,j)) {
+                for (int x = 0; x < NUM_CONTRADICTIONS; x++) {
+                    for (Orientation orient: (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
+                        if (contradictionApplies(i, j, contradictions_[x], orient)) {
+                            return true;
+                        }
                     }
                 }
+                grid_->setContraMatrix(i, j, false);
             }
         }
     }
@@ -85,6 +77,7 @@ bool Solver::testContradictions() const {
 /* Apply a combination of deterministic rules and
  * recursive guessing to find a solution to a puzzle */
 void Solver::solve() {
+    grid_->setUpdated(true);
     while (grid_->getUpdated() && !grid_->isSolved()) {
         applyRules(NUM_RULES - NUM_CONST_RULES);
         // updatePQ
@@ -143,7 +136,7 @@ void Solver::updateEPQ() {
             // }
             if (prio > 0) {
                 epq_.emplace(prio, i, j, true);
-            } 
+            }
         }
     }
 
@@ -152,7 +145,7 @@ void Solver::updateEPQ() {
             if (grid_->getVLine(i,j) != EMPTY) {
                 continue;
             }
-            float prio = grid_->getVLine(i-1,j) != EMPTY + grid_->getVLine(i+1,j) != EMPTY + 
+            float prio = grid_->getVLine(i-1,j) != EMPTY + grid_->getVLine(i+1,j) != EMPTY +
             grid_->getVLine(i,j-1) != EMPTY + grid_->getVLine(i,j+1) != EMPTY + grid_->getHLine(i,j-1) != EMPTY +
             grid_->getHLine(i+1,j-1) != EMPTY + grid_->getHLine(i,j) != EMPTY + grid_->getHLine(i+1,j) != EMPTY;
             // if (grid_->getVLine(i-1,j) != EMPTY) {
@@ -175,7 +168,7 @@ void Solver::updateEPQ() {
             //     prio = prio + 1;
             // }
             // if (grid_->getHLine(i+1,j-1) != EMPTY) {
-            //     prio = prio + 1;    
+            //     prio = prio + 1;
             // }
             // if (grid_->getHLine(i,j) != EMPTY) {
             //     prio = prio + 1;
@@ -203,9 +196,6 @@ void Solver::solveDepth(int depth) {
         int guesses = 0;
 
         while (!epq_.empty() && guesses++ < initSize && !multipleSolutions_) {
-            if (grid_->getUpdated()) {
-                applyRules(NUM_RULES - NUM_CONST_RULES);
-            }
 
             PrioEdge pe = epq_.top();
 
@@ -215,11 +205,17 @@ void Solver::solveDepth(int depth) {
                     pe.priority = pe.priority - 1;
                     epq_.push(pe);
                 }
+                if (grid_->getUpdated()) {
+                    break;
+                }
             } else {
                 makeVLineGuess(pe.coords.i, pe.coords.j, depth);
                 if (grid_->getVLine(pe.coords.i, pe.coords.j) == EMPTY) {
                     pe.priority = pe.priority - 1;
                     epq_.push(pe);
+                }
+                if (grid_->getUpdated()) {
+                    break;
                 }
             }
             epq_.pop();
@@ -581,7 +577,7 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
 bool Solver::ruleApplies(int i, int j, Rule const & rule, Orientation orient) const {
     int m = rule.getHeight();
     int n = rule.getWidth();
-    if (i > grid_->getHeight() - rule.getNumberWidth(orient) || j > grid_->getWidth() - rule.getNumberWidth(orient)) {
+    if (i > grid_->getHeight() - rule.getNumberHeight(orient) || j > grid_->getWidth() - rule.getNumberWidth(orient)) {
         return false;
     }
 
@@ -655,6 +651,10 @@ bool Solver::ruleApplies(int i, int j, Rule const & rule, Orientation orient) co
 bool Solver::contradictionApplies(int i, int j, Contradiction const & contradiction, Orientation orient) const {
     int m = contradiction.getHeight();
     int n = contradiction.getWidth();
+
+    if (i > grid_->getHeight() - contradiction.getNumberHeight(orient) || j > grid_->getWidth() - contradiction.getNumberWidth(orient)) {
+        return false;
+    }
 
     std::vector<NumberPosition> const * numberPattern = contradiction.getNumberPattern();
     for (int k = 0; k < numberPattern->size(); k++) {
