@@ -50,6 +50,7 @@ class Generator {
         int oneCount_;
         int twoCount_;
         int threeCount_;
+        int * selectedRules_;
         Grid grid_;
         std::vector <Coordinates> eligibleCoordinates_;
         std::vector <Coordinates> ineligibleCoordinates_;

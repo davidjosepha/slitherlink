@@ -33,7 +33,15 @@ Generator::Generator(int m, int n) {
     LoopGen loopgen = LoopGen(m_, n_, grid_);
     initArrays();
     
-    Solver solver = Solver(grid_, rules_, contradictions_, 0);
+    int selectedRules[NUM_RULES - NUM_CONST_RULES];
+    for (int i = 0; i < NUM_RULES - NUM_CONST_RULES; i++) {
+        selectedRules[i] = i;
+    }
+    selectedRules_ = selectedRules;
+
+    // TODO: maybe modify selected rules 
+    
+    Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, 0);
 
     // exporter.print();
     grid_.resetGrid();
@@ -65,7 +73,10 @@ Generator::Generator(int m, int n) {
         } while (!isBalanced(i, j, oldNum));
         eliminateNumber(i, j);
         //exporter.print();
-        solver = Solver(grid_, rules_, contradictions_, 1);
+
+        // TODO: maybe modify selected rules 
+        
+        solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, 1);
         if (!grid_.isSolved()) {
             grid_.setNumber(i, j, oldNum);
         } else {
@@ -74,8 +85,10 @@ Generator::Generator(int m, int n) {
         grid_.resetGrid();
     }
 
+    // TODO: maybe modify selected rules 
+    
     // reduceNumbers();
-    solver = Solver(grid_, rules_, contradictions_, 1);
+    solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, 1);
     printf("here's a new puzzle:\n");
     exporter.print();
     printf("here it is unsolved:\n");
@@ -115,7 +128,10 @@ void Generator::deleteNumbers(){
         }
         eliminateNumber(i, j);
         //exporter.print();
-        Solver solver = Solver(grid_, rules_, contradictions_, 1);
+
+        // TODO: maybe modify selected rules 
+        
+        Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, 1);
         if (!grid_.isSolved()) {
             grid_.setNumber(i, j, oldNum);
         } else {
@@ -262,7 +278,10 @@ bool Generator::checkIfSolved() {
     Contradiction contradictions_[NUM_CONTRADICTIONS];
     initContradictions(contradictions_);
     grid_.resetGrid();
-    Solver solver = Solver(grid_, rules_, contradictions_, 1);
+
+    // TODO: maybe modify selected rules 
+    
+    Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, 1);
     if (grid_.isSolved()) {
         return true;
     } else {

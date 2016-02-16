@@ -11,7 +11,7 @@
 #include "../shared/structs.h"
 
 /* Constructor takes a grid as input to solve */
-Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth) {
+Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int selectedRules[], int selectLength, int depth) {
     grid_ = &grid;
     depth_ = depth;
 
@@ -21,13 +21,30 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
     rules_ = rules;
     contradictions_ = contradictions;
+    selectedRules_ = selectedRules;
+    ruleCounts_ = 0;
+
+    int selectedPlusBasic[selectLength+NUM_CONST_RULES];
+    for (int i = 0; i < selectLength; i++) {
+        selectedPlusBasic[i] = selectedRules[i];
+    }
+    for (int i = 1; i <= NUM_CONST_RULES; i++) {
+        selectedPlusBasic[selectLength+ NUM_CONST_RULES - i] = (NUM_RULES - i);
+    }
+    
+    selectLength_ = selectLength + NUM_CONST_RULES;
+    
+    applyRules(selectedPlusBasic);
+    
+    selectLength_ = selectLength;
+    
 
     solve();
 }
 
 
 /* Constructor for when the EPQ should be passed down. */
-Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth, EPQ oldEPQ) {
+Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int selectedRules[], int selectLength, int depth, EPQ oldEPQ) {
     grid_ = &grid;
     depth_ = depth;
 
@@ -40,7 +57,10 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
 
     rules_ = rules;
     contradictions_ = contradictions;
-
+    selectedRules_ = selectedRules;
+    selectLength_ = selectLength;
+    ruleCounts_ = 0;
+    
     solve();
 }
 
@@ -79,7 +99,7 @@ bool Solver::testContradictions() const {
 void Solver::solve() {
     grid_->setUpdated(true);
     while (grid_->getUpdated() && !grid_->isSolved()) {
-        applyRules(NUM_RULES - NUM_CONST_RULES);
+        applyRules(selectedRules_);
         // updatePQ
         //if (epq_.size() < epqSize_/2) {
         //    updateEPQ();
@@ -223,14 +243,14 @@ void Solver::solveDepth(int depth) {
     } else {
         for (int i = 0; i < grid_->getHeight()+1; i++) {
             for (int j = 0; j < grid_->getWidth(); j++) {
-                applyRules(NUM_RULES - NUM_CONST_RULES);
+                applyRules(selectedRules_);
                 makeHLineGuess(i, j, depth);
             }
         }
 
         for (int i = 0; i < grid_->getHeight(); i++) {
             for (int j = 0; j < grid_->getWidth()+1; j++) {
-                applyRules(NUM_RULES - NUM_CONST_RULES);
+                applyRules(selectedRules_);
                 makeVLineGuess(i, j, depth);
             }
         }
@@ -253,7 +273,8 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
 
         /* make a LINE guess */
         lineGuess.setHLine(i, j, LINE);
-        Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth, epq_);
+        Solver lineSolver = Solver(lineGuess, rules_, contradictions_, selectedRules_, selectLength_, depth, epq_);
+        ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
 
         /* If this guess happens to solve the puzzle we need to make sure that
          * the opposite guess leads to a contradiction, otherwise we know that
@@ -262,7 +283,8 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
             Grid nLineGuess;
             grid_->copy(nLineGuess);
             nLineGuess.setHLine(i, j, NLINE);
-            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, selectedRules_, selectLength_, depth, epq_);
+            ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
             if (nLineSolver.testContradictions()) {
                 /* The opposite guess leads to a contradiction
                  * so the previous found solution is the only one */
@@ -289,7 +311,8 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
 
             /* make an NLINE guess */
             nLineGuess.setHLine(i, j, NLINE);
-            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, selectedRules_, selectLength_, depth, epq_);
+            ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
 
             /* if both guesses led to multiple solutions, we know this puzzle
              * must also lead to another solution */
@@ -339,7 +362,8 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
 
         /* make a LINE guess */
         lineGuess.setVLine(i, j, LINE);
-        Solver lineSolver = Solver(lineGuess, rules_, contradictions_, depth, epq_);
+        Solver lineSolver = Solver(lineGuess, rules_, contradictions_, selectedRules_, selectLength_, depth, epq_);
+        ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
 
         /* If this guess happens to solve the puzzle we need to make sure that
          * the opposite guess leads to a contradiction, otherwise we know that
@@ -348,7 +372,8 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
             Grid nLineGuess;
             grid_->copy(nLineGuess);
             nLineGuess.setVLine(i, j, NLINE);
-            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, selectedRules_, selectLength_, depth, epq_);
+            ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
             if (nLineSolver.testContradictions()) {
                 /* The opposite guess leads to a contradiction
                  * so the previous found solution is the only one */
@@ -375,7 +400,8 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
 
             /* make an NLINE guess */
             nLineGuess.setVLine(i, j, NLINE);
-            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, depth, epq_);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, selectedRules_, selectLength_, depth, epq_);
+            ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
 
             /* if both guesses led to multiple solutions, we know this puzzle
              * must also lead to another solution */
@@ -487,17 +513,16 @@ void Solver::intersectGrids(Grid const & lineGuess, Grid const & nLineGuess) {
  * position on the grid, checking if the rule applies, and, if so,
  * applying it, and continue updating them until there are no longer
  * any changes being made. */
-void Solver::applyRules(int numRules) {
+void Solver::applyRules(int selectedRules[]) {
     while (grid_->getUpdated()) {
         grid_->setUpdated(false);
-
         for (int i = 0; i < grid_->getHeight(); i++) {
             for (int j = 0; j < grid_->getWidth(); j++) {
                 if (grid_->getUpdateMatrix(i, j)) {
-                    for (int x = 0; x < numRules; x++) {
+                    for (int x = 0; x < selectLength_; x++) {
                         for (Orientation orient : (Orientation[]){ UP, DOWN, LEFT, RIGHT, UPFLIP, DOWNFLIP, LEFTFLIP, RIGHTFLIP }) {
-                            if (ruleApplies(i, j, rules_[x], orient)) {
-                                applyRule(i, j, rules_[x], orient);
+                            if (ruleApplies(i, j, rules_[selectedRules[x]], orient)) {
+                                applyRule(i, j, rules_[selectedRules[x]], orient);
                             }
                         }
                     }

@@ -9,11 +9,12 @@
 
 class Solver {
     public:
-        Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth);
-        Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int depth, EPQ oldEPQ);
+        Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int selectedRules[], int selectLength, int depth);
+        Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int selectedRules[], int selectLength, int depth, EPQ oldEPQ);
         bool testContradictions() const;
         bool hasMultipleSolutions() const {return multipleSolutions_;};
         void resetSolver();
+        int ruleCounts_;
 
     private:
         void solve();
@@ -27,7 +28,7 @@ class Solver {
 
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
 
-        void applyRules(int numRules);
+        void applyRules(int selectedRules[]);
         void applyRule(int i, int j, Rule & rule, Orientation orient);
         bool ruleApplies(int i, int j, Rule const & rule, Orientation orient) const;
         
@@ -37,6 +38,8 @@ class Solver {
         Grid * grid_;
         int depth_;
         Rule * rules_;
+        int * selectedRules_;
+        int selectLength_;
         Contradiction * contradictions_;
         EPQ epq_;
         int epqSize_;

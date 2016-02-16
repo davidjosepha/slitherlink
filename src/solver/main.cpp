@@ -23,6 +23,10 @@ int main(int argc, char * argv[]) {
     initRules(rules);
     Contradiction contradictions[NUM_CONTRADICTIONS];
     initContradictions(contradictions);
+    int selectedRules[NUM_RULES - NUM_CONST_RULES];
+    for (int i = 0; i < NUM_RULES - NUM_CONST_RULES; i++) {
+        selectedRules[i] = i;
+    }
 
     for (int i = 1; i < argc; i++) {
         char * filename = argv[i];
@@ -32,7 +36,7 @@ int main(int argc, char * argv[]) {
         Import importer = Import(grid, filename);
         Export exporter = Export(grid);
 
-        Solver solver = Solver(grid, rules, contradictions, MAX_DEPTH);
+        Solver solver = Solver(grid, rules, contradictions, selectedRules, NUM_RULES - NUM_CONST_RULES, MAX_DEPTH);
 
         exporter.print();
 
