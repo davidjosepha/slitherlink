@@ -28,16 +28,14 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     for (int i = 0; i < selectLength; i++) {
         selectedPlusBasic[i] = selectedRules[i];
     }
+
     for (int i = 1; i <= NUM_CONST_RULES; i++) {
         selectedPlusBasic[selectLength+ NUM_CONST_RULES - i] = (NUM_RULES - i);
     }
     
     selectLength_ = selectLength + NUM_CONST_RULES;
-    
     applyRules(selectedPlusBasic);
-    
     selectLength_ = selectLength;
-    
 
     solve();
 }
@@ -100,10 +98,7 @@ void Solver::solve() {
     grid_->setUpdated(true);
     while (grid_->getUpdated() && !grid_->isSolved()) {
         applyRules(selectedRules_);
-        // updatePQ
-        //if (epq_.size() < epqSize_/2) {
-        //    updateEPQ();
-        //}
+
         for (int d = 0; d < depth_; d++) {
             if (!grid_->getUpdated() && !testContradictions() && !grid_->isSolved() && !multipleSolutions_) {
                 solveDepth(d);
@@ -126,34 +121,7 @@ void Solver::updateEPQ() {
             float prio = grid_->getHLine(i,j-1) != EMPTY + grid_->getHLine(i,j+1) != EMPTY +
             grid_->getHLine(i+1,j) != EMPTY + grid_->getHLine(i-1,j) != EMPTY + grid_->getVLine(i-1,j+1) != EMPTY +
             grid_->getVLine(i-1,j) != EMPTY + grid_->getVLine(i,j) != EMPTY + grid_->getVLine(i,j+1) != EMPTY;
-            // if (grid_->getHLine(i,j-1) != EMPTY) {
-            //     prio = prio + 1;
-            //     //do stuff
-            // }
-            // if (grid_->getHLine(i,j+1) != EMPTY) {
-            //     prio = prio + 1;
-            //     //do stuff
-            // }
-            // if (grid_->getHLine(i+1,j) != EMPTY) {
-            //     prio = prio + .5;
-            //     //do stuff
-            // }
-            // if (grid_->getHLine(i-1,j) != EMPTY) {
-            //     prio = prio + .5;
-            //     //do stuff
-            // }
-            // if (grid_->getVLine(i-1,j+1) != EMPTY) {
-            //     prio = prio + 1;
-            // }
-            // if (grid_->getVLine(i-1,j) != EMPTY) {
-            //     prio = prio + 1;
-            // }
-            // if (grid_->getVLine(i,j) != EMPTY) {
-            //     prio = prio + 1;
-            // }
-            // if (grid_->getVLine(i,j+1) != EMPTY) {
-            //     prio = prio + 1;
-            // }
+
             if (prio > 0) {
                 epq_.emplace(prio, i, j, true);
             }
@@ -168,34 +136,7 @@ void Solver::updateEPQ() {
             float prio = grid_->getVLine(i-1,j) != EMPTY + grid_->getVLine(i+1,j) != EMPTY +
             grid_->getVLine(i,j-1) != EMPTY + grid_->getVLine(i,j+1) != EMPTY + grid_->getHLine(i,j-1) != EMPTY +
             grid_->getHLine(i+1,j-1) != EMPTY + grid_->getHLine(i,j) != EMPTY + grid_->getHLine(i+1,j) != EMPTY;
-            // if (grid_->getVLine(i-1,j) != EMPTY) {
-            //     prio = prio + 1;
-            //     //do stuff
-            // }
-            // if (grid_->getVLine(i+1,j) != EMPTY) {
-            //     prio = prio + 1;
-            //     //do stuff
-            // }
-            // if (grid_->getVLine(i,j-1) != EMPTY) {
-            //     prio = prio + .5;
-            //     //do stuff
-            // }
-            // if (grid_->getVLine(i,j+1) != EMPTY) {
-            //     prio = prio + .5;
-            //     //do stuff
-            // }
-            // if (grid_->getHLine(i,j-1) != EMPTY) {
-            //     prio = prio + 1;
-            // }
-            // if (grid_->getHLine(i+1,j-1) != EMPTY) {
-            //     prio = prio + 1;
-            // }
-            // if (grid_->getHLine(i,j) != EMPTY) {
-            //     prio = prio + 1;
-            // }
-            // if (grid_->getHLine(i+1,j) != EMPTY) {
-            //     prio = prio + 1;
-            // }
+
             if (prio > 0) {
                 epq_.emplace(prio, i, j, false);
             }
@@ -207,10 +148,8 @@ void Solver::updateEPQ() {
 
 /* Make a guess in each valid position in the graph */
 void Solver::solveDepth(int depth) {
-    //if (epq_.size() < epqSize_/2) {
-    //    updateEPQ();
-    //}
     bool usingPrioQueue = true;
+
     if (usingPrioQueue) {
         int initSize = epq_.size();
         int guesses = 0;
@@ -505,7 +444,7 @@ void Solver::intersectGrids(Grid const & lineGuess, Grid const & nLineGuess) {
                 grid_->setVLine(i, j, lineGuess.getVLine(i, j));
                 grid_->setUpdated(true);
             }
-        }
+        } 
     }
 }
 
@@ -602,7 +541,8 @@ void Solver::applyRule(int i, int j, Rule & rule, Orientation orient) {
 bool Solver::ruleApplies(int i, int j, Rule const & rule, Orientation orient) const {
     int m = rule.getHeight();
     int n = rule.getWidth();
-    if (i > grid_->getHeight() - rule.getNumberHeight(orient) || j > grid_->getWidth() - rule.getNumberWidth(orient)) {
+    if (i > grid_->getHeight() - rule.getNumberHeight(orient)
+            || j > grid_->getWidth() - rule.getNumberWidth(orient)) {
         return false;
     }
 
@@ -677,7 +617,8 @@ bool Solver::contradictionApplies(int i, int j, Contradiction const & contradict
     int m = contradiction.getHeight();
     int n = contradiction.getWidth();
 
-    if (i > grid_->getHeight() - contradiction.getNumberHeight(orient) || j > grid_->getWidth() - contradiction.getNumberWidth(orient)) {
+    if (i > grid_->getHeight() - contradiction.getNumberHeight(orient)
+            || j > grid_->getWidth() - contradiction.getNumberWidth(orient)) {
         return false;
     }
 
