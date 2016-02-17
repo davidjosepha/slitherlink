@@ -15,32 +15,15 @@ Grid::~Grid() {
             delete [] contraMatrix_[i];
         }
         delete [] contraMatrix_;
-    }
-}
 
-/*
- * Merge a newly created contour with other contours if one of their endpoints match.
- * This function assumes that all previous contours are distinct, and will ensure that by
- * the end of the function, all contours remain distinct.
- */
-void Grid::mergeContours(Contour & newContour) {
-    for (int n = 0; n < contours_.size(); n++) {
-        if (newContour.sharesEndpoint(contours_[n])) {
-            newContour.addContour(contours_[n]);
-
-            /* delete old contour after merging */
-            contours_[n] = contours_.back();
-            contours_.pop_back();
-
-            /* attempt to merge again, if possible */
-            mergeContours(newContour);
-            return;
+        for (int i = 0; i < m_+1; i++) {
+            delete [] contourMatrix_[i];
         }
+        delete [] contourMatrix_;
     }
 }
 
 void Grid::resetGrid() {
-    contours_.clear();
     for (int i = 1; i < getHeight(); i++) {
         for (int j = 1; j < getWidth()-1; j++) {
             hlines_[i][j] = EMPTY;
@@ -59,22 +42,15 @@ void Grid::resetGrid() {
             setContraMatrix(i, j, true);
         }
     }
-}
 
-int Grid::getUpdateMatrix(int i, int j) {
-    return updateMatrix_[i][j];
-}
+    for (int i = 0; i < getHeight()+1; i++) {
+        for (int j = 0; j < getWidth()+1; j++) {
+            setContourMatrix(i, j, std::make_pair(-1,-1));
+        }
+    }
 
-void Grid::setUpdateMatrix(int i, int j, bool b) {
-    updateMatrix_[i][j] = b;
-}
-
-int Grid::getContraMatrix(int i, int j) {
-    return contraMatrix_[i][j];
-}
-
-void Grid::setContraMatrix(int i, int j, bool b) {
-    contraMatrix_[i][j] = b;
+    numClosedLoops_ = 0;
+    numOpenLoops_ = 0;
 }
 
 /*
@@ -83,17 +59,16 @@ void Grid::setContraMatrix(int i, int j, bool b) {
 void Grid::copy(Grid & newGrid) {
     newGrid.initArrays(getHeight(), getWidth());
     newGrid.initUpdateMatrix();
-    newGrid.contours_.clear();
 
     for (int i = 0; i < getHeight()+1; i++) {
         for (int j = 0; j < getWidth(); j++) {
-            newGrid.setHLine(i, j, getHLine(i,j));
+            newGrid.changeHLine(i, j, getHLine(i,j));
         }
     }
 
     for (int i = 0; i < getHeight(); i++) {
         for (int j = 0; j < getWidth()+1; j++) {
-            newGrid.setVLine(i, j, getVLine(i,j));
+            newGrid.changeVLine(i, j, getVLine(i,j));
         }
     }
 
@@ -104,6 +79,15 @@ void Grid::copy(Grid & newGrid) {
             newGrid.setContraMatrix(i, j, contraMatrix_[i][j]);
         }
     }
+
+    for (int i = 0; i < getHeight()+1; i++) {
+        for (int j = 0; j < getWidth()+1; j++) {
+            newGrid.setContourMatrix(i, j, contourMatrix_[i][j]);
+        }
+    }
+
+    newGrid.numOpenLoops_ = numOpenLoops_;
+    newGrid.numClosedLoops_ = numClosedLoops_;
 }
 
 /*;
@@ -114,28 +98,34 @@ void Grid::copy(Grid & newGrid) {
 bool Grid::setHLine(int i, int j, Edge edge) {
     assert(0 <= i && i < m_+1 && 0 <= j && j < n_);
 
+    if (edge == EMPTY) {
+        return true;
+    }
+
     Edge prevEdge = getHLine(i, j);
     if (prevEdge == EMPTY) {
         hlines_[i][j] = edge;
     } else if (prevEdge != edge) {
         return false;
+    } else if (prevEdge == edge) {
+        return true;
     }
 
+    // Update contour information
     if (edge == LINE) {
-        Contour newContour = Contour(i, j, i, j+1);
-        mergeContours(newContour);
-        contours_.push_back(newContour);
+        updateContourMatrix(i, j, true);
     }
 
-
+    // Update which parts of grid have possible rules that could be applied
     for (int x = std::max(0, i-3); x < std::min(i+1, getHeight()); x++) {
-        for (int y = std::max(0, j-3); y < std::min(j+1, getWidth()); y++) {
+        for (int y = std::max(0, j-2); y < std::min(j+1, getWidth()); y++) {
             updateMatrix_[x][y] = true;
         }
     }
 
+    // Update which parts of grid have possible contradictions
     for (int x = std::max(0, i-2); x < std::min(i+1, getHeight()); x++) {
-        for (int y = std::max(0, j-2); y < std::min(j+1, getWidth()); y++) {
+        for (int y = std::max(0, j-1); y < std::min(j+1, getWidth()); y++) {
             contraMatrix_[x][y] = true;
         }
     }
@@ -156,21 +146,24 @@ bool Grid::setVLine(int i, int j, Edge edge) {
         vlines_[i][j] = edge;
     } else if (prevEdge != edge) {
         return false;
+    } else if (prevEdge == edge) {
+        return true;
     }
-
+    
+    // Update contour information
     if (edge == LINE) {
-        Contour newContour = Contour(i, j, i+1, j);
-        mergeContours(newContour);
-        contours_.push_back(newContour);
+        updateContourMatrix(i, j, false);
     }
 
-    for (int x = std::max(0, i-3); x < std::min(i+1, getHeight()); x++) {
+    // Update which parts of grid have possible rules that could be applied
+    for (int x = std::max(0, i-2); x < std::min(i+1, getHeight()); x++) {
         for (int y = std::max(0, j-3); y < std::min(j+1, getWidth()); y++) {
             updateMatrix_[x][y] = true;
         }
     }
 
-    for (int x = std::max(0, i-2); x < std::min(i+1, getHeight()); x++) {
+    // Update which parts of grid have possible contradictions
+    for (int x = std::max(0, i-1); x < std::min(i+1, getHeight()); x++) {
         for (int y = std::max(0, j-2); y < std::min(j+1, getWidth()); y++) {
             contraMatrix_[x][y] = true;
         }
@@ -238,7 +231,7 @@ bool Grid::numberSatisfied(int i, int j) const {
  * and that each number has been satisfied
  */
 bool Grid::isSolved() const {
-    if (contours_.size() != 1 || !contours_[0].isClosed()) {
+    if (numOpenLoops_ != 0 || numClosedLoops_ != 1) {
         return false;
     }
 
@@ -258,12 +251,7 @@ bool Grid::isSolved() const {
  * prematurely closed contours
  */
 bool Grid::containsClosedContours() const {
-    for (int i = 0; i < contours_.size(); i++) {
-        if (contours_[i].isClosed()) {
-            return true;
-        }
-    }
-    return false;
+    return (numClosedLoops_>0);
 }
 
 void Grid::initUpdateMatrix() {
@@ -283,7 +271,76 @@ void Grid::initUpdateMatrix() {
                 contraMatrix_[i][j] = false;
             }
         }
+        contourMatrix_ = new std::pair<int,int>*[m_+1];
+        for (int i = 0; i < getHeight()+1; i++) {
+            contourMatrix_[i] = new std::pair<int,int>[n_+1];
+            for (int j = 0; j < getWidth()+1; j++) {
+                contourMatrix_[i][j] = std::make_pair<int,int>(-1,-1);
+            }
+        }
+        numOpenLoops_ = 0;
+        numClosedLoops_ = 0;
     }
 
     init_ = true;
 };
+
+/* 
+ * Updates the information on the endpoints of our contours according to what
+ * new line has been added. We use this 2D array to keep track of the endpoints now 
+ * instead of a vector. Also keeps track of the current number of open
+ * and closed loops in our grid
+ */
+void Grid::updateContourMatrix(int i, int j, bool hline) {
+
+    int i2 = i;
+    int j2 = j;
+
+    // The second endpoint of the new line is determined by whether the line is
+    // horizontal or vertical
+    if (hline) {
+        j2 = j + 1;
+    } else {
+        i2 = i + 1;
+    }
+
+    /* Both ends of the new line are already endpoints to a single contour.
+       So get rid of both open endpoints and add one count of a closed loop. */
+    if (getContourMatrix(i,j).first == i2 && getContourMatrix(i,j).second == j2 && getContourMatrix(i2,j2).first == i && getContourMatrix(i2,j2).second == j) {
+        setContourMatrix(i,j,std::make_pair(-1,-1));
+        setContourMatrix(i2,j2,std::make_pair(-1,-1));
+        numClosedLoops_++;
+        numOpenLoops_--;
+    } 
+    /* Both ends of the new line are already endpoints to two different
+     * conoturs. Get rid of the open endpoints, update the new ends of the
+     * merged contour, and count one less open contour */
+    else if (getContourMatrix(i,j).first != -1 && getContourMatrix(i2,j2).first != -1) {
+        setContourMatrix(getContourMatrix(i,j).first,getContourMatrix(i,j).second,getContourMatrix(i2,j2));
+        setContourMatrix(getContourMatrix(i2,j2).first,getContourMatrix(i2,j2).second,getContourMatrix(i,j));
+        setContourMatrix(i,j,std::make_pair(-1,-1));
+        setContourMatrix(i2,j2,std::make_pair(-1,-1));
+        numOpenLoops_--;
+    } 
+    /* First end of the new line is already an endpoint to a contour. Extend
+     * the contour and update new endpoints. */
+    else if (getContourMatrix(i,j).first != -1) {
+        setContourMatrix(getContourMatrix(i,j).first,getContourMatrix(i,j).second,std::make_pair(i2,j2));
+        setContourMatrix(i2,j2,getContourMatrix(i,j));
+        setContourMatrix(i,j,std::make_pair(-1,-1));
+    } 
+    /* Second end of the new line is already an endpoint to a contour. Extend
+     * the contour and update new endpoints. */
+    else if (getContourMatrix(i2,j2).first != -1) {
+        setContourMatrix(getContourMatrix(i2,j2).first,getContourMatrix(i2,j2).second,std::make_pair(i,j));
+        setContourMatrix(i,j,getContourMatrix(i2,j2));
+        setContourMatrix(i2,j2,std::make_pair(-1,-1));
+    }
+    /* Neither end of new line is shared by a contour, so create a new contour
+     * with endpoints (i,j) and (i,j+1) */
+    else {
+        setContourMatrix(i,j,std::make_pair(i2,j2));
+        setContourMatrix(i2,j2,std::make_pair(i,j));
+        numOpenLoops_++;
+    }
+}
