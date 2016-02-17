@@ -24,6 +24,7 @@ class Generator {
         void eliminateNumber(int i, int j);
         void findNumberToRemove();
         bool eligible(int i, int j);
+    
 // <<<<<<< HEAD
         // Sam's changes
         void deleteNumbers();
@@ -32,10 +33,18 @@ class Generator {
         void changeCounts(Number num);
 // =======
         // Dan's changes (distinct way to code a generator)
-        void fillEligibleVector();
+        void fillSingleEligible();
         void markEligible(int i, int j);
         void markNecessary(int i, int j);
         void setOldNumber(int i, int j);
+    
+        // Combining Dan and Sam's Respective Algorithms
+        void fillEligibleVectors();
+        void findZeroToRemove();
+        void findOneToRemove();
+        void findTwoToRemove();
+        void findThreeToRemove();
+        
     
         bool checkIfSolved();
         
@@ -45,7 +54,7 @@ class Generator {
         
         int m_;
         int n_;
-        int factor_;
+        double factor_;
         int numberCount_;
         int oneCount_;
         int twoCount_;
@@ -53,6 +62,11 @@ class Generator {
         int * selectedRules_;
         Grid grid_;
         std::vector <Coordinates> eligibleCoordinates_;
+        std::vector <Coordinates> eligibleZeroCoordinates_;
+        std::vector <Coordinates> eligibleOneCoordinates_;
+        std::vector <Coordinates> eligibleTwoCoordinates_;
+        std::vector <Coordinates> eligibleThreeCoordinates_;
+    
         std::vector <Coordinates> ineligibleCoordinates_;
         Rule * rules_;
         Contradiction * contradictions_;

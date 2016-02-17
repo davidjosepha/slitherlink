@@ -20,7 +20,7 @@ Generator::Generator(int m, int n) {
     
     numberCount_ = m_*n_;
     // 1count_, 2count_, 3count_ = 0;
-    factor_ = 2;
+    factor_ = .5;
 
     srand(time(NULL));
     Rule rules_[NUM_RULES];
@@ -46,48 +46,49 @@ Generator::Generator(int m, int n) {
     // exporter.print();
     grid_.resetGrid();
 
-    // doesn't work yet :/
-    // deleteNumbers(solver);
+//    // doesn't work yet :/
+//    // deleteNumbers(solver);
     setCounts();
     printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
-    int count = 0;
-    int i = rand() % (m_) + 1;
-    int j = rand() % (n_) + 1;
-    Number oldNum = grid_.getNumber(i, j);
-    while (count < ((m_)*(n_)*2/3 + 10)) {
-        count++;
-        int count2 = 0;
-        do {
-            i = rand() % (m_) + 1;
-            j = rand() % (n_) + 1;
-            oldNum = grid_.getNumber(i, j);
-            count2 ++;
-            if (count2 > n_+m_) {
-                if (eligible(i,j) or oldNum == NONE) {
-                    count+= (m_+n_)/2;
-                    printf("Counts: %i,%i,%i\n", oneCount_, twoCount_, threeCount_);
-                    printf("can't balance: %i, %i, num: %i\n", i, j, oldNum-1);
-                    break;
-                }
-            }
-        } while (!isBalanced(i, j, oldNum));
-        eliminateNumber(i, j);
-        //exporter.print();
-
-        // TODO: maybe modify selected rules 
-        
-        solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, 1);
-        if (!grid_.isSolved()) {
-            grid_.setNumber(i, j, oldNum);
-        } else {
-            changeCounts(oldNum);
-        }
-        grid_.resetGrid();
-    }
+    
+//    int count = 0;
+//    int i = rand() % (m_) + 1;
+//    int j = rand() % (n_) + 1;
+//    Number oldNum = grid_.getNumber(i, j);
+//    while (count < ((m_)*(n_)*2/3 + 10)) {
+//        count++;
+//        int count2 = 0;
+//        do {
+//            i = rand() % (m_) + 1;
+//            j = rand() % (n_) + 1;
+//            oldNum = grid_.getNumber(i, j);
+//            count2 ++;
+//            if (count2 > n_+m_) {
+//                if (eligible(i,j) or oldNum == NONE) {
+//                    count+= (m_+n_)/2;
+//                    printf("Counts: %i,%i,%i\n", oneCount_, twoCount_, threeCount_);
+//                    printf("can't balance: %i, %i, num: %i\n", i, j, oldNum-1);
+//                    break;
+//                }
+//            }
+//        } while (!isBalanced(i, j, oldNum));
+//        eliminateNumber(i, j);
+//        //exporter.print();
+//
+//        // TODO: maybe modify selected rules 
+//        
+//        solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, 1);
+//        if (!grid_.isSolved()) {
+//            grid_.setNumber(i, j, oldNum);
+//        } else {
+//            changeCounts(oldNum);
+//        }
+//        grid_.resetGrid();
+//    }
 
     // TODO: maybe modify selected rules 
     
-    // reduceNumbers();
+    reduceNumbers();
     solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, 1);
     printf("here's a new puzzle:\n");
     exporter.print();
@@ -217,20 +218,22 @@ void Generator::genPuzzle() { }
 void Generator::reduceNumbers() {
     
     
-    while (numberCount_ > (m_*n_)/2) {
+    while (numberCount_ > (m_*n_)*factor_) {
         std::cout << "Number count:\t" << numberCount_ << std::endl;
         
         findNumberToRemove();
+        
         eligibleCoordinates_.clear();
         grid_.resetGrid();
         Export exporter = Export(grid_);
         exporter.print();
+        printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
     }
 }
 
 /* Finds a number to remove from the grid while keeping exactly one solution */
 void Generator::findNumberToRemove() {   
-    fillEligibleVector();
+    fillSingleEligible();
     bool coordsFound = false;
     
     while (!eligibleCoordinates_.empty() && !coordsFound) {
@@ -247,7 +250,8 @@ void Generator::findNumberToRemove() {
         } else {
             ineligibleCoordinates_.push_back(attempt);
             coordsFound = true;
-            numberCount_ --; 
+            numberCount_ --;
+            changeCounts(oldNumbers_[attempt.i-1][attempt.j-1]);
         }
     }
     
@@ -260,13 +264,39 @@ void Generator::findNumberToRemove() {
     } 
 }
 
+void Generator::findZeroToRemove() {}
+void Generator::findOneToRemove() {}
+void Generator::findTwoToRemove() {}
+void Generator::findThreeToRemove() {}
+
 /* Adds Coordinates of Numbers that are eligible for elimination to a vector */
-void Generator::fillEligibleVector() {
+void Generator::fillSingleEligible() {
     for (int i = 1; i < m_+1; i++) {
         for (int j = 1; j < n_+1; j++) {
             if (eligible(i, j)) {
                 Coordinates coords = { i, j };
                 eligibleCoordinates_.push_back(coords);
+            }
+        }
+    }
+}
+
+
+void Generator::fillEligibleVectors() {
+    for (int i = 1; i < m_+1; i++) {
+        for (int j = 1; j < n_+1; j++) {
+            if (eligible(i, j)) {
+                Coordinates coords  = { i, j };
+                
+                if (grid_.getNumber(i,j) == ZERO) {
+                    eligibleZeroCoordinates_.push_back(coords);
+                } else if (grid_.getNumber(i,j) == ONE) {
+                    eligibleOneCoordinates_.push_back(coords);;
+                } else if (grid_.getNumber(i,j) == TWO) {
+                    eligibleTwoCoordinates_.push_back(coords);
+                } else if (grid_.getNumber(i,j) == THREE) {
+                    eligibleThreeCoordinates_.push_back(coords);
+                }
             }
         }
     }
