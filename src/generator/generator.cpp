@@ -158,13 +158,14 @@ bool Generator::isBalanced(int i, int j, Number num){
 }
 
 bool Generator::isBalanced(int i, int j) {
+    float moa = 1.1;
     Number num = grid_.getNumber(i, j);
     if (num == THREE) {
-        return (threeCount_*2.1+1 > 3*oneCount_ & threeCount_*5.2+1 > 3*twoCount_);
+        return (threeCount_*2*moa >= 3*oneCount_ & threeCount_*5*moa >= 3*twoCount_);
     } else if (num == TWO) {
-        return (twoCount_*2.1+1 > 5*oneCount_ & twoCount_*3.1+1 > 5*threeCount_);
+        return (twoCount_*2.1+1 >= 5*oneCount_ & twoCount_*3*moa >= 5*threeCount_);
     } else if (num == ONE) {
-        return (oneCount_*3.2+1 > 2*threeCount_ & oneCount_*5.2+1 > 2*twoCount_);
+        return (oneCount_*3*moa >= 2*threeCount_ & oneCount_*5*moa >= 2*twoCount_);
     } else {
         return false;
     }
