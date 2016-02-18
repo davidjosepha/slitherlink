@@ -19,7 +19,7 @@ Generator::Generator(int m, int n) {
     n_ = n;
     
     numberCount_ = m_*n_;
-    factor_ = .5;
+    factor_ = .50 ;
 
     srand(time(NULL));
     Rule rules_[NUM_RULES];
@@ -80,7 +80,7 @@ Generator::Generator(int m, int n) {
 //        if (!grid_.isSolved()) {
 //            grid_.setNumber(i, j, oldNum);
 //        } else {
-//            changeCounts(oldNum);
+//            minusCounts(oldNum);
 //        }
 //        grid_.resetGrid();
 //    }
@@ -135,7 +135,7 @@ void Generator::deleteNumbers(){
         if (!grid_.isSolved()) {
             grid_.setNumber(i, j, oldNum);
         } else {
-            changeCounts(oldNum);
+            minusCounts(oldNum);
         }
         grid_.resetGrid();
     }
@@ -190,7 +190,7 @@ void Generator::setCounts(){
     }
 }
 
-void Generator::changeCounts(Number num){
+void Generator::minusCounts(Number num){
     if (num == ZERO) {
         zeroCount_ --;
     }else if (num == ONE) {
@@ -199,6 +199,18 @@ void Generator::changeCounts(Number num){
         twoCount_ --;
     } else if (num == THREE) {
         threeCount_ --;
+    }
+}
+
+void Generator::plusCounts(Number num){
+    if (num == ZERO) {
+        zeroCount_ ++;
+    }else if (num == ONE) {
+        oneCount_ ++;
+    } else if (num == TWO) {
+        twoCount_ ++;
+    } else if (num == THREE) {
+        threeCount_ ++;
     }
 }
 
@@ -259,7 +271,6 @@ void Generator::findNumberToRemove() {
         eligibleCoordinates_.erase(eligibleCoordinates_.begin() + random);
         
         if (isBalanced(attempt.i, attempt.j)) {
-            //std::cout << "Eligible Size:\t" << eligibleCoordinates_.size()<< std::endl;
             removeNumber(attempt.i, attempt.j);
             if (!checkIfSolved()) {
                 setOldNumber(attempt.i, attempt.j);
@@ -270,13 +281,11 @@ void Generator::findNumberToRemove() {
                 ineligibleCoordinates_.push_back(attempt);
                 coordsFound = true;
                 numberCount_ --;
-                changeCounts(oldNumbers_[attempt.i-1][attempt.j-1]);
+                minusCounts(oldNumbers_[attempt.i-1][attempt.j-1]);
             }
         }
-        
-        
-        
     }
+    
     
     
     if (!coordsFound && numberCount_ < m_ * n_) {
@@ -345,13 +354,14 @@ bool Generator::checkIfSolved() {
 void Generator::getNecessaryCoordinate() {
     bool found = false;
     
-    
     while (!found) {
         Coordinates popped = ineligibleCoordinates_.back();
         if (grid_.getNumber(popped.i, popped.j) == NONE) {
             markNecessary(popped.i, popped.j);
             setOldNumber(popped.i, popped.j);
             ineligibleCoordinates_.push_back(popped);
+            plusCounts(grid_.getNumber(popped.i, popped.j));
+            found = true;
         } else {
             ineligibleCoordinates_.pop_back();
             markEligible(popped.i, popped.j);

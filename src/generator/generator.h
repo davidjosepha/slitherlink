@@ -30,7 +30,7 @@ class Generator {
         void deleteNumbers();
         bool isBalanced(int i, int j, Number num);
         void setCounts();
-        void changeCounts(Number num);
+        void minusCounts(Number num);
 // =======
         // Dan's changes (distinct way to code a generator)
         void fillSingleEligible();
@@ -41,6 +41,7 @@ class Generator {
         // Combining Dan and Sam's Respective Algorithms
         void fillEligibleVectors();
         bool isBalanced(int i, int j);
+        void plusCounts(Number num);
         
     
         bool checkIfSolved();
