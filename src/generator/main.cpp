@@ -13,6 +13,7 @@ int main(int argc, char * argv[]) {
     endTime = clock();
     float diff = ((float)endTime - (float)startTime) / CLOCKS_PER_SEC;
     std::cout << "Time to solve:\t" << diff << " seconds" << std::endl;
+    
 
     return 0;
 }

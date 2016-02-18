@@ -40,10 +40,7 @@ class Generator {
     
         // Combining Dan and Sam's Respective Algorithms
         void fillEligibleVectors();
-        void findZeroToRemove();
-        void findOneToRemove();
-        void findTwoToRemove();
-        void findThreeToRemove();
+        bool isBalanced(int i, int j);
         
     
         bool checkIfSolved();
@@ -56,6 +53,7 @@ class Generator {
         int n_;
         double factor_;
         int numberCount_;
+        int zeroCount_;
         int oneCount_;
         int twoCount_;
         int threeCount_;
@@ -72,6 +70,7 @@ class Generator {
         Contradiction * contradictions_;
         bool ** canEliminate_;
         Number ** oldNumbers_;
+        
 
 };
 
