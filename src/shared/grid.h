@@ -17,6 +17,7 @@ class Grid : public Lattice {
         bool numberSatisfied(int i, int j) const;
         bool isSolved() const;
         void copy(Grid & newGrid);
+        void clearAndCopy(Grid & newGrid);
         bool getValid() const { return valid_; };
         void setValid(bool validity) { valid_ = validity && valid_; };
         void resetGrid();

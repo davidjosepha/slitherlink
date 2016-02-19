@@ -90,6 +90,36 @@ void Grid::copy(Grid & newGrid) {
     newGrid.numClosedLoops_ = numClosedLoops_;
 }
 
+
+void Grid::clearAndCopy(Grid & newGrid) {
+    for (int i = 0; i < getHeight()+1; i++) {
+        for (int j = 0; j < getWidth(); j++) {
+            newGrid.changeHLine(i, j, getHLine(i,j));
+        }
+    }
+
+    for (int i = 0; i < getHeight(); i++) {
+        for (int j = 0; j < getWidth()+1; j++) {
+            newGrid.changeVLine(i, j, getVLine(i,j));
+        }
+    }
+
+    for (int i = 0; i < getHeight(); i++) {
+        for (int j = 0; j < getWidth(); j++) {
+            newGrid.setNumber(i, j, getNumber(i,j));
+            newGrid.setUpdateMatrix(i, j, updateMatrix_[i][j]);
+            newGrid.setContraMatrix(i, j, contraMatrix_[i][j]);
+        }
+    }
+
+    for (int i = 0; i < getHeight()+1; i++) {
+        for (int j = 0; j < getWidth()+1; j++) {
+            newGrid.setContourMatrix(i, j, contourMatrix_[i][j]);
+        }
+    }
+
+}
+
 /*;
  * Set a horizontal line to a given edge type, checking to see if this change overwrites
  * any previous value set to that position. If a line is added, create a new contour and

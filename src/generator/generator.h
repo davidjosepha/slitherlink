@@ -61,12 +61,16 @@ class Generator {
         int guessDepth_;
         double factor_;
         int numberCount_;
+        int smallestCount_;
+        int buffer_;
+        int bufferReachCount_;
         int zeroCount_;
         int oneCount_;
         int twoCount_;
         int threeCount_;
         int * selectedRules_;
         Grid grid_;
+        Grid smallestCountGrid_;
         std::vector <Coordinates> eligibleCoordinates_;
     
         std::vector <Coordinates> ineligibleCoordinates_;

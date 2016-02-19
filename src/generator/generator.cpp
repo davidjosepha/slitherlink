@@ -31,10 +31,10 @@ Generator::Generator(int m, int n) {
 void Generator::setDifficulty(Difficulty difficulty) {
     setRules();
     if (difficulty == EASY) {
-        factor_ = .53;
+        factor_ = .51;
         guessDepth_ = 0;
     } else if (difficulty == HARD) {
-        factor_ = .45;
+        factor_ = .41;
         guessDepth_ = 1;
     }
 }
@@ -48,13 +48,14 @@ void Generator::setRules() {
 }
 
 void Generator::createPuzzle() {
-    
+    smallestCount_ = m_ * n_;
+    bufferReachCount_ = 0;
     Import importer = Import(grid_, m_, n_);
-    displayPuzzle();
     LoopGen loopgen = LoopGen(m_, n_, grid_);
     
     initArrays();
     setCounts();
+    grid_.copy(smallestCountGrid_);
 
     reduceNumbers();
 }
@@ -76,13 +77,6 @@ void Generator::displayPuzzle() {
     printf("Total Numbers: %i\n", numberCount_);
     printf("0:%i, 1:%i, 2:%i, 3:%i\n", zeroCount_, oneCount_, twoCount_, threeCount_);
 }
-
-
-
-
-
-
-
 
 
 void Generator::setCounts(){
@@ -155,6 +149,21 @@ void Generator::destroyArrays() {
 void Generator::reduceNumbers() {
     
     while (numberCount_ > ((m_*n_)*factor_ + 3)) {
+        if (smallestCount_ > numberCount_) {
+            smallestCount_ = numberCount_;
+            grid_.clearAndCopy(smallestCountGrid_);
+            buffer_ = (numberCount_ + (m_*n_))/2 - 2;
+            //printf("Buffer: %i\n", buffer_);
+        }
+        
+        if (numberCount_ == buffer_) {
+            bufferReachCount_ ++;
+        }
+        
+        if (bufferReachCount_ == 3) {
+            smallestCountGrid_.clearAndCopy(grid_);
+            break;
+        } 
         findNumberToRemove();
         eligibleCoordinates_.clear();
         
@@ -162,6 +171,7 @@ void Generator::reduceNumbers() {
         displayPuzzle();
     }
 }
+
 
 
 /* Finds a number to remove from the grid while keeping exactly one solution */
@@ -305,7 +315,7 @@ void Generator::markNecessary(int i, int j) {
 
 void Generator::deleteNumbers(){ 
     setCounts();
-    printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
+    //printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
     int count = 0;
     int i = rand() % (m_) + 1;
     int j = rand() % (n_) + 1;
