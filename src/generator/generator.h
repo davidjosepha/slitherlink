@@ -12,18 +12,23 @@
 class Generator {
     public:
         Generator(int m, int n);
+        
 
     private:
-        void genPuzzle();
+        void setDifficulty(Difficulty difficulty);
 
         void reduceNumbers();
     
         void initArrays();
         void destroyArrays();
+        void createPuzzle();
         void removeNumber(int i, int j);
         void eliminateNumber(int i, int j);
         void findNumberToRemove();
         bool eligible(int i, int j);
+        void displayPuzzle();
+        void displayFinalPuzzle();
+        
     
 // <<<<<<< HEAD
         // Sam's changes
@@ -37,9 +42,9 @@ class Generator {
         void markEligible(int i, int j);
         void markNecessary(int i, int j);
         void setOldNumber(int i, int j);
+        void setRules();
     
         // Combining Dan and Sam's Respective Algorithms
-        void fillEligibleVectors();
         bool isBalanced(int i, int j);
         void plusCounts(Number num);
         
@@ -52,6 +57,8 @@ class Generator {
         
         int m_;
         int n_;
+        
+        int guessDepth_;
         double factor_;
         int numberCount_;
         int zeroCount_;
@@ -61,10 +68,6 @@ class Generator {
         int * selectedRules_;
         Grid grid_;
         std::vector <Coordinates> eligibleCoordinates_;
-        std::vector <Coordinates> eligibleZeroCoordinates_;
-        std::vector <Coordinates> eligibleOneCoordinates_;
-        std::vector <Coordinates> eligibleTwoCoordinates_;
-        std::vector <Coordinates> eligibleThreeCoordinates_;
     
         std::vector <Coordinates> ineligibleCoordinates_;
         Rule * rules_;
