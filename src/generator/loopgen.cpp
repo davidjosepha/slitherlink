@@ -48,25 +48,12 @@ void LoopGen::fillGrid() {
 
 /* count the number of lines adjacent to a given cell */
 int LoopGen::countLines(int i, int j) const {
-    int lines = 0;
-
     bool inside = inLoop(i, j);
 
-    if ((!inBounds({ i + 1, j}) && inside) || (inBounds({ i + 1, j }) && inLoop(i + 1, j) != inside)) {
-        lines++;
-    }
-
-    if ((!inBounds({ i - 1, j}) && inside) || (inBounds({ i - 1, j }) && inLoop(i - 1, j) != inside)) {
-        lines++;
-    }
-
-    if ((!inBounds({ i, j + 1}) && inside) || (inBounds({ i, j + 1 }) && inLoop(i, j + 1) != inside)) {
-        lines++;
-    }
-
-    if ((!inBounds({ i, j - 1}) && inside) || (inBounds({ i, j - 1 }) && inLoop(i, j - 1) != inside)) {
-        lines++;
-    }
+    int lines = ((!inBounds({ i + 1, j}) && inside) || (inBounds({ i + 1, j }) && inLoop(i + 1, j) != inside))
+                + ((!inBounds({ i - 1, j}) && inside) || (inBounds({ i - 1, j }) && inLoop(i - 1, j) != inside))
+                + ((!inBounds({ i, j + 1}) && inside) || (inBounds({ i, j + 1 }) && inLoop(i, j + 1) != inside))
+                + ((!inBounds({ i, j - 1}) && inside) || (inBounds({ i, j - 1 }) && inLoop(i, j - 1) != inside));
 
     return lines;
 }
