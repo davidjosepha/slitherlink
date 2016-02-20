@@ -13,8 +13,6 @@
 #include "../shared/import.h"
 #include "../shared/lattice.h"
 
-#define MAX_DEPTH 10
-
 int main(int argc, char * argv[]) {
     clock_t startTime, endTime;
     startTime = clock();
@@ -36,7 +34,7 @@ int main(int argc, char * argv[]) {
         Import importer = Import(grid, filename);
         Export exporter = Export(grid);
 
-        Solver solver = Solver(grid, rules, contradictions, selectedRules, NUM_RULES - NUM_CONST_RULES, MAX_DEPTH);
+        Solver solver = Solver(grid, rules, contradictions, selectedRules, NUM_RULES - NUM_CONST_RULES, 100);
 
         exporter.print();
 

@@ -10,6 +10,8 @@
 #include "../shared/grid.h"
 #include "../shared/structs.h"
 
+#define MAX_DEPTH 100
+
 /* Constructor takes a grid as input to solve */
 Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int selectedRules[], int selectLength, int depth) {
     grid_ = &grid;
@@ -38,6 +40,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     selectLength_ = selectLength;
 
     solve();
+
 }
 
 /* Constructor for when the EPQ should be passed down. */
@@ -45,11 +48,8 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     grid_ = &grid;
     depth_ = depth;
 
-    if (oldEPQ.size() == 0) {
-        epq_.initEPQ(grid_->getHeight(), grid_->getWidth());
-    } else {
-        epq_.copyPQ(oldEPQ);
-    }
+    epq_.copyPQ(oldEPQ);
+
     multipleSolutions_ = false;
 
     rules_ = rules;
@@ -221,7 +221,7 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
             Grid nLineGuess;
             grid_->copy(nLineGuess);
             nLineGuess.setHLine(i, j, NLINE);
-            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, selectedRules_, selectLength_, depth, epq_);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, selectedRules_, selectLength_, MAX_DEPTH, epq_);
             ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
             if (nLineSolver.testContradictions()) {
                 /* The opposite guess leads to a contradiction
@@ -233,8 +233,9 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
                 multipleSolutions_ = true;
             } else {
                 /* The opposite guess led to neither a solution or
-                 * a contradiction, so we can't say whether there are
-                 * more than one solution */
+                 * a contradiction, which can only happen if the subPuzzle
+                 * is unsolvable for our maximum depth. We can learn nothing
+                 * from this result. */
                 grid_->setUpdated(false);
             }
             return;
@@ -254,7 +255,7 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
 
             /* if both guesses led to multiple solutions, we know this puzzle
              * must also lead to another solution */
-            if (nLineSolver.hasMultipleSolutions() && lineSolver.hasMultipleSolutions()) {
+            if (nLineSolver.hasMultipleSolutions() || lineSolver.hasMultipleSolutions()) {
                 multipleSolutions_ = true;
                 return;
             }
@@ -262,7 +263,23 @@ void Solver::makeHLineGuess(int i, int j, int depth) {
              * get to a solution or contradiction with the opposite guess, so
              * we know we can't conclude whether this is the single solution */
             else if (nLineGuess.isSolved()) {
-                grid_->setUpdated(false);
+                lineSolver = Solver(lineGuess, rules_, contradictions_, selectedRules_, selectLength_, MAX_DEPTH, epq_);
+                ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
+                if (lineSolver.testContradictions()) {
+                    /* The opposite guess leads to a contradiction
+                     * so the previous found solution is the only one */
+                    nLineGuess.copy(*grid_);
+                } else if (lineGuess.isSolved() || lineSolver.hasMultipleSolutions()) {
+                    /* The opposite guess also led to a solution
+                     * so there are multiple solutions */
+                    multipleSolutions_ = true;
+                } else {
+                    /* The opposite guess led to neither a solution or
+                     * a contradiction, which can only happen if the subPuzzle
+                     * is unsolvable for our maximum depth. We can learn nothing
+                     * from this result. */
+                    grid_->setUpdated(false);
+                }
                 return;
             }
             /* again check for contradictions */
@@ -310,7 +327,7 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
             Grid nLineGuess;
             grid_->copy(nLineGuess);
             nLineGuess.setVLine(i, j, NLINE);
-            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, selectedRules_, selectLength_, depth, epq_);
+            Solver nLineSolver = Solver(nLineGuess, rules_, contradictions_, selectedRules_, selectLength_, MAX_DEPTH, epq_);
             ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
             if (nLineSolver.testContradictions()) {
                 /* The opposite guess leads to a contradiction
@@ -322,8 +339,9 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
                 multipleSolutions_ = true;
             } else {
                 /* The opposite guess led to neither a solution or
-                 * a contradiction, so we can't say whether there are
-                 * more than one solution */
+                 * a contradiction, which can only happen if the subPuzzle
+                 * is unsolvable for our maximum depth. We can learn nothing
+                 * from this result. */
                 grid_->setUpdated(false);
             }
             return;
@@ -343,7 +361,7 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
 
             /* if both guesses led to multiple solutions, we know this puzzle
              * must also lead to another solution */
-            if (nLineSolver.hasMultipleSolutions() && lineSolver.hasMultipleSolutions()) {
+            if (nLineSolver.hasMultipleSolutions() || lineSolver.hasMultipleSolutions()) {
                 multipleSolutions_ = true;
                 return;
             }
@@ -351,7 +369,23 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
              * get to a solution or contradiction with the opposite guess, so
              * we know we can't conclude whether this is the single solution */
             else if (nLineGuess.isSolved()) {
-                grid_->setUpdated(false);
+                lineSolver = Solver(lineGuess, rules_, contradictions_, selectedRules_, selectLength_, MAX_DEPTH, epq_);
+                ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
+                if (lineSolver.testContradictions()) {
+                    /* The opposite guess leads to a contradiction
+                     * so the previous found solution is the only one */
+                    nLineGuess.copy(*grid_);
+                } else if (lineGuess.isSolved() || lineSolver.hasMultipleSolutions()) {
+                    /* The opposite guess also led to a solution
+                     * so there are multiple solutions */
+                    multipleSolutions_ = true;
+                } else {
+                    /* The opposite guess led to neither a solution or
+                     * a contradiction, which can only happen if the subPuzzle
+                     * is unsolvable for our maximum depth. We can learn nothing
+                     * from this result. */
+                    grid_->setUpdated(false);
+                }
                 return;
             }
             /* again check for contradictions */
