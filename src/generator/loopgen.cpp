@@ -103,7 +103,7 @@ void LoopGen::genLoop() {
     std::vector<Coordinates> avail;
     avail.push_back(cur);
 
-    for (int i = 0; i < 300000; i++) {
+    while (avail.size() > 0) {
         cur = pickCell(avail);
 
         if (cur.i == -1 || cur.j == -1) {
@@ -220,6 +220,7 @@ bool LoopGen::validCell(Coordinates coords, Coordinates cur) const {
 
     valid = valid && loop_[coords.i][coords.j] != NOEXP;
     valid = valid && loop_[coords.i][coords.j] != OUT;
+    valid = valid && loop_[coords.i][coords.j] != EXP;
 
     Coordinates shift = { coords.i - cur.i, coords.j - cur.j };
 
