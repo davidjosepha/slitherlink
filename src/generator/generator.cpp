@@ -88,7 +88,7 @@ void Generator::displayPuzzle() {
 
 /* Sets the counts of each number to the amount 
  * contained before removal of numbers */
-void Generator::setCounts(){
+void Generator::setCounts() {
     zeroCount_ = 0;
     oneCount_ = 0;
     twoCount_ = 0;
@@ -103,7 +103,7 @@ void Generator::setCounts(){
 
 
 /* Adds to a number's count */
-void Generator::plusCounts(Number num){
+void Generator::plusCounts(Number num) {
     if (num == ZERO) {
         zeroCount_ ++;
     }else if (num == ONE) {
@@ -116,7 +116,7 @@ void Generator::plusCounts(Number num){
 }
 
 /* Subtracts from a number's count */
-void Generator::minusCounts(Number num){
+void Generator::minusCounts(Number num) {
     if (num == ZERO) {
         zeroCount_ --;
     }else if (num == ONE) {
@@ -331,7 +331,7 @@ void Generator::markNecessary(int i, int j) {
 
 
 /* Another method for removing numbers */
-void Generator::deleteNumbers(){ 
+void Generator::deleteNumbers() { 
     setCounts();
     int count = 0;
     int i = rand() % (m_) + 1;
@@ -371,7 +371,7 @@ void Generator::deleteNumbers(){
 }
 
 bool Generator::isBalanced(int i, int j, Number num) const {
-    if (eligible(i, j)){
+    if (eligible(i, j)) {
         if (num == ZERO) {
             return true;
         } if (num == THREE) {
