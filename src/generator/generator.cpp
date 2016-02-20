@@ -34,7 +34,7 @@ void Generator::setDifficulty(Difficulty difficulty) {
     setRules(difficulty);
     if (difficulty == EASY) {
         factor_ = .52;
-        guessDepth_ = 0;
+        guessDepth_ = 1;
     } else if (difficulty == HARD) {
         factor_ = .42;
         guessDepth_ = 1;
