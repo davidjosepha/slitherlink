@@ -40,7 +40,6 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     solve();
 }
 
-
 /* Constructor for when the EPQ should be passed down. */
 Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int selectedRules[], int selectLength, int depth, EPQ oldEPQ) {
     grid_ = &grid;

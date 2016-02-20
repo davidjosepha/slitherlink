@@ -1,45 +1,47 @@
 #include "generator.h"
 #include <stdlib.h>
 #include <time.h>
+#include <iostream>
+#include <stack>
 #include "loopgen.h"
+#include "../shared/export.h"
+#include "../shared/import.h"
+#include "../shared/structs.h"
 #include "../solver/contradiction.h"
 #include "../solver/contradictions.h"
 #include "../solver/rule.h"
 #include "../solver/rules.h"
 #include "../solver/solver.h"
-#include "../shared/structs.h"
-#include "../shared/export.h"
-#include "../shared/import.h"
-#include <iostream>
-#include <stack>
+
 
 /* Generator constructor */
-Generator::Generator(int m, int n) {
+Generator::Generator(int m, int n, Difficulty difficulty) {
     m_ = m;
     n_ = n;
     
     numberCount_ = m_*n_;
 
     srand(time(NULL));
-    setDifficulty(HARD);
+    setDifficulty(difficulty);
     createPuzzle();
     displayFinalPuzzle();
     destroyArrays();
 }
 
-
+/* Sets the difficulty of the puzzle by imposing limitiations on the solver's capabilities */
 void Generator::setDifficulty(Difficulty difficulty) {
-    setRules();
+    setRules(difficulty);
     if (difficulty == EASY) {
-        factor_ = .51;
+        factor_ = .52;
         guessDepth_ = 0;
     } else if (difficulty == HARD) {
-        factor_ = .41;
+        factor_ = .42;
         guessDepth_ = 1;
     }
 }
 
-void Generator::setRules() {
+/* Sets which rules the solver can apply */
+void Generator::setRules(Difficulty difficulty) {
     selectedRules_ = new int[NUM_RULES - NUM_CONST_RULES];
     
     for (int i = 0; i < NUM_RULES - NUM_CONST_RULES; i++) {
@@ -47,8 +49,10 @@ void Generator::setRules() {
     }
 }
 
+/* Creates the puzzle by importing a puzzle, 
+ * creating a loop, and removing numbers */
 void Generator::createPuzzle() {
-    smallestCount_ = m_ * n_;
+    smallestCount_ = numberCount_;
     bufferReachCount_ = 0;
     Import importer = Import(grid_, m_, n_);
     LoopGen loopgen = LoopGen(m_, n_, grid_);
@@ -56,10 +60,10 @@ void Generator::createPuzzle() {
     initArrays();
     setCounts();
     grid_.copy(smallestCountGrid_);
-
     reduceNumbers();
 }
 
+/* Prints the puzzle in its final state, both solved and unsolved */
 void Generator::displayFinalPuzzle() {
     checkIfSolved();
     printf("here's a new puzzle:\n");
@@ -70,6 +74,7 @@ void Generator::displayFinalPuzzle() {
     
 }
 
+/* Displays the puzzle, the total count of numbers, and a count of each type */
 void Generator::displayPuzzle() {
     
     Export exporter = Export(grid_);
@@ -78,7 +83,8 @@ void Generator::displayPuzzle() {
     printf("0:%i, 1:%i, 2:%i, 3:%i\n", zeroCount_, oneCount_, twoCount_, threeCount_);
 }
 
-
+/* Sets the counts of each number to the amount 
+ * contained before removal of numbers */
 void Generator::setCounts(){
     oneCount_ = 0;
     twoCount_ = 0;
@@ -92,7 +98,7 @@ void Generator::setCounts(){
 }
 
 
-
+/* Adds to a number's count */
 void Generator::plusCounts(Number num){
     if (num == ZERO) {
         zeroCount_ ++;
@@ -105,6 +111,7 @@ void Generator::plusCounts(Number num){
     }
 }
 
+/* Subtracts from a number's count */
 void Generator::minusCounts(Number num){
     if (num == ZERO) {
         zeroCount_ --;
@@ -145,25 +152,32 @@ void Generator::destroyArrays() {
     delete [] selectedRules_;
 }
 
-
+/* Reduces numbers from the puzzle until a satisfactory number has been reached */
 void Generator::reduceNumbers() {
     
+    // Remove numbers until this count has been reached
     while (numberCount_ > ((m_*n_)*factor_ + 3)) {
+        
+        /* Reset the smallest count and buffer incase the required amount
+        of numbers cannot be removed. */
         if (smallestCount_ > numberCount_) {
             smallestCount_ = numberCount_;
             grid_.clearAndCopy(smallestCountGrid_);
             buffer_ = (numberCount_ + (m_*n_))/2 - 2;
-            //printf("Buffer: %i\n", buffer_);
         }
         
         if (numberCount_ == buffer_) {
             bufferReachCount_ ++;
         }
         
+        /* If the count has past the buffer three times,
+         * return the grid with the smallest count of
+         * of numbers that is currently known. */
         if (bufferReachCount_ == 3) {
             smallestCountGrid_.clearAndCopy(grid_);
             break;
         } 
+        
         findNumberToRemove();
         eligibleCoordinates_.clear();
         
@@ -176,7 +190,7 @@ void Generator::reduceNumbers() {
 
 /* Finds a number to remove from the grid while keeping exactly one solution */
 void Generator::findNumberToRemove() {   
-    fillSingleEligible();
+    fillEligibleVector();
     bool coordsFound = false;
     
     while (!eligibleCoordinates_.empty() && !coordsFound) {
@@ -184,12 +198,14 @@ void Generator::findNumberToRemove() {
         Coordinates attempt = eligibleCoordinates_.at(random);
         eligibleCoordinates_.erase(eligibleCoordinates_.begin() + random);
         
+        // Checks if the number in question is needed to retain a balance
         if (isBalanced(attempt.i, attempt.j)) {
             removeNumber(attempt.i, attempt.j);
+            
+            // If unsolvable, bring number back and look for another
             if (!checkIfSolved()) {
                 setOldNumber(attempt.i, attempt.j);
                 markNecessary(attempt.i, attempt.j);
-            
             } else {
                 ineligibleCoordinates_.push_back(attempt);
                 coordsFound = true;
@@ -199,15 +215,14 @@ void Generator::findNumberToRemove() {
         }
     }
     
-    
+    // If no more candidates, bring back the previously removed number
     if (!coordsFound && numberCount_ < m_ * n_) {
         getNecessaryCoordinate();
         numberCount_ ++;
-    } else if (!coordsFound) {
-        printf("yikes:\n");
     } 
 }
 
+/* Determines if the puzzle contains a proper ratio of Number types */
 bool Generator::isBalanced(int i, int j) {
     float moa = 1.1;
     Number num = grid_.getNumber(i, j);
@@ -223,7 +238,7 @@ bool Generator::isBalanced(int i, int j) {
 }
 
 /* Adds Coordinates of Numbers that are eligible for elimination to a vector */
-void Generator::fillSingleEligible() {
+void Generator::fillEligibleVector() {
     for (int i = 1; i < m_+1; i++) {
         for (int j = 1; j < n_+1; j++) {
             if (eligible(i, j)) {
@@ -250,9 +265,9 @@ bool Generator::checkIfSolved() {
     }
 }
 
-
-/* Pops Coordinates out of ineligible vector, marking each as eligible
- * until one is found that has been removed */
+/* Pops Coordinates out of ineligible vector, marking 
+ * each as eligible until one is found that has been removed. 
+ * This one is then marked as necessary */
 void Generator::getNecessaryCoordinate() {
     bool found = false;
     
@@ -271,6 +286,7 @@ void Generator::getNecessaryCoordinate() {
     }
 }
 
+/* Sets a space in the grid back to its original number */
 void Generator::setOldNumber(int i, int j) {
     grid_.setNumber(i, j, oldNumbers_[i-1][j-1]);
 }
@@ -305,14 +321,14 @@ void Generator::markEligible(int i, int j) {
     canEliminate_[i-1][j-1] = true;
 }
 
+/* Marks a Number at specific Coordinates as ineligible for elimination
+ * due to its necessity to complete the puzzle at this configuration */
 void Generator::markNecessary(int i, int j) {
     canEliminate_[i-1][j-1] = false;
 }
 
 
-
-
-
+/* Another method for removing numbers */
 void Generator::deleteNumbers(){ 
     setCounts();
     //printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
