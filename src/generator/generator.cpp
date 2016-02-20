@@ -34,7 +34,7 @@ void Generator::setDifficulty(Difficulty difficulty) {
     setRules(difficulty);
     if (difficulty == EASY) {
         factor_ = .52;
-        guessDepth_ = 2;
+        guessDepth_ = 0;
     } else if (difficulty == HARD) {
         factor_ = .42;
         guessDepth_ = 1;
@@ -44,14 +44,19 @@ void Generator::setDifficulty(Difficulty difficulty) {
 /* Sets which rules the solver can apply */
 void Generator::setRules(Difficulty difficulty) {
     if (difficulty == EASY) {
-        numberOfRules_ = 12;
+        numberOfRules_ = sizeof((int [])EASY_RULES) / sizeof(int);
+        selectedRules_ = new int[numberOfRules_];
+
+        for (int i = 0; i < numberOfRules_; i++) {
+            selectedRules_[i] = (int [])EASY_RULES[i];
+        }
     } else {
-        numberOfRules_ = NUM_RULES - NUM_CONST_RULES;
-    }
-    selectedRules_ = new int[numberOfRules_];
-    
-    for (int i = 0; i < numberOfRules_; i++) {
-        selectedRules_[i] = i;
+        numberOfRules_ = sizeof((int [])HARD_RULES) / sizeof(int);
+        selectedRules_ = new int[numberOfRules_];
+
+        for (int i = 0; i < numberOfRules_; i++) {
+            selectedRules_[i] = (int [])HARD_RULES[i];
+        }
     }
 }
 
