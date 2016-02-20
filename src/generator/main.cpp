@@ -11,7 +11,6 @@ int main(int argc, char * argv[]) {
     
     clock_t startTime, endTime;
     
-    
     if (argc == 3) {
         
         std::istringstream mn(argv[1]);
@@ -25,7 +24,7 @@ int main(int argc, char * argv[]) {
 
         endTime = clock();
         float diff = ((float)endTime - (float)startTime) / CLOCKS_PER_SEC;
-        std::cout << "Time to solve:\t" << diff << " seconds" << std::endl;
+        std::cout << "Time to create:\t" << diff << " seconds" << std::endl;
         return 0;
         
     } 
