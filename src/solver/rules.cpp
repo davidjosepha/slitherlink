@@ -654,7 +654,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     rules[i].addVLineDiff(0, 0, LINE);
 
     i++;
-    
+
     /**
      * Rule #31
      * Before   After
@@ -673,7 +673,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     rules[i].addVLineDiff(0, 1, NLINE);
 
     i++;
-    
+
     /**
      * Rule 32
      * Before       After
@@ -695,7 +695,7 @@ void initRules(Rule (& rules)[NUM_RULES]) {
     rules[i].addVLineDiff(0, 2, LINE);
 
     i++;
-    
+
     /**
      * Rule 33
      * Before       After

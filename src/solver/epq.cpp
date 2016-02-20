@@ -11,7 +11,7 @@ void EPQ::initEPQ(int m, int n)  {
 
     for (int i = 1; i < m-1; i++) {
         for (int j = 1; j < n-1; j++) {
-            pq_.push(createPrioEdge(0, i, j, true)); 
+            pq_.push(createPrioEdge(0, i, j, true));
             pq_.push(createPrioEdge(0, i, j, false));
         }
         pq_.push(createPrioEdge(0, i, n-1, false));
@@ -55,7 +55,7 @@ void EPQ::emplace(double prio, int i, int j, bool hLine) {
 //     public:
 //         bool operator()(PrioEdge & e1, PrioEdge & e2) const { return e1.priority < e2.priority; }
 // };
-    
+
 std::vector<PrioEdge> EPQ::copyPQToVector(){
     std::priority_queue<PrioEdge, std::vector<PrioEdge>, ComparePrioEdge> newPQ;
     std::vector<PrioEdge> outputvec(pq_.size());

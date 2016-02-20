@@ -31,8 +31,8 @@ class Solver {
         void applyRules(int selectedRules[]);
         void applyRule(int i, int j, Rule & rule, Orientation orient);
         bool ruleApplies(int i, int j, Rule const & rule, Orientation orient) const;
-        
-        
+
+
         bool contradictionApplies(int i, int j, Contradiction const & contradiction, Orientation orient) const;
 
         Grid * grid_;

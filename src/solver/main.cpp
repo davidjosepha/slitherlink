@@ -16,7 +16,7 @@
 int main(int argc, char * argv[]) {
     clock_t startTime, endTime;
     startTime = clock();
-    
+
     Rule rules[NUM_RULES];
     initRules(rules);
     Contradiction contradictions[NUM_CONTRADICTIONS];

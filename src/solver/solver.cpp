@@ -34,7 +34,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     for (int i = 1; i <= NUM_CONST_RULES; i++) {
         selectedPlusBasic[selectLength+ NUM_CONST_RULES - i] = (NUM_RULES - i);
     }
-    
+
     selectLength_ = selectLength + NUM_CONST_RULES;
     applyRules(selectedPlusBasic);
     selectLength_ = selectLength;
@@ -57,7 +57,7 @@ Solver::Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[
     selectedRules_ = selectedRules;
     selectLength_ = selectLength;
     ruleCounts_ = 0;
-    
+
     solve();
 }
 
@@ -477,7 +477,7 @@ void Solver::intersectGrids(Grid const & lineGuess, Grid const & nLineGuess) {
                 grid_->setVLine(i, j, lineGuess.getVLine(i, j));
                 grid_->setUpdated(true);
             }
-        } 
+        }
     }
 }
 
