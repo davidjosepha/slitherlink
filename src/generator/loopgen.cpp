@@ -23,21 +23,6 @@ LoopGen::LoopGen(int m, int n, Grid & grid) {
 
 /* fill the grid with numbers after generating the loop */
 void LoopGen::fillGrid() {
-    /*
-     * Prints loop
-    for (int i = 0; i < m_; i++) {
-        for (int j = 0; j < n_; j++) {
-            if (loop_[i][j] != UNKNOWN && loop_[i][j] != OUT) {
-                //printf("%d", loop_[i][j]);
-                printf("X");
-            } else {
-                printf(" ");
-            }
-        }
-        printf("\n");
-    }
-    */
-
     int lines;
     for (int i = 1; i < m_ + 1; i++) {
         for (int j = 1; j < n_ + 1; j++) {

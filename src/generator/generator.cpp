@@ -1,5 +1,4 @@
 #include "generator.h"
-#include <stdlib.h>
 #include <time.h>
 #include <iostream>
 #include <stack>
@@ -68,9 +67,8 @@ void Generator::createPuzzle() {
 /* Prints the puzzle in its final state, both solved and unsolved */
 void Generator::displayFinalPuzzle() {
     checkIfSolved();
-    printf("here's a new puzzle:\n");
     displayPuzzle();
-    printf("here it is unsolved:\n");
+    std::cout << std::endl;
     grid_.resetGrid();
     displayPuzzle();
     
@@ -81,8 +79,6 @@ void Generator::displayPuzzle() {
     
     Export exporter = Export(grid_);
     exporter.print();
-    printf("Total Numbers: %i\n", numberCount_);
-    printf("0:%i, 1:%i, 2:%i, 3:%i\n", zeroCount_, oneCount_, twoCount_, threeCount_);
 }
 
 /* Sets the counts of each number to the amount 
@@ -185,7 +181,7 @@ void Generator::reduceNumbers() {
         eligibleCoordinates_.clear();
         
         grid_.resetGrid();
-        displayPuzzle();
+        //displayPuzzle();
     }
 }
 
@@ -334,7 +330,6 @@ void Generator::markNecessary(int i, int j) {
 /* Another method for removing numbers */
 void Generator::deleteNumbers(){ 
     setCounts();
-    //printf("%i,%i,%i\n", oneCount_, twoCount_, threeCount_);
     int count = 0;
     int i = rand() % (m_) + 1;
     int j = rand() % (n_) + 1;
@@ -353,8 +348,6 @@ void Generator::deleteNumbers(){
             if (count2 > n_+m_) {
                 if (eligible(i,j) or oldNum == NONE) {
                     count+= (m_+n_)/2;
-                    // printf("Counts: %i,%i,%i\n", oneCount_, twoCount_, threeCount_);
-                    // printf("can't balance: %i, %i, num: %i\n", i, j, oldNum-1);
                     break;
                 }
             }
