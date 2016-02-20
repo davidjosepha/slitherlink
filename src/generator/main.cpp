@@ -20,13 +20,13 @@ int main(int argc, char * argv[]) {
         assert(nn >> n && nn.eof());
         
         startTime = clock();
-        Generator g = Generator(m, n, HARD); //one square for left/right top/bottom boundries
+        Generator g = Generator(m, n, EASY); //one square for left/right top/bottom boundries
 
         endTime = clock();
         float diff = ((float)endTime - (float)startTime) / CLOCKS_PER_SEC;
         std::cout << "Time to create:\t" << diff << " seconds" << std::endl;
-        return 0;
-        
+
+        return EXIT_SUCCESS;
     } 
     
 }

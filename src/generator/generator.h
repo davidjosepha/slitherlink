@@ -54,8 +54,6 @@ class Generator {
         
         void getNecessaryCoordinate();
         
-// >>>>>>> fd3cbc36c9cfe95ac544eafb21161d02b1d09cb1
-        
         int m_;
         int n_;
         

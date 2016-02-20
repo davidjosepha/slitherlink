@@ -34,7 +34,7 @@ void Generator::setDifficulty(Difficulty difficulty) {
     setRules(difficulty);
     if (difficulty == EASY) {
         factor_ = .52;
-        guessDepth_ = 0;
+        guessDepth_ = 2;
     } else if (difficulty == HARD) {
         factor_ = .42;
         guessDepth_ = 1;
@@ -43,9 +43,14 @@ void Generator::setDifficulty(Difficulty difficulty) {
 
 /* Sets which rules the solver can apply */
 void Generator::setRules(Difficulty difficulty) {
-    selectedRules_ = new int[NUM_RULES - NUM_CONST_RULES];
+    if (difficulty == EASY) {
+        numberOfRules_ = 12;
+    } else {
+        numberOfRules_ = NUM_RULES - NUM_CONST_RULES;
+    }
+    selectedRules_ = new int[numberOfRules_];
     
-    for (int i = 0; i < NUM_RULES - NUM_CONST_RULES; i++) {
+    for (int i = 0; i < numberOfRules_; i++) {
         selectedRules_[i] = i;
     }
 }
@@ -181,7 +186,6 @@ void Generator::reduceNumbers() {
         eligibleCoordinates_.clear();
         
         grid_.resetGrid();
-        //displayPuzzle();
     }
 }
 
@@ -256,7 +260,7 @@ bool Generator::checkIfSolved() {
     initContradictions(contradictions_);
     grid_.resetGrid();
     
-    Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, guessDepth_);
+    Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_, numberOfRules_, guessDepth_);
     if (grid_.isSolved()) {
         return true;
     } else {
