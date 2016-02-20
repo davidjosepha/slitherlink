@@ -21,6 +21,8 @@ Generator::Generator(int m, int n, Difficulty difficulty) {
     
     numberCount_ = m_*n_;
 
+    buffer_ = 0;
+
     srand(time(NULL));
     setDifficulty(difficulty);
     createPuzzle();
@@ -86,6 +88,7 @@ void Generator::displayPuzzle() {
 /* Sets the counts of each number to the amount 
  * contained before removal of numbers */
 void Generator::setCounts(){
+    zeroCount_ = 0;
     oneCount_ = 0;
     twoCount_ = 0;
     threeCount_ = 0;
