@@ -11,8 +11,9 @@ $ ./slsolver mypuzzle.slk anotherpuzzle.slk
 
 ## run slitherlink generator
 ```
-$ ./slgenerator
+$ ./slgenerator height width difficulty
 ```
+where difficulty is either 'e' or 'h'
 
 ## proposed run-time
 ```
