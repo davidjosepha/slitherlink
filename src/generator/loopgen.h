@@ -20,7 +20,7 @@ class LoopGen {
 
         Coordinates addCell(Coordinates cur);
         Coordinates pickDirection(Coordinates cur) const;
-        bool isExpandable(Coordinates cur);
+        bool isExpandable(Coordinates cur) const;
         AdjacencyList getAdjacent(Coordinates cur) const;
         void addAvailable(Coordinates coords, std::vector<Coordinates> & avail) const;
         Coordinates pickCell(std::vector<Coordinates> & avail) const;

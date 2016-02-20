@@ -56,7 +56,7 @@ void Grid::resetGrid() {
 /*
  * Copies grid for the purpose of making a guess.
  */
-void Grid::copy(Grid & newGrid) {
+void Grid::copy(Grid & newGrid) const {
     newGrid.initArrays(getHeight(), getWidth());
     newGrid.initUpdateMatrix();
 

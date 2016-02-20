@@ -12,7 +12,7 @@ class Solver {
         Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int selectedRules[], int selectLength, int depth);
         Solver(Grid & grid, Rule rules[NUM_RULES], Contradiction contradictions[NUM_CONTRADICTIONS], int selectedRules[], int selectLength, int depth, EPQ oldEPQ);
         bool testContradictions() const;
-        bool hasMultipleSolutions() const {return multipleSolutions_;};
+        bool hasMultipleSolutions() const { return multipleSolutions_; };
         void resetSolver();
         int ruleCounts_;
 
@@ -24,15 +24,11 @@ class Solver {
 
         void updateEPQ();
 
-        bool spiralNext(int startm, int startn, int & prevm, int & prevn) const;
-
         void intersectGrids(Grid const & lineGuess, Grid const & nLineGuess);
 
         void applyRules(int selectedRules[]);
         void applyRule(int i, int j, Rule & rule, Orientation orient);
         bool ruleApplies(int i, int j, Rule const & rule, Orientation orient) const;
-
-
         bool contradictionApplies(int i, int j, Contradiction const & contradiction, Orientation orient) const;
 
         Grid * grid_;

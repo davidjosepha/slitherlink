@@ -51,12 +51,8 @@ void EPQ::pop() {
 void EPQ::emplace(double prio, int i, int j, bool hLine) {
     pq_.push(createPrioEdge(prio, i, j, hLine));
 }
-// class ComparePrioEdge {
-//     public:
-//         bool operator()(PrioEdge & e1, PrioEdge & e2) const { return e1.priority < e2.priority; }
-// };
 
-std::vector<PrioEdge> EPQ::copyPQToVector(){
+std::vector<PrioEdge> EPQ::copyPQToVector() const {
     std::priority_queue<PrioEdge, std::vector<PrioEdge>, ComparePrioEdge> newPQ;
     std::vector<PrioEdge> outputvec(pq_.size());
     std::copy(&(pq_.top()), &(pq_.top()) + pq_.size(), &outputvec[0]);

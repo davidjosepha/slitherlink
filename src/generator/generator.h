@@ -22,41 +22,36 @@ class Generator {
         void displayPuzzle();
         void fillEligibleVector();
         void initArrays();
-    
+
         void setDifficulty(Difficulty difficulty);
 
         void reduceNumbers();
-    
-        
-        
-        
+
         void removeNumber(int i, int j);
         void eliminateNumber(int i, int j);
         void findNumberToRemove();
-        bool eligible(int i, int j);
-        bool isBalanced(int i, int j);
-        bool isBalanced(int i, int j, Number num);
+        bool eligible(int i, int j) const;
+        bool isBalanced(int i, int j) const;
+        bool isBalanced(int i, int j, Number num) const;
 
-    
+
         void setCounts();
         void minusCounts(Number num);
-        
+
         void markEligible(int i, int j);
         void markNecessary(int i, int j);
         void setOldNumber(int i, int j);
         void setRules(Difficulty difficulty);
-    
-        
+
         void plusCounts(Number num);
-        
-    
+
         bool checkIfSolved();
-        
+
         void getNecessaryCoordinate();
-        
+
         int m_;
         int n_;
-        
+
         int guessDepth_;
         double factor_;
         int numberCount_;
@@ -72,14 +67,12 @@ class Generator {
         Grid grid_;
         Grid smallestCountGrid_;
         std::vector <Coordinates> eligibleCoordinates_;
-    
+
         std::vector <Coordinates> ineligibleCoordinates_;
         Rule * rules_;
         Contradiction * contradictions_;
         bool ** canEliminate_;
         Number ** oldNumbers_;
-        
-
 };
 
 #endif

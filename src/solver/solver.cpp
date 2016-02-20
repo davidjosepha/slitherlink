@@ -407,53 +407,6 @@ void Solver::makeVLineGuess(int i, int j, int depth) {
     }
 }
 
-/* TODO: Comment this function */
-bool Solver::spiralNext(int startm, int startn, int & prevm, int & prevn) const {
-    int tempm = prevm;
-    int tempn = prevn;
-
-    if (prevm + prevn == startm + startn) {
-        if (prevn >= startn) {
-            prevn++;
-        } else {
-            prevm--;
-        }
-    } else if ((startm - prevm) == (startn - prevn)) {
-        if (prevm > startm) {
-            prevn--;
-        } else {
-            prevn++;
-        }
-    } else if (prevm > prevn) {
-        if (prevm + prevn > startm + startn) {
-            if (prevm > startm) {
-                prevn--;
-            }
-        } else {
-            if (prevn < startn) {
-                prevm--;
-            }
-        }
-    } else {
-        if (prevm + prevn > startm + startn) {
-            if (prevn > startn) {
-                prevm++;
-            }
-        } else {
-            if (prevm < startm) {
-                prevn++;
-            }
-        }
-    }
-
-    return !((tempm == prevm && tempn == prevn) ||
-              prevm < 0 ||
-              prevn < 0 ||
-              prevm >= grid_->getHeight() ||
-              prevn >= grid_->getWidth());
-}
-
-
 /* Checks for the intersection between lineGuess and nLineGuess grids
  * and applies any intersection to the canonical grid. */
 void Solver::intersectGrids(Grid const & lineGuess, Grid const & nLineGuess) {

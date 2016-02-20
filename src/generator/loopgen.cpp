@@ -160,7 +160,7 @@ Coordinates LoopGen::pickDirection(Coordinates cur) const {
 }
 
 /* check whether it's possible to expand in at least one direction */
-bool LoopGen::isExpandable(Coordinates cur) {
+bool LoopGen::isExpandable(Coordinates cur) const {
     assert(cur.i >= 0 && cur.i < m_ && cur.j >= 0 && cur.j < n_);
 
     AdjacencyList adjacencyList = getAdjacent(cur);

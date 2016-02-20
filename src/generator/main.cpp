@@ -8,11 +8,9 @@
 #include "generator.h"
 
 int main(int argc, char * argv[]) {
-    
     clock_t startTime, endTime;
     
     if (argc == 3) {
-        
         std::istringstream mn(argv[1]);
         std::istringstream nn(argv[2]);
         int m, n;
@@ -28,5 +26,4 @@ int main(int argc, char * argv[]) {
 
         return EXIT_SUCCESS;
     } 
-    
 }

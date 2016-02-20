@@ -192,7 +192,7 @@ void Generator::reduceNumbers() {
 
 
 /* Finds a number to remove from the grid while keeping exactly one solution */
-void Generator::findNumberToRemove() {   
+void Generator::findNumberToRemove() {
     fillEligibleVector();
     bool coordsFound = false;
     
@@ -226,7 +226,7 @@ void Generator::findNumberToRemove() {
 }
 
 /* Determines if the puzzle contains a proper ratio of Number types */
-bool Generator::isBalanced(int i, int j) {
+bool Generator::isBalanced(int i, int j) const {
     float moa = 1.1;
     Number num = grid_.getNumber(i, j);
     if (num == THREE) {
@@ -253,7 +253,6 @@ void Generator::fillEligibleVector() {
 }
 
 bool Generator::checkIfSolved() {
-    
     Rule rules_[NUM_RULES];
     initRules(rules_);
     Contradiction contradictions_[NUM_CONTRADICTIONS];
@@ -311,7 +310,7 @@ void Generator::eliminateNumber(int i, int j) {
 }
 
 /* Determines if a Number at Coordinates is eligible for elimination */
-bool Generator::eligible(int i, int j) {
+bool Generator::eligible(int i, int j) const {
     if (canEliminate_[i-1][j-1] && (grid_.getNumber(i, j) != NONE)) {
         return true;
     } else {
@@ -371,7 +370,7 @@ void Generator::deleteNumbers(){
     }
 }
 
-bool Generator::isBalanced(int i, int j, Number num){
+bool Generator::isBalanced(int i, int j, Number num) const {
     if (eligible(i, j)){
         if (num == ZERO) {
             return true;
