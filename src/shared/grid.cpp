@@ -179,7 +179,7 @@ bool Grid::setVLine(int i, int j, Edge edge) {
     } else if (prevEdge == edge) {
         return true;
     }
-    
+
     // Update contour information
     if (edge == LINE) {
         updateContourMatrix(i, j, false);
@@ -315,9 +315,9 @@ void Grid::initUpdateMatrix() {
     init_ = true;
 };
 
-/* 
+/*
  * Updates the information on the endpoints of our contours according to what
- * new line has been added. We use this 2D array to keep track of the endpoints now 
+ * new line has been added. We use this 2D array to keep track of the endpoints now
  * instead of a vector. Also keeps track of the current number of open
  * and closed loops in our grid
  */
@@ -341,7 +341,7 @@ void Grid::updateContourMatrix(int i, int j, bool hline) {
         setContourMatrix(i2,j2,std::make_pair(-1,-1));
         numClosedLoops_++;
         numOpenLoops_--;
-    } 
+    }
     /* Both ends of the new line are already endpoints to two different
      * conoturs. Get rid of the open endpoints, update the new ends of the
      * merged contour, and count one less open contour */
@@ -351,14 +351,14 @@ void Grid::updateContourMatrix(int i, int j, bool hline) {
         setContourMatrix(i,j,std::make_pair(-1,-1));
         setContourMatrix(i2,j2,std::make_pair(-1,-1));
         numOpenLoops_--;
-    } 
+    }
     /* First end of the new line is already an endpoint to a contour. Extend
      * the contour and update new endpoints. */
     else if (getContourMatrix(i,j).first != -1) {
         setContourMatrix(getContourMatrix(i,j).first,getContourMatrix(i,j).second,std::make_pair(i2,j2));
         setContourMatrix(i2,j2,getContourMatrix(i,j));
         setContourMatrix(i,j,std::make_pair(-1,-1));
-    } 
+    }
     /* Second end of the new line is already an endpoint to a contour. Extend
      * the contour and update new endpoints. */
     else if (getContourMatrix(i2,j2).first != -1) {

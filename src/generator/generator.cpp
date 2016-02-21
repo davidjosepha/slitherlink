@@ -17,7 +17,7 @@
 Generator::Generator(int m, int n, Difficulty difficulty) {
     m_ = m;
     n_ = n;
-    
+
     numberCount_ = m_*n_;
 
     buffer_ = 0;
@@ -60,14 +60,14 @@ void Generator::setRules(Difficulty difficulty) {
     }
 }
 
-/* Creates the puzzle by importing a puzzle, 
+/* Creates the puzzle by importing a puzzle,
  * creating a loop, and removing numbers */
 void Generator::createPuzzle() {
     smallestCount_ = numberCount_;
     bufferReachCount_ = 0;
     Import importer = Import(grid_, m_, n_);
     LoopGen loopgen = LoopGen(m_, n_, grid_);
-    
+
     initArrays();
     setCounts();
     grid_.copy(smallestCountGrid_);
@@ -81,17 +81,17 @@ void Generator::displayFinalPuzzle() {
     std::cout << std::endl;
     grid_.resetGrid();
     displayPuzzle();
-    
+
 }
 
 /* Displays the puzzle, the total count of numbers, and a count of each type */
 void Generator::displayPuzzle() {
-    
+
     Export exporter = Export(grid_);
     exporter.print();
 }
 
-/* Sets the counts of each number to the amount 
+/* Sets the counts of each number to the amount
  * contained before removal of numbers */
 void Generator::setCounts() {
     zeroCount_ = 0;
@@ -102,7 +102,7 @@ void Generator::setCounts() {
         for (int j = 1; j <= n_; j++) {
             Number oldNum = grid_.getNumber(i, j);
             plusCounts(oldNum);
-        } 
+        }
     }
 }
 
@@ -163,10 +163,10 @@ void Generator::destroyArrays() {
 
 /* Reduces numbers from the puzzle until a satisfactory number has been reached */
 void Generator::reduceNumbers() {
-    
+
     // Remove numbers until this count has been reached
     while (numberCount_ > ((m_*n_)*factor_ + 3)) {
-        
+
         /* Reset the smallest count and buffer incase the required amount
         of numbers cannot be removed. */
         if (smallestCount_ > numberCount_) {
@@ -174,22 +174,22 @@ void Generator::reduceNumbers() {
             grid_.clearAndCopy(smallestCountGrid_);
             buffer_ = (numberCount_ + (m_*n_))/2 - 2;
         }
-        
+
         if (numberCount_ == buffer_) {
             bufferReachCount_ ++;
         }
-        
+
         /* If the count has past the buffer three times,
          * return the grid with the smallest count of
          * of numbers that is currently known. */
         if (bufferReachCount_ == 3) {
             smallestCountGrid_.clearAndCopy(grid_);
             break;
-        } 
-        
+        }
+
         findNumberToRemove();
         eligibleCoordinates_.clear();
-        
+
         grid_.resetGrid();
     }
 }
@@ -200,16 +200,16 @@ void Generator::reduceNumbers() {
 void Generator::findNumberToRemove() {
     fillEligibleVector();
     bool coordsFound = false;
-    
+
     while (!eligibleCoordinates_.empty() && !coordsFound) {
         int random = rand() % eligibleCoordinates_.size();
         Coordinates attempt = eligibleCoordinates_.at(random);
         eligibleCoordinates_.erase(eligibleCoordinates_.begin() + random);
-        
+
         // Checks if the number in question is needed to retain a balance
         if (isBalanced(attempt.i, attempt.j)) {
             removeNumber(attempt.i, attempt.j);
-            
+
             // If unsolvable, bring number back and look for another
             if (!checkIfSolved()) {
                 setOldNumber(attempt.i, attempt.j);
@@ -222,12 +222,12 @@ void Generator::findNumberToRemove() {
             }
         }
     }
-    
+
     // If no more candidates, bring back the previously removed number
     if (!coordsFound && numberCount_ < m_ * n_) {
         getNecessaryCoordinate();
         numberCount_ ++;
-    } 
+    }
 }
 
 /* Determines if the puzzle contains a proper ratio of Number types */
@@ -263,7 +263,7 @@ bool Generator::checkIfSolved() {
     Contradiction contradictions_[NUM_CONTRADICTIONS];
     initContradictions(contradictions_);
     grid_.resetGrid();
-    
+
     Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_, numberOfRules_, guessDepth_);
     if (grid_.isSolved()) {
         return true;
@@ -272,12 +272,12 @@ bool Generator::checkIfSolved() {
     }
 }
 
-/* Pops Coordinates out of ineligible vector, marking 
- * each as eligible until one is found that has been removed. 
+/* Pops Coordinates out of ineligible vector, marking
+ * each as eligible until one is found that has been removed.
  * This one is then marked as necessary */
 void Generator::getNecessaryCoordinate() {
     bool found = false;
-    
+
     while (!found) {
         Coordinates popped = ineligibleCoordinates_.back();
         if (grid_.getNumber(popped.i, popped.j) == NONE) {
@@ -300,16 +300,16 @@ void Generator::setOldNumber(int i, int j) {
 
 /* Elimates a number at a set of coordinates */
 void Generator::removeNumber(int i, int j) {
-    grid_.setNumber(i, j, NONE); 
+    grid_.setNumber(i, j, NONE);
     grid_.resetGrid();
     Coordinates removed{ i, j };
     ineligibleCoordinates_.push_back(removed);
-    
+
 }
 
 /* Elimates a number at a set of coordinates */
 void Generator::eliminateNumber(int i, int j) {
-    grid_.setNumber(i, j, NONE); 
+    grid_.setNumber(i, j, NONE);
     grid_.resetGrid();
     canEliminate_[i-1][j-1] = false;
 }
@@ -322,7 +322,7 @@ bool Generator::eligible(int i, int j) const {
         return false;
     }
 }
-                            
+
 /* Marks a Number at specific Coordinates as eligible for elimination */
 void Generator::markEligible(int i, int j) {
     canEliminate_[i-1][j-1] = true;
@@ -336,7 +336,7 @@ void Generator::markNecessary(int i, int j) {
 
 
 /* Another method for removing numbers */
-void Generator::deleteNumbers() { 
+void Generator::deleteNumbers() {
     setCounts();
     int count = 0;
     int i = rand() % (m_) + 1;
@@ -363,8 +363,8 @@ void Generator::deleteNumbers() {
         eliminateNumber(i, j);
         //exporter.print();
 
-        // TODO: maybe modify selected rules 
-        
+        // TODO: maybe modify selected rules
+
         Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_, NUM_RULES - NUM_CONST_RULES, 1);
         if (!grid_.isSolved()) {
             grid_.setNumber(i, j, oldNum);
@@ -385,7 +385,7 @@ bool Generator::isBalanced(int i, int j, Number num) const {
             return (oneCount_*3.2+1 > 2*threeCount_ & oneCount_*5.2+1 > 2*twoCount_);
         } if (num == TWO) {
             return (twoCount_*2.1+1 > 5*oneCount_ & twoCount_*3.1+1 > 5*threeCount_);
-        }   
+        }
     }
     return false;
 }

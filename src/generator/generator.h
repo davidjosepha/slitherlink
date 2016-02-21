@@ -12,7 +12,7 @@
 class Generator {
     public:
         Generator(int m, int n, Difficulty difficulty);
-        
+
 
     private:
         void createPuzzle();

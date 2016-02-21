@@ -98,29 +98,29 @@ void Import::buildLattice(std::string filename) {
 
 /* Initializes an empty lattice based on given dimensions */
 void Import::buildEmptyLattice(int m, int n) {
-    
+
     lattice_->initArrays(m+2, n+2);
     lattice_->initUpdateMatrix();
-    
+
     for (int i = 0; i < m+1; i++) {
         lattice_->setHLine(i+1, 0, NLINE);
     }
-    
+
     for (int i = 0; i < m+2; i++) {
         lattice_->setVLine(i, 0, NLINE);
         lattice_->setVLine(i, n+2, NLINE);
     }
-    
+
     for (int j = 0; j < n+3; j++) {
         lattice_->setVLine(0, j, NLINE);
         lattice_->setVLine(m+1, j, NLINE);
     }
-    
+
     for (int j = 0; j < n+2; j++) {
         lattice_->setHLine(0, j, NLINE);
         lattice_->setHLine(m+2, j, NLINE);
     }
-    
+
     for (int j = 0; j < m+3; j++) {
         lattice_->setHLine(j, 0, NLINE);
         lattice_->setHLine(j, n+1, NLINE);
@@ -161,7 +161,7 @@ void Import::importNumberRow(int i, std::string row) {
 void Import::importHLineRow(int i, std::string row) {
   lattice_->setHLine(i, 0, NLINE);
     for (std::string::size_type j = 0; j < row.size(); j++) {
-     
+
         char c = row[j];
         switch (c) {
             case '-':
@@ -175,14 +175,14 @@ void Import::importHLineRow(int i, std::string row) {
                 break;
         }
     }
-    lattice_->setHLine(i, row.size()+1, NLINE); 
+    lattice_->setHLine(i, row.size()+1, NLINE);
 }
 
 /* Helper function for reading a line from stdin and
  * interpreting '-' and 'x' as their corresponding values in
  * the Number enumeration. */
 void Import::importVLineRow(int i, std::string row) {
-  
+
     for (std::string::size_type j = 0; j < row.size(); j++) {
         char c = row[j];
         switch (c) {

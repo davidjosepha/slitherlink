@@ -9,7 +9,7 @@
 
 int main(int argc, char * argv[]) {
     clock_t startTime, endTime;
-    
+
     if (argc == 4) {
         std::istringstream mn(argv[1]);
         std::istringstream nn(argv[2]);
@@ -30,5 +30,5 @@ int main(int argc, char * argv[]) {
         std::cout << "Time to create:\t" << diff << " seconds" << std::endl;
 
         return EXIT_SUCCESS;
-    } 
+    }
 }

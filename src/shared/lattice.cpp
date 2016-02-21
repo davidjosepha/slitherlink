@@ -95,7 +95,7 @@ void Lattice::setNumber(int i, int j, Number num) {
 /* Set value of horizontal edge located at coordinates
  * (i, j), where i is on the range [0, m_+1] and j is
  * on the range [0, n_]. */
-bool Lattice::setHLine(int i, int j, Edge edge) { 
+bool Lattice::setHLine(int i, int j, Edge edge) {
     assert(0 <= i && i < m_+1 && 0 <= j && j < n_);
 
     hlines_[i][j] = edge;
@@ -105,7 +105,7 @@ bool Lattice::setHLine(int i, int j, Edge edge) {
 /* Set value of vertical edge located at coordinates
  * (i, j), where i is on the range [0, m_+1] and j is
  * on the range [0, n_]. */
-bool Lattice::setVLine(int i, int j, Edge edge) { 
+bool Lattice::setVLine(int i, int j, Edge edge) {
     assert(0 <= i && i < m_ && 0 <= j && j < n_+1);
 
     vlines_[i][j] = edge;
